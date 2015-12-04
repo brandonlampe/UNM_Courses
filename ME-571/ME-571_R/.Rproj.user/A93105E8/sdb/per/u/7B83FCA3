@@ -1,0 +1,17 @@
+{
+    "contents" : "d <- seq(0, 200e-6, 1e-5) #micro meter\nK <- 4e6\n\nSigma <- K/(sqrt(pi*d/2))/1e6 #MPa\n\nplot(d,Sigma, ylab = \"Stress [MPa]\", xlab = \"Grain Size [m]\", ylim = c(0,1000))\nlines(d,Sigma)\n\ntest <- read.csv(\"/Users/Lampe/Documents/UNM_Courses/ME-571_AdvMaterialScience_Tehrani/ME-571_R/TransTemp.csv\",\n           header = TRUE)\n\nTestTemp <- test[,1:5]\ncolnames(TestTemp) <- c(\"Temperature\", \"0%Ni\", \"2%Ni\", \"5%Ni\", \"8%Ni\")\n\nlibrary(ggplot2)\nlibrary(reshape2)\nTestTemp.long <- melt(TestTemp, id.vars = \"Temperature\", factorsAsStrings = TRUE)\ncolnames(TestTemp.long) <- c(\"Temperature\", \"Alloy\", \"Energy\")\n\np <- ggplot(TestTemp.long, aes(x = Temperature))\np <- p + geom_point(aes(y = Energy))\np <- p + geom_line(aes(y = Energy))\np <- p + facet_wrap(~ Alloy, ncol = 2)\np <- p + labs(y = \"Energy Level [in J/m^2]\", x = \"Temperature [C]\")\np\n",
+    "created" : 1415164012584.000,
+    "dirty" : true,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "1413827454",
+    "id" : "7B83FCA3",
+    "lastKnownWriteTime" : 0,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

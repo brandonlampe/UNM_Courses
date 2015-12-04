@@ -1,0 +1,587 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Assignment 1
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Date
+ME-500: Numerical Methods in Mechanical Engineering
+\end_layout
+
+\begin_layout Standard
+\align center
+08/31/15
+\end_layout
+
+\begin_layout Section
+Summary of Relevant Theory
+\end_layout
+
+\begin_layout Standard
+A numerical routine was written to approximate the definite integral of
+ a function based on the Trapezoidal rule, and a convergence analysis was
+ then performed.
+ However; I am unsure of how to compare the theoretical rate of convergence
+ to the numerical rate I computed.
+ Additionally, I was unable to write a working Gauss quadrature routine;
+ therefore, an available code was used to perform the Gauss quadrature of
+ a third order polynomial.
+\end_layout
+
+\begin_layout Section
+Program General Trapezoidal Rule
+\end_layout
+
+\begin_layout Standard
+The general trapezoidal rule (Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:TrapRule"
+
+\end_inset
+
+) was utilized to calculate an numerical approximation to the definite integral
+ (quadrature) of an arbitrarily chosen Function 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Function"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+I_{num}=\alpha f(a)+(1-\alpha)f(b),\label{eq:TrapRule}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+f(x)=sin(x)+x\label{eq:Function}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The problem domain, 
+\begin_inset Formula $x\in[0,10]$
+\end_inset
+
+, was divided into 15 subdomains, where 
+\begin_inset Formula $a$
+\end_inset
+
+ and 
+\begin_inset Formula $b$
+\end_inset
+
+ in Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:TrapRule"
+
+\end_inset
+
+ represent the upper and lower bounds of each subdomain, respectively.
+ The analytical solution to the definite integral was calculated (Equation
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:AnnSol"
+
+\end_inset
+
+) and quadrature estimates with 
+\begin_inset Formula $\alpha=0,0.5,1$
+\end_inset
+
+ resulted in values of 
+\begin_inset Formula $I_{num}=48.62,51.77,54.92$
+\end_inset
+
+ , respectively.
+ Additionally, approximations for each subdomain are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:TrapResults"
+
+\end_inset
+
+, where each point is centered at the horizontal midpoint of its respective
+ subdomain.
+ 
+\begin_inset Formula 
+\begin{equation}
+\int_{0}^{10}\!sin(x)+x\,\mathrm{d}x=51.84\label{eq:AnnSol}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+These results show that the trapezoidal rule most closely approximates the
+ function when 
+\begin_inset Formula $\alpha=0.5$
+\end_inset
+
+, and quadrature results for 
+\begin_inset Formula $\alpha=0$
+\end_inset
+
+ and 
+\begin_inset Formula $1$
+\end_inset
+
+ proivde approximately the same error but on opposite sides of the analytical
+ solution.
+ The Python code for this algorithm is shown in the attached code listing.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 02_Trap_Alpha.pdf
+	width 16cm
+
+\end_inset
+
+
+\backslash
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Results of the approximation to Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Function"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:TrapResults"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Determine the Rate of Convergence
+\end_layout
+
+\begin_layout Standard
+The same function (Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Function"
+
+\end_inset
+
+) was chosen with the domain of, 
+\begin_inset Formula $x\in[0,10]$
+\end_inset
+
+, and the exact integral to this function over the defined domain was calculated
+ as 
+\begin_inset Formula $I_{ann}=51.84$
+\end_inset
+
+.
+ Using this value, the error was defined as:
+\begin_inset Formula 
+\[
+Error=|I_{ann}-I_{num}|
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The error was calculated over a range of subdomains ranging from 1 to 64,
+ with the corresponding suddomain legth 
+\begin_inset Formula $(h)$
+\end_inset
+
+ ranging from 10 down to 0.16.
+ Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Convergence-analysis."
+
+\end_inset
+
+ shows the results of the convergence analysis.
+ The highest rate of convergence clearly occurs when 
+\begin_inset Formula $\alpha=0.5$
+\end_inset
+
+ with a value of approximately 2, the convergence rate for 
+\begin_inset Formula $\alpha=0$
+\end_inset
+
+ and 
+\begin_inset Formula $1$
+\end_inset
+
+ were approximately unity (values shown on Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Convergence-analysis."
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 03_Trap_Error.pdf
+	width 16cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Convergence analysis.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Convergence-analysis."
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I am unsure of how to compare the numerically calculated rate of convergence
+ (slopes listed on plot) to the theoretical values.
+ This is because the theoretical upper bound for the rate of convergence
+ was said to be of the order of the polynomial function plus one (
+\begin_inset Formula $n_{p}+1)$
+\end_inset
+
+; however, the function I ingetrated was not a polynomial.
+\end_layout
+
+\begin_layout Section
+Gauss Quadrature
+\end_layout
+
+\begin_layout Standard
+Third, fourth, fifth, and sixth-order taylor series expansions (TSE) of
+ Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Function"
+
+\end_inset
+
+ about 
+\begin_inset Formula $x=5$
+\end_inset
+
+ were performed to obtain the functions shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Approximations-of-Equation"
+
+\end_inset
+
+.
+ The polynomial obtained from the third-order expansion is shown in Equation
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:TSE"
+
+\end_inset
+
+.
+\begin_inset Formula 
+\begin{equation}
+f(x)=-0.047x^{3}+1.189x^{2}-7.056x+15.12\label{eq:TSE}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+I wrote a third-order Gauss quadrature routine (
+\emph on
+GaussQuad_3
+\emph default
+) and evaluated the error associated each of the different TSE polynomials
+ over a range of subdomain widths.
+ Results of analysis hown in Figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Analysis-of-Gauss"
+
+\end_inset
+
+.
+ These results show that a negligible amount of error was calculated when
+ my third-order quadrature routine evaluated a third-order polynomail, hence
+ the rate of convergence was zero.
+ For higher order polynomials (fourth, fifth, and sixth), the rate of convergenc
+e was appears to be four, but when calculated these values were 3.6 and 2.4
+ for fifth and sixth-order polynomials, respectively.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 04_GaussQuad.pdf
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Taylor series expansions of Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Function"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Approximations-of-Equation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 05_Gauss_Error.pdf
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Analysis of Gauss quadrature of Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:TSE"
+
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Analysis-of-Gauss"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

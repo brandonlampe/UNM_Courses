@@ -1,0 +1,408 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 0.75in
+\topmargin 0.75in
+\rightmargin 0.75in
+\bottommargin 0.75in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ME-504 Take-Home Exam: Problem 4 (Finite Element Theory)
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Standard
+Strong Form of the Problem:
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+\begin_inset Formula 
+\begin{eqnarray*}
+ & -(sin(x)\theta')'+cos(x)\theta=x,\hspace{1em}\Omega\rightarrow0<x<1\\
+ & \theta(0)=1\\
+ & \theta(1)=-1
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+Weak Form of the Problem:
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+\begin_inset Formula 
+\[
+\int_{0}^{1}[v'\theta'sin(x)+v\theta cos(x)]dx=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+Examine Convergence:
+\end_layout
+
+\begin_layout Standard
+Approximate solutions over the problem domain are shown in Figure 1 and
+ first derivatives of the approximate solutions are shown in Figure 2.
+ Convergence was analyzed at 
+\begin_inset Formula $x=0.5$
+\end_inset
+
+, as shown in Figure 3.
+ 
+\end_layout
+
+\begin_layout Subsection*
+Evaluate the Error:
+\end_layout
+
+\begin_layout Standard
+Figure 4 shows the calculated values of the Energy and L2 error norms with
+ respect to the inverse of the element width.
+ The errors were calculated between elements of width 
+\begin_inset Formula $h$
+\end_inset
+
+ and width 
+\begin_inset Formula $\frac{h}{2}$
+\end_inset
+
+, not with respect to the analytical solution.
+ The error norms scale with the order of the basis function such that the
+ energy error norm scales with 
+\begin_inset Formula $h^{k+1}$
+\end_inset
+
+ and the L2 error norm scales with 
+\begin_inset Formula $h^{k}$
+\end_inset
+
+, where 
+\begin_inset Formula $h$
+\end_inset
+
+ is the element width and 
+\begin_inset Formula $k$
+\end_inset
+
+ is the order of the polynomial used for the basis function (order 1 polynomials
+ were used for this assignment).
+\end_layout
+
+\begin_layout Subsubsection*
+Energy Error Norm
+\end_layout
+
+\begin_layout Standard
+The work function is:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\prod[\theta]=\frac{1}{2}\int_{0}^{1}[sin(x)\theta'^{2}+cos(x)\theta^{2}]dx-\int_{0}^{1}[x\theta]dx=0
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Therefore, the relative energy norm, which takes into account only the stiffness
+ matrix (i.e., not the forcing function) is defined as:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+||e||_{Energy}=\Big(\frac{1}{2}\int_{0}^{1}[sin(x)(\theta'_{N}-\theta'_{2N})^{2}+cos(x)(\theta_{N}-\theta_{2N})^{2}]dx\Big)^{\frac{1}{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection*
+L2 Error Norm:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+||e||_{L2}=\Big(\int_{0}^{1}[(\theta_{N}-\theta_{2N})^{2}]dx\Big)^{\frac{1}{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Discussion of Results
+\end_layout
+
+\begin_layout Standard
+Convergence rates vary dramatically across the domain.
+ The approximate solution appears to have converged on the right side of
+ the domain, near x = 1, when as few as four elements were used.
+ This quick convergence rate is the result of the solution being approximately
+ linear on the right side of the domain and the implementation of linear
+ basis functions.
+ However, the left side of the domain, near x = 0, had a solution that was
+ highly nonlinear and required a very fine mesh to obtain convergence (more
+ than 128 elements).
+ Convergence would have been reached much quicker over the nonlinear portion
+ of the mesh had higher order (nonlinear) basis functions been used.
+ Difference in convergence rates across the domain is especially evident
+ when comparing the spatial derivatives of the approximate solution across
+ the domain.
+ The approximate derivatives all overly on the right side of the domain
+ while there are substantial difference as more elements are used in to
+ results on the right side of the domain.
+\end_layout
+
+\begin_layout Standard
+
+\end_layout
+
+\begin_layout Standard
+The both error norms decreased when an increasing number of elements were
+ used.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ApproximateSolution.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Approximate Solutions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ApproximateSolutionDerivative.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Derivatives of the Approximate Solutions
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Convergence.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Approximate solutions at x = 0.5 for differing numbers of elements.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename ErrorNorms.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+L2 and Energy error norms with respect to the inverse of element width.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

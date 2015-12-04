@@ -1,0 +1,16 @@
+{
+    "contents" : "#### HW 02\nlibrary(ggplot2)\n############# PROBLEM 3.1\nepsilon <- matrix(c(0.02, 0.1))\nepsilon[2,1]\n\nsigma <- matrix(c(175, 185))\nsigma\n\nn <- (log(sigma[2,1]) - log(sigma[1,1])) /\n    ((log(epsilon[2,1]) - log(epsilon[1,1])))\n\nk <- sigma[1,1]/ epsilon[1,1]^n\n\nhollomon <- function(e, n, k){\n          sigma <- k * e ^ n\n          }\n\ncheck <- hollomon(epsilon, n, k)\n\ne.test <- seq(0.0,0.5, 0.005)\ns.check <- hollomon(e.test, n, k)\nplot(epsilon, sigma)\nlines(e.test, s.check)\n\n#### problem 3.4 c\n\nVonMises <- function(s1){\n  s2 <- s1/2\n  s3 <- 0\n  sqrt(2)/2*((s1-s2)^2 + (s2-s3)^2 + (s1 - s3)^2)^(1/2)\n}\n\np1 <- 250:350\nyield <- VonMises(p1)\n\nplot(p1, yield)\n######## PROBLEM 3.16\n\n# compressive stress / tensile stress [MPa]\nsc.st <- matrix(c(0.9, .8, .7, .6, .5, .4, .35, .325, .32))\n\n# x 10^(-2)\nep <- matrix(c(0.1, .25, .4, .65, .95, 1.5, 2, 2.5, 3))\n\ne <- ep * 10 ^ (-2)\n\nplot(ep, sc.st)\nlines(ep, sc.st)\n\nfsigma.T <- function (e){\n        300 + 450 * e ^ 0.5 }\n\nsigma.C <- sc.st * fsigma.T(e)\nsigma.C\n\nsigma.T <- fsigma.T(e)\n\n## final Plot\npar(mfrow = c(2,1))\nplot(e, sigma.C, xlab = \"Strain\",\n     ylab = \"Compressive Stress [MPa]\")\nlines(e, sigma.C)\n\nplot(e, sigma.T, xlab = \"Strain\",\n     ylab = \"Tensile Stress [MPa]\")\nlines(e,sigma.T)\n\n# ---- 3.21 ----\ns3c <- 55 # MPa\ns1t <- 51 # MPa\n\ns <- matrix(c(sqrt(1/3)*s1t, sqrt(1/3)*s3c),nrow = 2)\nKA <- matrix(c(1,1,51/3,-55/3), ncol = 2)\nsolve(KA,s)\n\n###################\nA <- matrix(c(1,1,17,18.3),ncol = 2)\nb <- matrix(c(29.44, 31.75),ncol = 1)\n\ntest <- matrix(c(30.5, -0.065),ncol = 1)\nA %*% test\n\nsolve(A,b)\n\n",
+    "created" : 1410958263073.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3287925281",
+    "id" : "BDDAC5BB",
+    "lastKnownWriteTime" : 1411020142,
+    "path" : "~/Documents/UNM_Courses/ME-571_AdvMaterialScience_Tehrani/ME-571_R/ME571_HW02.R",
+    "project_path" : "ME571_HW02.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

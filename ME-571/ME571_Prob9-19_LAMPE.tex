@@ -1,0 +1,33 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=.75in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+\usepackage[english]{babel}
+\usepackage{bm}
+\usepackage{tensor}
+\usepackage{xfrac}
+\usepackage{gensymb}
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{(\alph{subsection})}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+\title{Problem 9.19}
+\author{Brandon Lampe}
+\maketitle
+
+\subsection{After Charpy testing, what is the correlation between the energy absorbed and the appearance of the fracture surface?}
+
+The amount of absorbed energy can be qualitatively analyzed based on the amount of plastic deformation prior to failure; i.e., a greater amount of plastic deformation indicates a greater amount of energy absorbed.  When the fracture surface occurs on a plane (e.g., a cleavage plane) and very little plastic deformation happens prior to failure, this appearance indicates little energy was absorbed by the material.  Fractures that appear fibrous with signs of plastic deformation have absorbed more energy than planar fractures.
+
+\subsection{How does this relate to ductile and brittle materials?}
+Materials at temperatures greater than the ductile to brittle transition temperatures (DBTT) will experience plastic deformation prior to failure.  This plastic deformation indicates the material was ductile at the test conditions and results in a jagged fracture surface that absorbs more energy than a planar fracture.  Materials at temperatures below the DBTT will fail in a brittle fashion (i.e., planar fracture surface) and absorb less energy than a ductile material.
+
+\end{document}

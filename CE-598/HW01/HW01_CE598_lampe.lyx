@@ -1,0 +1,502 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Practical Peridynamics - HW 1
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Section
+Chapter 1: Excercises 1.1 through 1.6
+\end_layout
+
+\begin_layout Subsection
+Show why mass density is undefined on the boudnary of a homogeneous material
+ body.
+\end_layout
+
+\begin_layout Standard
+Density is the ratio of an amount of matter having mass 
+\begin_inset Formula $(\Delta m)$
+\end_inset
+
+ to the volume that matter occupies 
+\begin_inset Formula $(\Delta V).$
+\end_inset
+
+ Let 
+\begin_inset Formula $P$
+\end_inset
+
+ represent the center of mass (centroid) of the volume 
+\begin_inset Formula $\Delta V$
+\end_inset
+
+.
+ When density is defined as 
+\begin_inset Formula $lim_{\Delta V\rightarrow0}(\Delta m/\Delta V)$
+\end_inset
+
+, this definition is physically limited (in an engineering sense) to a minimium
+ 
+\begin_inset Formula $\Delta V$
+\end_inset
+
+ with a characteristic length that is greater than the mean free path of
+ the molecules which compose the homogenous body.
+ Therefore, when 
+\begin_inset Formula $P$
+\end_inset
+
+ is chosen on the boundary of a homogenous body 
+\begin_inset Formula $\Delta V$
+\end_inset
+
+ will encompass a volume that is not a part of that homogenous body.
+ This will then provide a value of 
+\begin_inset Formula $\rho$
+\end_inset
+
+ that is not representative of the homogenous body.
+ Therefore, 
+\begin_inset Formula $\rho$
+\end_inset
+
+ is only meaningful when 
+\begin_inset Formula $\Delta V$
+\end_inset
+
+is of an order greater than that of the mean free path and greater than
+ the characteristic length of 
+\begin_inset Formula $\Delta V$
+\end_inset
+
+ from the boundary.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename HomogenousBody.pdf
+	width 5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Point on the boundary of a homogenous body where 
+\begin_inset Formula $\rho$
+\end_inset
+
+is undefined.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Describe and sketch three physical situations in which the traction vector
+ is undefined at a point.
+\end_layout
+
+\begin_layout Standard
+Tractions are typically undefined as a result of the 
+\begin_inset Formula $\Delta A$
+\end_inset
+
+ being undefined, the following lists some situations in which this is so
+ and Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Examples-of-undefined"
+
+\end_inset
+
+ illustrates these:
+\end_layout
+
+\begin_layout Itemize
+A) At a corner: the area which the traction is applied is said to be uniquely
+ described by the unit normal to that area; however, at an edge a unique
+ normal vector does not exist and therefore the traction is not defined.
+\end_layout
+
+\begin_layout Itemize
+B) At a crack front: the force applied by the traction encompasses a very
+ small area, which may result in an unrealistically high magnitude of the
+ traction.
+ Additionally, the assumption of continuity is no longer valid as new faces
+ are formed.
+\end_layout
+
+\begin_layout Itemize
+C) Point of material seperation: again, the force applied by the traction
+ encompasses a very small area, which may result in an unrealistically high
+ magnitude of the traction.
+ Additionally, the assumption of continuity is no longer valid as new faces
+ are formed.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename UndefTraction.pdf
+	width 10cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Examples of undefined tracstions.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Examples-of-undefined"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Describe and sketch three physical situations in which the strain component
+ at a point 
+\begin_inset Formula $\epsilon_{xx}$
+\end_inset
+
+ is undefined.
+\end_layout
+
+\begin_layout Standard
+Below are situations where strain components are undefined and (at least
+ a partial) reason why (shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Examples-of-undefined"
+
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Itemize
+A) At a corner: 
+\begin_inset Formula $\Delta X$
+\end_inset
+
+ is undefined at the boundary of a body.
+\end_layout
+
+\begin_layout Itemize
+B) At a crack front: the area 
+\begin_inset Formula $\Delta X$
+\end_inset
+
+ is discontinuous and therefore not differentiable.
+ This results in a strong formulation of strain being undefined and thus
+ requiring a weak formulation.
+\end_layout
+
+\begin_layout Itemize
+C) Point of material seperation: again, strains are discontinuous and the
+ area 
+\begin_inset Formula $\Delta X$
+\end_inset
+
+ is vanishingly small, which result in strain being undefined.
+\end_layout
+
+\begin_layout Subsection
+Determine the maximum permitted load for the beam shown in Fig.
+ 1.2 when the maximum shear stress is 15,000 psi.
+\end_layout
+
+\begin_layout Itemize
+a) Work for this problem is shown on the following pages.
+ Calculated solution for the maximum value of P was 90,000 lb.
+\end_layout
+
+\begin_layout Itemize
+b) Results were calculated using Abaqus.
+ Results (in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Contours-of-the"
+
+\end_inset
+
+) show the maximum allowable shear stress 
+\begin_inset Formula $(J_{2})$
+\end_inset
+
+ was obtained when the applied load 
+\begin_inset Formula $P=7,250$
+\end_inset
+
+ psi.
+ Maximum stress was observed at the edges near the two reaction forces on
+ the lower boundary of the beam with the following material parameters:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Young's modulus = 
+\begin_inset Formula $30*10^{6}psi$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+Poisson's ratio = 
+\begin_inset Formula $0.3$
+\end_inset
+
+ 
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1-4b_Mises.png
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Contours of the maximum shear stress results on the deformed beam.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Contours-of-the"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+c) The problem statement defines the load and reaction to be 
+\begin_inset Quotes eld
+\end_inset
+
+concentrated
+\begin_inset Quotes erd
+\end_inset
+
+.
+ A concentrated force implies the force will be applied over a negligible
+ area.
+ Because of this, the magnitude of the resulting traction will be infinite
+ (undefined) for any nonzero force vector.
+ Therefore, the permitted load 
+\begin_inset Formula $(P)\mbox{ }$
+\end_inset
+
+ in this situation is zero.
+\end_layout
+
+\begin_layout Subsection
+What is the load at which the glass plate with a hole in it will break?
+\end_layout
+
+\begin_layout Standard
+A solution was obtained from literature where the stress concentration factor
+ 
+\begin_inset Formula $(K)$
+\end_inset
+
+ at the boundary of the whole was defined as:
+\begin_inset Formula 
+\[
+K=3.000-3.140(d/D)+3.667(d/D)^{2}-1.527(d/D)^{3}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $d$
+\end_inset
+
+ is the thickness of the plate and 
+\begin_inset Formula $D$
+\end_inset
+
+ is the height of the plate.
+ This definition of 
+\begin_inset Formula $K$
+\end_inset
+
+ yielded a value of 
+\begin_inset Formula $2.875$
+\end_inset
+
+ for this problem.
+ Therefore, the load at which the glass plate will break was calculated
+ as:
+\begin_inset Formula 
+\[
+P_{max}=\sigma_{ult}A/K=10,000*(6*0.25)/2.875=5.217\text{ kip}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+When the two cracks are each 0.5 inches in length, what is the maximum stress
+ in the plate?
+\end_layout
+
+\begin_layout Standard
+A FEA was not completed for this problem.
+\end_layout
+
+\end_body
+\end_document

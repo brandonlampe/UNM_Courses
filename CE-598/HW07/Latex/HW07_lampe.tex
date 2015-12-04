@@ -1,0 +1,141 @@
+\documentclass[letterpaper, 10pt, oneside]{article}
+
+\usepackage{tikz}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{framed} % for framed equations
+\usepackage{empheq} % for framed equations
+\usepackage{mathrsfs} % for script fonts
+\usepackage[section]{placeins} % keeps figures in the section where they were placed
+
+%%%%% new environment and new command definitions
+\newenvironment{dd}[1]{
+	\noindent
+	\textbf{\normalsize{#1}}
+	\hspace{0.1in}
+	\small
+	\rmfamily
+	}
+	{\medskip}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}} 
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}} 
+\newcommand{\as}[1]{\begin{align*}#1\end{align*}}
+\newcommand{\an}[1]{\begin{align}#1\end{align}}
+\newcommand{\bdd}{\begin{dd}}
+\newcommand{\edd}{\end{dd}} 
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}  
+\newcommand{\boxedeq}[2]{\begin{empheq}[box={\fboxsep=6pt\fbox}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\coloredeq}[2]{\begin{empheq}[box=\colorbox{lightgreen}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\Figure}[4]{
+  \begin{figure}[#1]
+    \centering
+    \includegraphics[width=#2in]{figs/#3}
+    \caption{#4.}\label{fig:#3}
+  \end{figure}}
+  %example: Figure{placement options (htp)}{width in inches}{file name in "figs" subdirectory}{caption}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% begin the document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\title{CE-598\\ Practical Peridynamics\\ Assignment 7}
+\author{Brandon Lampe}
+% \date{October 3, 2015} % delete this line to display the current date
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}
+\bdd{Compile and run the MatLab function beamExample.m. Use the MatLab editor and debugger to step through the function and learn about how the program works. Turn in hard copies of the final frame of the movie and the time history plot. To three significant digits, what is the final displacement of the central particle in the beam? How does this compare with the Bernoulli beam theory prediction?}
+
+\Figure{htp}{4}{1_def.pdf}{Results of the final configuration from \emph{beamExample.m}, where the abscissa and ordinate represent the final simulated horizontal and vertical positions, respectively.}
+
+\Figure{htp}{4}{1_Hist.pdf}{Results from \emph{beamExample.m} are shown, where the vertical displacement versus time of the center particle in the initial configuration.}
+
+The equation for beam displacement from Bernoulli's theory is:
+\as{\Delta y = \frac{5wL^{4}}{384EI}}
+
+\begin{center}\begin{tabular}{c c c}
+	& X Position & Y Position\\
+	\hline
+	Initial Position & 0.150 & 0.030 \\
+	\hline
+	Final Position \emph{beamExample.m} & 0.152 & 0.0181 \\
+	\hline
+	Displacement \emph{beamExample.m} & 0.002 & -0.0119\\
+	\hline
+	Disp. Predicteb by Bernoulli beam theory & 0 & -0.005 \\
+	\hline
+\end{tabular}\end{center}
+\edd
+
+\section{}
+\bdd{The FORTRAN program beam.f90 in the SimplyFortran project beamExample.prj has ten missing source code lines, so it will not run. Using the MatLab program beamExample.m as a guide, fill in the missing lines in beam.f90. Use makeMovie.m, plotDefShape.m, and plotTimeHist.m to visualize the results of the FORTRAN simulation. Create hard copies of the final frame of the movie and the time history plot. To three significant digits, what is the final displacement of the central particle in the beam? Does it match the result of Problem (1)?}
+
+\Figure{htp}{4}{2_def.pdf}{Results of the final configuration from \emph{beam.exe}, where the abscissa and ordinate represent the final simulated horizontal and vertical positions, respectively.}
+
+\Figure{htp}{4}{2_hist.pdf}{Results from \emph{beam.exe} are shown, where the vertical displacement versus time of the center particle in the initial configuration.}
+
+Displacement of the central particle in the beam is described in the table below, these results are identical to those calculated using the MatLab file.
+
+\begin{center}\begin{tabular}{c c c}
+	& X Position & Y Position\\
+	\hline
+	Initial Position & 0.150 & 0.030 \\
+	\hline
+	Final Position \emph{beam.exe} & 0.152 & 0.0181 \\
+	\hline
+	Displacement \emph{beam.exe} & 0.0024 & -0.0119\\
+	\hline
+\end{tabular}\end{center}
+\edd
+
+\section{}
+\bdd{We wish to study the center-point vertical displacement component of the beam in Problem (1) as a function of angle of lattice rotation. Complete the provided but incomplete function differenceVersusLatticeRotation.m. Provide a plot of percent difference in mid-point deflection (between peridynamic lattice and Bernoulli predictions) versus lattice rotation angle.}
+
+\Figure{htp}{4}{3_Rot-PerDiff.pdf}{Results from \emph{differenceVerssusLatticRotation.m} file.}
+\edd
+
+\section{}
+\bdd{Using beamExample.m, change the BCcodes of the right hand support to (0,0), thus removing the roller support. Adjust the plot window axis as necessary to display the entire deformed beam. Do the simulation results seem reasonable?}\\
+
+Results from this analysis are provided in Figure \ref{fig:4_def.pdf}, and these results appear to by physically consistent with the boundary conditions.
+
+\Figure{htp}{4}{4_def.pdf}{Initial and final results from \emph{beamExample.m} with the modified boundary conditions.}
+\edd
+
+\section{}
+\bdd{Repeat Problem 4, this time using beamExample.prj and makeMovie.m, plotDefShape.m, and plotTimeHist.m to visualize the results of the FORTRAN simulation.}
+
+\Figure{htp}{4}{5_def.pdf}{Results of the final configuration from \emph{beam.exe} with modified boundary conditions, where the abscissa and ordinate represent the final simulated horizontal and vertical positions, respectively.}
+
+\Figure{htp}{4}{5_hist.pdf}{Results from \emph{beam.exe} are shown with modified boundary conditions, where the vertical displacement versus time of the center particle in the initial configuration.}
+\edd
+
+\section{}
+\bdd{ Write a one-page essay explaining your ideas on the advantages and disadvantages of the of the bond-based peridynamic lattice model compared to a finite element model (say, ABAQUS or SAP2000).}\\
+
+Most engineers in the fields of structures and natural materials (possibly all) are introduced to the ideas of stress and strain during a course titled \emph{strength of materials} (or something similar), which is truly a course on statics of deformable elastic bodies. This course teaches students how to solve and derive conservation equations in such a way that analytical solutions for displacement and stress may be obtained for somewhat complex loading by making assumptions such as forces are applied at points and deformations are homogeneous.  I think the finite element method is a product of this approach.
+
+In reality forces are not applied at points and deformation in a body is rarely homogeneous. The bond-based peridynamic lattice model (PD model) is derived from a fundamentally different ideology then finite element models (FE models), this fundamental difference results in a sometimes unique set of advantages and disadvantages for a user of a PD model.  
+
+The PD model makes no assumptions regarding continuity and is derived explicitly from a discrete set of interactions between particles within a horizon.  Whereas FE models are formulated from an assumption of a continuous body. The differential equations associated with that body are then reformulated from a strong form, where the governing equations are satisfied exactly at every continuous point in the body, to a weak form.  This reformulation to a weak form of governing equations, written in terms of integrals instead of differentials,  allows for them to be satisfied approximately at discrete locations within the FE mesh.  Therefore, although the PD model and FE models are derived using fundamentally different assumptions, they both result in numerical approximations at discrete locations within a domain.  
+
+In situations where deformations are linear and continuous FE models may obtain solutions with a relatively few number of correctly chosen elements, e.g., one beam element would provide an exactly solution to problems 1 in this assignment. Whereas numerous particles in the PD model would be needed, which would result in a noticeably greater computation time.  However, only advanced nonlinear FE models are able to compute the results of problem 4, and the computation time for these results would likely take longer and be much more involved than those resulting from the PD model. 
+
+Both the PD model and FE models provide results that are dependent on the discretization. That is, FE models will provide different results depending on the mesh density, unless the problem is simple enough where the chosen element type provides an exact solution to the problem.  Because the result is mesh dependent, all finite element analyses must be subjected to convergence studies to determine if a suitable fine mesh has been chosen such that changes in the solution have negligible variance.  Similarly, results from the PD model must be subjected to the same scrutiny.  Problem 3 made clear that results were dependent on the lattice alignment, which indicates the lattice should be refined to obtain accurate (and material frame indifferent) results.
+
+In general, I think the PD model and other peridynamic models provide an additional set of tools to the practicing engineer and may be especially useful for those in the fields of fracture mechanics, material damage, and other fields where the continuum assumptions are not held.
+\edd
+
+
+\end{document}

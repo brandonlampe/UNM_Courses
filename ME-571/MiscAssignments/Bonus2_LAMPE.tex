@@ -1,0 +1,46 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+ 
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{\thesection.\alph{subsection}}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Bonus 2}%replace X with the appropriate number
+\author{Brandon Lampe\\ %replace with your name
+ME 571 - Material Science} %if necessary, replace with your course title
+ 
+\maketitle
+ 
+\section{Define and provide examples of isotropic and homogenous materials:}  
+	\subsection{isotropic materials:}
+		\begin{itemize}
+			\item definition:  a substance having material properties (e.g., Young's modulus and Poisson's ratio) that are uniform in all spatial directions i.e., they properties do not vary with direction;
+			\item examples of isotropic materials:  steel, glass;
+			\item examples of anisotropic materials:  carbon fiber, wood;
+		\end{itemize}
+	\subsection{homogenous materials:}
+		\begin{itemize}
+			\item definition:  a material having uniform composition and properties at every point in the material.  Homogeneity of a material is dependent on the scale at which the material is observed e.g., atomic, crystal, bulk scales;
+			\item examples of materials with a homogenous crystal structure:  halite, gold  
+			\item a uniform sandstone (e.g., quartz bound together with a calcite matrix) is typically not isotropic (i.e., properties vary with direction) but the bulk material is homogenous.
+		\end{itemize}			 
+
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}

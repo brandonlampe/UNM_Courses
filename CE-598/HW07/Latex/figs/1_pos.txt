@@ -1,0 +1,26 @@
+
+MatLab results:
+
+initial_xpos =
+
+    0.1500
+
+
+initial_ypos =
+
+    0.0300
+
+
+xpos =
+
+    0.1524
+
+
+ypos =
+
+    0.0181
+
+beam deflection equation given in "BeamDeflection.pdf" pg 6
+
+FORTRAN results
+1.52433383336176E-001  1.81370705220045E-002  1.50000000000000E-001  3.00000000000000E-002

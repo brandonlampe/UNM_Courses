@@ -1,0 +1,49 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=.75in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+\usepackage[english]{babel}
+\usepackage{bm}
+\usepackage{tensor}
+\usepackage{xfrac}
+\usepackage{gensymb}
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{(\alph{subsection})}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+\title{The Eigen Problem}
+\author{Brandon Lampe}
+\maketitle
+
+When a second-order tensor (1) operates on a vector (2) and the result is a scalar times the same vector, then the vector is an eigenvector and the scalar is an eigenvalue.  The eigenproblem is: given a tensor, find \textbf{p} and $\lambda$ that satisfy equation 3, which is typically shown by equation 4.  Equation 5 shows the tensor expressed in terms of its components and base vectors, where the components of the eigenvector are expressed with respect to the same basis.  When the problem is written as Equation 6, p($\lambda$) is the characteristic polynomial, and for a nontrivial solution to exist  p($\lambda$) = 0.  The eigenvalues are the roots of the characteristic equation.\\
+
+Components of the eigenvector associated with an eigenvalue is obtained via equation 7, where $\lambda_1$ solves for $\overset{e}{p_{1,1}}, \overset{e}{p_{1,2}}, \overset{e}{p_{1,3}}$.  The components of each eigenvector are orthogonal; therefore, if two components of the eigenvector are obtained, the third component is simply orthogonal to the first two.  When a tensor is expressed in the basis composed of its eigenvectors, this tensor is said to be in its principal basis and all off-diagonal components of the tensor will equal zero.  The transformation matrix between the e-e basis the principal basis is expressed in equation 9.\\
+
+Spectral decomposition of a tensor T is expressed, with the summation notion suspended, in equation 10.  Invariants of a tensor are constant regardless of the basis chosen to express the tensor, and the eigenvalues of a tensor are one set of invariants.  The Cayley-Hamilton Theorem states that a tensor satisfies it's own characteristic equation; i.e., the roots of the characteristic polynomial can be obtained by using the three sets of independent invariants associated with a tenor.  By definition, the square root of a tensor is obtained by equation 11.\\
+
+\begin{enumerate}
+  \item $T_{ij} \bm{e}_i \otimes \bm{e}_j$
+  \item $p_k \bm{e}_k$
+  \item $\bm{T} \cdot \bm{p} = \lambda \bm{p}$
+  \item$[\bm{T} - \lambda \bm{I}]\cdot \bm{p} = \bm{0} =$ a  vector
+  \item$\big[ \overset{e-e}{[T]} - \lambda [I] \big]\overset{e}{\{p\}} = \{0\}$
+  \item $det\left( \big[ \overset{e-e}{[T]} - \lambda [I] \big] \right) = -p(\lambda) = 0$
+    \item$\big[ \overset{e-e}{[T]} - \lambda_1 [I] \big] \begin{Bmatrix} \overset{e}{p_{1,1}} \\ \overset{e}{p_{1,2}} \\ \overset{e}{p_{1,3}} \end{Bmatrix} = \begin{Bmatrix} 0\\0\\0 \end{Bmatrix}$
+    \item $\bm{p}_1 = \overset{e}{p_{1,1}} \bm{e}_1 + \overset{e}{p_{1,2}} \bm{e}_2 + \overset{e}{p_{1,3}} \bm{e}_3$
+    \item $\overset{p-e}{[a]} = \begin{bmatrix}  \overset{e}{p_{1,1}} &  \overset{e}{p_{1,2}}  &  \overset{e}{p_{1,3}} \\
+                                                                        \overset{e}{p_{2,1}} &  \overset{e}{p_{2,2}}  &  \overset{e}{p_{2,3}} \\ 
+                                                                        \overset{e}{p_{3,1}} &  \overset{e}{p_{3,2}}  &  \overset{e}{p_{3,3}} \end{bmatrix}$
+  \item $\bm{T} = \sum_{i=1}^{3} \lambda_i \bm{p}_i \otimes \bm{p}_j$
+  \item $\bm{T}^{1/2} = \sum_{i=1}^{3} \lambda_i^{1/2} \bm{p}_i \otimes \bm{p}_j$
+ \end{enumerate}
+
+
+\end{document}

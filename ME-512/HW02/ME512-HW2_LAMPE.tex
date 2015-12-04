@@ -1,0 +1,109 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+\usepackage[english]{babel}
+%\usepackage{undertilde}
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{\thesection.\alph{subsection}}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{ASSIGNMENT 2}%replace X with the appropriate number
+\author{Brandon Lampe\\ %replace with your name
+ME 512 - Continuum Mechanics} %if necessary, replace with your course title
+ 
+\maketitle
+ 
+\section{Construct a new basis:}  %You can use theorem, exercise, problem, or question here.  Modify x.yz to be whatever number 
+	\subsubsection{Pick three distinct nonzero numbers as $v_i$ of a vector \boldmath{$v$}.}
+		\begin{itemize}
+			\item $v_i \Rightarrow \{v\} = \begin{Bmatrix} 3 \\ 2 \\ 1 \end{Bmatrix}$
+			\item $\boldsymbol{v} = v_i \boldsymbol{e_i} = 3 \boldsymbol{e_1} + 2 \boldsymbol{e_2} +1\boldsymbol{e_3}$
+		\end{itemize}
+				
+	\subsubsection{Construct a second vector, \boldmath{$u$}, with two arbitrary components and the calculated third component so that \boldmath{$u \perp v$}. }
+		\begin{itemize}
+			\item Two vectors are perpendicular if the dot product between the two equals zero:  
+				$\boldsymbol{u} \bullet \boldsymbol{v} = 0$
+			\item $u_i \Rightarrow \{u\} = \begin{Bmatrix} 2 \\ 2 \\ -10 \end{Bmatrix}$
+			\item $\boldsymbol{u} = u_i \boldsymbol{e_i} = 2 \boldsymbol{e_1} + 2 \boldsymbol{e_2} -10\boldsymbol{e_3}$
+		\end{itemize}
+
+	\subsubsection{Construct a new orthonormal basis \boldmath{$E$} as follows:}
+		\begin{itemize}
+			\item $\boldsymbol{E_1} = \boldsymbol{\frac{v}{||v||}}, \qquad \boldsymbol{E_2} = \boldsymbol{\frac{u}{||u||}},
+								 \qquad \boldsymbol{E_3} = \boldsymbol{E_1} \times \boldsymbol{E_2}$
+			\item $\boldsymbol{E_1} = 0.802 \boldsymbol{e_1} + 0.535 \boldsymbol{e_2} + 0.267 \boldsymbol{e_3}$
+			\item $\boldsymbol{E_2} = 0.192 \boldsymbol{e_1} + 0.192 \boldsymbol{e_2} -0.962 \boldsymbol{e_3}$					\item $\boldsymbol{E_2} = -0.566 \boldsymbol{e_1} + 0.823 \boldsymbol{e_2} + 0.051 \boldsymbol{e_3}$			
+		\end{itemize}
+		
+	\subsubsection{Construct a transformation matrix relating $\boldsymbol{E}$ to $\boldsymbol{e}$:}
+		\begin{itemize}
+			\item $\begin{bmatrix} {}^E a^e \end{bmatrix} = \begin{bmatrix}
+				0.802 & 0.535 & 0.267 \\
+				0.192 & 0.192 & -0.962 \\
+				-0.566 & 0.823 & 0.051
+				\end{bmatrix}$
+		\end{itemize}
+
+% -------------- 2 -----------------------------------------------------------------------------------------------------------		
+\section{Show that the transformation matrix is orthogonal and the determinant equals +1}
+	\begin{itemize} 
+		\item The matrix is orthogonal because: $[{}^E a^e] [{}^E a^e]^T = [I]$,\\
+			 where $[I]$ is the identity matrix: $\begin{bmatrix} 	1 & 0 & 0 \\
+			 										0 & 1 & 0 \\
+													0 & 0 & 1 \\
+													\end{bmatrix}$
+													
+		\item The determinant of the transformation matrix (i.e., $|[{}^E a^e]|$) equals 1.
+	\end{itemize}
+
+% -------------- 3 -----------------------------------------------------------------------------------------------------------
+\section{Choose three nonzero distinct numbers as the components, $w_i^E$, of a vector $\boldsymbol{w}$, with respect to the basis $\boldsymbol{E_i}$.  Find the components $w_i^e$.}
+		\begin{itemize}
+			\item $w^E_i \Rightarrow \{w^E\} = \begin{Bmatrix} 3 \\ 4 \\ 5 \end{Bmatrix}$, \qquad $\boldsymbol{w} = w^E_i 						\boldsymbol{E_i}$
+			\item $w^e_i = [{}^e a^E] {w^E_i},$ \\
+					 $[{}^e a^E] = [{}^E a^e]^{-1} = [{}^E a^e]^{T} = \begin{bmatrix}
+													0.802 & 0.192 & -0.566 \\
+													0.535 & 0.192 & 0.823 \\
+													0.267 & -0.962 & 0.051\\
+												\end{bmatrix}$\\
+				$w^e_i \Rightarrow \{ w^e \} = \begin{Bmatrix*} 0.346 \\ 6.49 \\ -2.79 \end{Bmatrix*}$
+
+		\end{itemize} 
+
+% ----------- 4 ----------------------------------------------------------------------------------------------------
+\section {Show that the magnitude of $\boldsymbol{w}$ is the same with respect to both basis ($w^E_i w^E_i = w^e_A w^e_A$)}
+	\begin{itemize}
+		\item The magnitude squared is an invariant, i.e., doesn't change between bases:\\
+			$w^E_i w^E_i = 50.0$ \\
+			 $w^e_i w^e_i = 50.0$
+	\end{itemize}
+	
+% ---------- 5 -----------------------------------------------------------------------------------------------------
+\section{ Pick components of $Z^e_i$, with respect to basis $\boldsymbol{e_i}$ and evaluate $\boldsymbol{w}
+		\bullet  \boldsymbol{Z}$}
+	\begin{itemize}
+		\item $Z^e_i \Rightarrow \{Z^e \} = \begin{Bmatrix} 7 \\ 8 \\ 9 \end{Bmatrix}, \qquad
+			\boldsymbol{Z} = Z_i \boldsymbol{e_i}$
+		\item  $w^e_i \Rightarrow \{w^e \} = \begin{Bmatrix} 0.346 \\6.49 \\ -2.79 \end{Bmatrix}, \qquad
+			\boldsymbol{w} = w_i \boldsymbol{e_i}$
+		\item $ \boldsymbol{w} \bullet \boldsymbol{Z} = 29.2$
+	\end{itemize}
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}

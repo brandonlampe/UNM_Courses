@@ -1,0 +1,22 @@
+{
+    "contents" : "",
+    "created" : 1415169577441.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "88F9D157",
+    "lastKnownWriteTime" : 8386069150342053888,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "caption" : "TestTemp.long",
+        "contentUrl" : "content?title=TestTemp.long&file=48bb4b7292fc4513a9bac6ec0990ec36.htm",
+        "displayedObservations" : 28,
+        "displayedVariables" : 3,
+        "totalObservations" : 28,
+        "variables" : 3
+    },
+    "source_on_save" : false,
+    "type" : "r_dataframe"
+}

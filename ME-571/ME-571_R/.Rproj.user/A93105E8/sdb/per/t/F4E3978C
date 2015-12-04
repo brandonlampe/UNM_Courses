@@ -1,0 +1,16 @@
+{
+    "contents" : "library(matrixcalc)\nlibrary(Matrix)\n\nB <- 5.905e-6\nA <- .45\n\nm <- 2\nn <- 10\n\n\nnum <- (m+1)*A*m\nden <- (n+1)*B*n\nR<- (num/den)^(1/(m-n))\nR\n\nF <- (m*A)/R^(m+1) -(n*B)/R^(n+1)\nF\n\nS <- R^4/(A*(n-1))\nS\n",
+    "created" : 1410958254853.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1766945091",
+    "id" : "F4E3978C",
+    "lastKnownWriteTime" : 1410958310,
+    "path" : "~/Documents/UNM_Courses/ME-571_AdvMaterialScience_Tehrani/ME-571_R/ME571_HW01.R",
+    "project_path" : "ME571_HW01.R",
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}

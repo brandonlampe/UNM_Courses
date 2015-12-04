@@ -1,0 +1,201 @@
+\documentclass[10pt, reqno]{amsart}
+\usepackage[margin=1in]{geometry} % see geometry.pdf on how to lay out the page. There's lots.
+\geometry{letterpaper}
+\newtheorem{mydef}{Statement}
+
+\title{CBE 521\\ Advanced Transport Phenomena\\ Homework 2}
+\author{Brandon Lampe}
+\date{Sept. 29, 2015} % delete this line to display the current date
+
+%%% BEGIN DOCUMENT
+\begin{document}
+
+\maketitle
+\section{Problem 3: Steady Parallel Rectilinear Flow}
+\subsection{Part b: Show the solution can be written as the sum of particular and complementary (homogeneous) solutions, where $v=v_p + v_c$}
+
+\begin{mydef}
+The complete solution is:
+% problem statement
+\begin{equation} \label{eq:PDE}
+\frac{\partial^2 v}{\partial \xi^2}+\frac{\partial^2 v}{\partial \eta^2}=-1
+\end{equation}
+\end{mydef}
+
+the problem domain:
+\begin{gather} \label{eq:bcts}
+ v(\pm1,\eta)=0\\
+ v(\xi , \pm r)=0
+ \end{gather}
+
+\begin{mydef}
+Must make sense of problem domain definitions:
+\begin{gather}
+ x \in [0, 2B] \\
+ y\in [0,2W] \\
+ r \equiv \frac{W}{B} \\
+\xi \equiv \frac{x}{B} =\frac{2B}{B} = 2 \implies -1\le \xi \le 1\\
+\eta \equiv \frac{y}{B} = \frac{2W}{B} = \frac{2rB}{B} = 2r \implies -r \le \eta \le r
+\end{gather}
+\end{mydef}
+
+\begin{mydef}
+Separate the differential equation into particular and homogeneous parts, and let the particular solution $(v_p)$ satisfy the boundary conditions given in equation \ref{eq:bcts}:
+\begin{gather} \label{eq:part}
+\frac{\partial^2 v_p}{\partial \xi^2} = -1\\
+v_p(\pm 1, \eta) = 0
+\end{gather}
+\end{mydef}
+
+\begin{mydef} The complementary part of the problem is then given by:
+\begin{gather} \label{eq:hom}
+\frac{\partial^2 v_c}{\partial \xi^2}+\frac{\partial^2 v_c}{\partial \eta^2}=0\\
+% v_c(\pm 1, \eta)=0\\
+% v_c (\xi, \pm r)=-v_p(\xi, \pm r)
+\end{gather}
+
+
+The complementary solution must satisfy the following:
+\begin{equation}
+v - v_p = v_c \implies \frac{\partial^2 v}{\partial \xi^2}+\frac{\partial^2 v}{\partial \eta^2} - \frac{\partial^2 v_p}{\partial \xi^2} = -1 - (-1) = 0
+\end{equation}
+
+The boundary conditions must then be:
+\begin{gather}
+ v(\pm1,\eta) - v_p(\pm1, \eta) = v_c(\pm1, \eta)=0 - 0 = 0\\
+ v(\xi,\pm r) - v_p(\xi, \pm r) = v_c(\xi, \pm r) \implies 0 - c_1 = c_1
+\end{gather}
+Therefore:
+\begin{equation}
+c_1 = v_c(\xi, \pm r) = - v_p(\xi, \pm r)
+\end{equation}
+\end{mydef}
+
+\subsection{Part c: Show the particular solution:}
+\begin{mydef}
+The solution to equation \ref{eq:part} is obtained by integrating twice and solving for the boundary conditions:
+\begin{gather}
+v_p(\xi = \pm 1, \eta) = -\frac{\xi^2}{2} + \frac{1}{2} = \frac{1}{2}(1-\xi^2)
+\end{gather}
+\end{mydef}
+
+\subsection{Part d: Obtain the complementary solution:}
+\begin{mydef}
+Considering only the homogeneous form of the equation will allow for a system of basis functions that satisfy the given boundary conditions, and a solution method similar to that for the Laplace equation will be utilized.  Additionally, the boundary conditions of the homogeneous form will be modified such that the boundary conditions for $v$ are satisfied (i.e., $v_c(\xi, \pm r) = -v_p(\xi, \pm r)$). The Homogeneous form of the equation is:
+
+\begin{equation} \label{eq:HomPDE}
+\frac{\partial^2 v_c}{\partial \xi^2}+\frac{\partial^2 v_c}{\partial \eta^2}=0
+\end{equation}
+
+$$v_c(\pm 1, \eta)=0$$
+$$v_c (\xi, \pm r)=-v_p(\xi, \pm r)=\frac{\xi^2}{2} - \frac{1}{2}$$
+\end{mydef}
+
+\begin{mydef}
+Seperate the variables and assume $v_c\left(\xi, \eta\right)$ consists of two independent functions $\Xi\left(\xi\right)$ and $H \left(\eta\right)$: 
+$$v_c \left( \xi,\eta \right) = \Xi \left( \xi \right) H \left( \eta \right)$$ 
+\end{mydef}
+
+therefore, using the product rule, the partial derivatives are:
+$$v_{c,\xi \xi} = \Xi^{''} H $$
+$$v_{c,\eta \eta} = H^{''} \Xi$$
+
+\begin{mydef}
+Substitute the above definitions into equation  \ref{eq:HomPDE} and the following (equation \ref{eq:sep}) is obtained. If the left and right sides of the above equation are equal for all $\xi$ and $\eta$, then $\lambda$ must be a constant.
+\begin{equation} \label{eq:sep}
+	\Xi^{''}(\xi) H(\eta)=-H^{''}(\eta) \Xi(\xi)=\lambda = \frac{\Xi^{''}(\xi)}{\Xi(\xi)}=-\frac{H^{''}(\eta)}{H(\eta)}
+\end{equation}
+\end{mydef}
+
+\begin{mydef}
+Because $\lambda$ is constant, equation \ref{eq:sep} may be rewritten in terms of two ordinary differential equations.  
+\begin{equation} \label{eq:ode1}
+\Xi^{''} - \Xi \lambda^2 = 0 
+\end{equation}
+\begin{equation} \label{eq:ode2}
+H^{''}+H\lambda^2 = 0
+\end{equation}
+\end{mydef}
+
+\begin{mydef}
+By translating the boundary conditions to be in terms of the separation variables and dividing them to be in terms of a single variable results in the following:
+\begin{gather*}
+	v_c(+1,\eta) = \Xi(+1)H(\eta) = 0 \hspace{0.25in} \forall \, \eta \in[-r,+r] \implies \Xi(+1)=0 \\
+	v_c(-1,\eta) = \Xi(-1)H(\eta) = 0 \hspace{0.25in} \forall \, \eta \in[-r,+r] \implies \Xi(-1)=0 \\
+	v_c(\xi,-r) = \Xi(\xi)H(-r) = 0 \hspace{0.25in} \forall \, \xi \in[-1,+1] \implies H(-r)=0 \\
+	v_c(\xi,+r) = \Xi(\xi)H(+r) = 0 \hspace{0.25in} \forall \, \xi \in[-1,+1] \implies H(+r)=0
+\end{gather*}
+\end{mydef}
+
+\begin{mydef}
+The equations (Eq. \ref{eq:ode2}) is now an ordinary differential equations with homogeneous boundary conditions having the  characteristic equation $m^2 + \lambda^2=0$. The solution of this system is in form of an infinite sequence of eigenfunctions $(H_n)$ and eigenvalues $(\lambda_n)$.
+\begin{gather}
+H^{''} + H\lambda^2 = 0 \\
+\nonumber H(+r)=0\\
+\nonumber H(-r)=0
+\end{gather}
+\end{mydef}
+
+\begin{mydef}
+The solution to \ref{eq:ode2} can be written in the form: $H=e^{\alpha \eta} \left( Asin(\beta \eta) + Bcos(\beta\eta) \right)$. Here $\alpha=0$ and $\beta=\lambda$. Substitution of $(\eta + r)$ for $\eta$ in the equation result only in a shift in the eigenspace and allows for a solution when the boundary conditions are applied:
+\begin{gather*}
+H=Asin(\beta (\eta + r)) + Bcos(\beta((\eta+r))\\
+H(\eta = -r)=0\\
+H(\eta = +r)=0
+\end{gather*}
+\end{mydef}
+
+\begin{mydef}
+Solving for the boundary conditions at $\eta = -r$ results in $B=0$. This leaves $H=Asin(\lambda(\eta + r))$, and when solved at the boundary $\eta = +r$:
+\begin{gather}
+H(+r)=0=Asin(\lambda2r)
+\end{gather}
+If $A=0$, the solution reduces to the trivial solution $H=0$. For a non-trivial solution $sin(\lambda(2r))=0$ and by letting $\lambda(2r)=(n+1)\pi, \, n=0,1,2,...$ a solution for $\lambda$ may be obtained:
+\begin{gather}
+\lambda_n=\frac{(n+1)\pi}{2r}, \, n=0,1,2,3,...\\
+H_n(\eta)=sin\left(\frac{(n+1)\pi(\eta+r)}{2r}\right), \, n=0,1,2,3...
+\end{gather}
+\end{mydef}
+
+\begin{mydef}
+Solve the remaining ODE (Equation \ref{eq:ode1}) with boundary conditions:
+\begin{gather}
+\Xi^{''}-\Xi\lambda^2=0\\
+\nonumber \Xi(\xi=+1)=0\\
+\nonumber \Xi(\xi=-1)=0
+\end{gather}
+\end{mydef}
+
+\begin{mydef}
+The remaining equation has the characteristic equation of $m^2-\lambda^2=0 $.  By performing similar steps to those shown in statements 11 and 12 above, it may be shown that $\Xi = Asinh(\lambda(\xi+1))$ and for a nontrivial solution:
+\begin{gather}
+\lambda_m = \frac{(m+1)\pi{\xi+1}}{2}, \, m=0,1,2,3...\\
+\Xi_m(\xi) = sinh\left( \frac{(m+1)\pi(\xi+1)}{2} \right), \, m = 0,1,2,3...
+\end{gather}
+\end{mydef}
+
+\begin{mydef}
+the complementary solution is then obtained when the partial second derivatives of $H_n$ and $\Xi_m$ are calculated and the solution is summed over $m$ and $n$.  This results in:
+
+\begin{gather*}
+v_c \left( \xi,\eta \right) = \Xi \left( \xi \right) H \left( \eta \right)=
+\frac{\partial^2 v_c}{\partial \xi^2}+\frac{\partial^2 v_c}{\partial \eta^2} =\\ 
+-\left( \left(\frac{(m+1)\pi(1+1)}{2}\right)^2 \left( \frac{(n+1)\pi(1+r)}{2r} \right)^2 \right)
+\sum\limits_{m=0}^\infty \sum\limits_{n=0}^\infty
+sinh\left( \frac{(m+1)\pi(\xi+1)}{2} \right)
+sin\left(\frac{(n+1)\pi(\eta+r)}{2r}\right)
+\end{gather*}
+\end{mydef}
+
+\subsection{Part e: Show that as the aspect ratio $r$ grows large, teh velocity distribution approaches that of the particular soluation $v_p$}
+
+\begin{mydef}
+Because the aspect ration $r$ is in the denominator of $v_c$, as $r \rightarrow \infty$, $v_c \rightarrow 0$.  This results in:
+
+\begin{equation}
+r \rightarrow \infty: v=v_p + v_c = v_p + 0 = v_p
+\end{equation}
+
+\end{mydef}
+
+\end{document}

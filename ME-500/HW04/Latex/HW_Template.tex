@@ -1,0 +1,381 @@
+\documentclass[letterpaper, 10pt, oneside]{article}
+
+\usepackage{tikz}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{framed} % for framed equations
+\usepackage{empheq} % for framed equations
+\usepackage{mathrsfs} % for script fonts
+\usepackage[procnames]{listings} % for code listings
+\usepackage{color} % for colored code listings
+\usepackage{bm} % for bold math
+
+%%%%% new environment and new command definitions
+\newenvironment{dd}[1]{
+	\noindent
+	\textbf{\normalsize{#1}}
+	\hspace{0.1in}
+	\small
+	\rmfamily
+	}
+	{\medskip}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}} 
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}} 
+\newcommand{\as}[1]{\begin{align*}#1\end{align*}}
+\newcommand{\an}[1]{\begin{align}#1\end{align}}
+\newcommand{\bdd}{\begin{dd}}
+\newcommand{\edd}{\end{dd}} 
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}  
+\newcommand{\boxedeq}[2]{\begin{empheq}[box={\fboxsep=6pt\fbox}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\coloredeq}[2]{\begin{empheq}[box=\colorbox{lightgreen}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\Figure}[4]{
+  \begin{figure}[#1]
+    \centering
+    \includegraphics[width=#2in]{figs/#3}
+    \caption{#4.}\label{fig:#3}
+  \end{figure}}
+  %example: \Figure{placement options (htp)}{width in inches}{file name in "figs" subdirectory}{caption}
+
+%%%%% for code listings
+\definecolor{keywords}{RGB}{255,0,90}
+\definecolor{comments}{RGB}{0,0,113}
+\definecolor{red}{RGB}{160,0,0}
+\definecolor{green}{RGB}{0,150,0}
+\lstset{language=Python, 
+        basicstyle=\ttfamily\small, 
+        keywordstyle=\color{keywords},
+        commentstyle=\color{comments},
+        stringstyle=\color{red},
+        showstringspaces=false,
+        identifierstyle=\color{green},
+        procnamekeys={def,class}}
+
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not. 
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% begin the document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\title{ME 500\\ Numerical Methods in Mechanical Engineering\\ Assignment 4}
+\author{Brandon Lampe}
+% \date{October 3, 2015} % delete this line to display the current date
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Written summary of material and definitions}
+
+\begin{dd}{eigenproblem}
+When a matrix or second-order tensor (\ref{mat}) operates on a vector \ref{vec} and the result is a scalar times the same vector, then that vector is an eigenvector and the scalar is an eigenvalue.  The standard eigenproblem is: \\
+
+\emph{given a matrix, find $\{p\}$ and $\lambda$ that satisfies $\big[ [A] - \lambda [I] \big]\{p\} = 0$}  (or Equations \ref{stdEig} and \ref{stdEig2} in direct notation)\\
+
+The general eignproblem is defined: \\
+\emph{given the matrices [A] and [B], find $\{p\}$ and $\lambda$ that satisfies $\big[ [A] - \lambda [B] \big]\{p\} = 0$}\\
+
+
+The characteristic polynomial $p(\lambda)$ is written as Equation \ref{charPoly}, and the characteristic equation results when the characterisic polynomial is set equal to zero (Equation \ref{charEqn}), Where the roots of the characteristic equation are the eigenvalues. The Cayley-Hamilton Theorem states that a tensor satisfies it's own characteristic equation; i.e., the roots of the characteristic polynomial can be obtained by using the three sets of independent invariants associated with a $3\times 3$ tensor.
+
+Components of the eigenvector associated with an eigenvalue may be obtained obtained by substiting back in the eigenvalue $(\lambda)$ into Equation \ref{stdEig3} and solving for the components of the eigenvector $\{p\}$. Components of an eigenvector are not independent; therefore, one of the components may be arbitrarily chosen (say $p_{1,1} = 1$) and the remaining components may be solve for.  Also, for real-symmetric matrices each eigenvalue is typically associated with a unique eigenvector, that is $\lambda_1$ solves for $\overset{e}{p_{1,1}}, \overset{e}{p_{1,2}}, \overset{e}{p_{1,3}}$.
+
+For a real-symmetric matrix, each eigenvector is orthogonal to all other eigenvectors; therefore, for a $3\times 3$ matrix, if two eigenvectors are obtained, the third eigenvector must be orthogonal to the first two and may be solved for via a cross product.  When a tensor is expressed in the basis composed of its eigenvectors, this tensor is said to be in its principal basis and all off-diagonal components of the tensor will equal zero.  The modal matrix is a matrix which has columns composed of the eigenvectors, this matrix also acts as a transformation matrix between the "lab" (e-e) basis and principal basis (p-p) as shown in Equation \ref{Modal}.
+
+An eigenpair consists of an eigenvalue and its associated eigenvector.  The eigensystem of a matrix is the complete set of all eigenpairs. The modal matrix, composed of a set of normalized eigenvectors, is an orthonormal matrix. A matrix with all positive eigenvalues is positive definite and its inverse exists.
+
+Spectral decomposition of a matrix is expressed in Equation \ref{specDecomp} shown using the outer product of eigenvectors (repeated indices are not summed) and modal matrices and diagonal matrix of eigenvalues, respectively. The function of matrix, is defined as the specific function acting on the spectrally decomposed matrix, e.g., Equation \ref{func} shows the the square root of $[A]$ is obtained.\\
+
+\be{\label{mat}} [A] \implies A_{ij} \bm{e}_i \otimes \bm{e}_j \ee
+
+\be{\label{vec}} \{p\} \implies p_k \bm{e}_k \ee
+
+\be{\label{stdEig}} \bm{A} \cdot \bm{p} = \lambda \bm{p} \ee
+\be{\label{stdEig2}} [\bm{A} - \lambda \bm{I}]\cdot \bm{p} = \bm{0} \ee
+
+\be{\label{stdEig3}}\big[ \overset{e-e}{[A]} - \lambda [I] \big]\overset{e}{\{p\}} = \{0\} \ee
+
+\be\label{charPoly} det\left( \Big[ \overset{e-e}{[A]} - \lambda [I] \Big] \right) = p(\lambda) \ee
+
+\be \label{charEqn} p(\lambda) = 0 \ee
+
+\be \Big[ \overset{e-e}{[A]} - \lambda_1 [I] \Big] \begin{Bmatrix} \overset{e}{p_{1,1}} \\ \overset{e}{p_{1,2}} \\ \overset{e}{p_{1,3}} \end{Bmatrix} = \begin{Bmatrix} 0\\0\\0 \end{Bmatrix} \ee
+
+\be \bm{p}_1 = \overset{e}{p_{1,1}} \bm{e}_1 + \overset{e}{p_{1,2}} \bm{e}_2 + \overset{e}{p_{1,3}} \bm{e}_3 \ee
+
+\be \label{Modal} \overset{e-p}{[M^o]} = \begin{bmatrix}  \overset{e}{p_{1,1}} &  \overset{e}{p_{2,1}}  &  \overset{e}{p_{3,1}} \\ \overset{e}{p_{1,2}} &  \overset{e}{p_{2,2}}  &  \overset{e}{p_{3,2}} \\ \overset{e}{p_{1,3}} &  \overset{e}{p_{2,3}}  &  \overset{e}{p_{3,3}} \end{bmatrix} \ee
+
+\be \label{specDecomp} [A] = \sum_{i=1}^{n} \lambda_i \{p_i\}<p_i> = [M^o]^T [\lambda] [M^o]\ee
+\be \label{func} [A]^{1/2} = \sum_{i=1}^{n} \lambda_i^{1/2} \{p_i\}<p_i> \ee
+
+\end{dd}
+
+\bdd{rank}
+\emph{r}, is the number of independent vectors in a given vector space, which may be obtained via the Gram-Schmidt procedure. $$\text{for } [A]_{m \times n} \ r \le n$$
+\edd
+
+\bdd{nullspace}
+$N([A])$, a vector space of $[A]$ formed from the solution of $[A]\{x\} = 0$. Where the \emph{nullspace} of [A] consists of all vectors $\{x\}$ which satisfy this equation
+\edd
+
+\bdd{range}
+$R([A])$, a vector space formed by the columns of a matrix, also known as the column space, which is a subspace of $R^m$ (the whole vector space). This space includes all vectors not included in the nullspace.
+\edd
+
+\bdd{Rayleigh's quotient}
+defined as: $$R(\{x\}) = \frac{<x>[A]\{x\}}{<x>\{x\}}$$
+where, if $\{x\}$ is an eigenvector, then $R(\{x\}^i) = \lambda_i$
+\edd
+
+\bdd{Gershgorin's theorem}
+Every eigenvalue of [A] lies in at least one of the circles $C_i$, which are centered at the diagonal entries of [A] (e.g. $A_{ii}$) and have have radii of $$r_i = \sum_{i \ne j} \abs{a_{ij}}$$
+\edd
+
+\bdd{condition number}
+when associated with the linear algebraic problem $[A]\{x\}=\{b\}$, the condition number provides a bound on how inaccurate the solution $\{x\}$ will be when it is numerically approximated.  This is a property of the matrix [A], not the not the chosen algorithm.  The condition number $(C)$ may be calculated as the ratio between the maximum and mininimum eigenvalues: $$C = \frac{\lambda_{max}}{\lambda_{min}}$$
+\edd
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}
+Hand calculations are attached at the end of this document.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Consider the following matrix:}
+
+\begin{lstlisting}
+[A] = 	[ 1. -1.  0.  0.  0.]
+ 	[-1.  2. -1.  0.  0.]
+ 	[ 0. -1.  2. -1.  0.]
+ 	[ 0.  0. -1.  2. -1.]
+ 	[ 0.  0.  0. -1.  2.]
+\end{lstlisting}
+
+
+\bdd{(a) Obtain the eigensystem}\\
+
+\bf{(i)}
+The diagonal components of $[\lambda]$ are the eigenvalues, and the columns of $[M^o]$ are the associated eigenvectors, together they form the eigensystem shown below.
+
+ \begin{lstlisting}
+[lbda]=	[ 3.683  0.     0.     0.     0.   ]
+	[ 0.     2.831  0.     0.     0.   ]
+	[ 0.     0.     0.081  0.     0.   ]
+	[ 0.     0.     0.     1.715  0.   ]
+	[ 0.     0.     0.     0.     0.69 ]
+
+ [M] = 	[-0.17  -0.326 -0.597  0.456 -0.549]
+ 	[ 0.456  0.597 -0.549 -0.326 -0.17 ]
+ 	[-0.597 -0.17  -0.456 -0.549  0.326]
+ 	[ 0.549 -0.456 -0.326  0.17   0.597]
+ 	[-0.326  0.549 -0.17   0.597  0.456]
+ \end{lstlisting}
+
+ \bf{(ii)}\\
+
+ $[M^o]^T[M^o] = $
+\begin{lstlisting}
+ [  1.000e+00   5.013e-16   8.546e-17  -3.753e-16  -2.776e-17]
+ [  5.013e-16   1.000e+00   4.905e-16  -2.285e-16   1.943e-16]
+ [  8.546e-17   4.905e-16   1.000e+00  -3.905e-16   3.053e-16]
+ [ -3.753e-16  -2.285e-16  -3.905e-16   1.000e+00  -5.551e-17]
+ [ -2.776e-17   1.943e-16   3.053e-16  -5.551e-17   1.000e+00]
+\end{lstlisting}
+
+\bf{(iii)} \\
+
+$[A^*] = [M^o][\lambda][M^o]^T =$ 
+\begin{lstlisting}
+ [  1.000e+00  -1.000e+00   7.494e-16  -1.110e-15  -8.327e-17]
+ [ -1.000e+00   2.000e+00  -1.000e+00  -8.743e-16   1.270e-15]
+ [  7.494e-16  -1.000e+00   2.000e+00  -1.000e+00   1.457e-15]
+ [ -1.055e-15  -8.743e-16  -1.000e+00   2.000e+00  -1.000e+00]
+ [ -1.943e-16   1.270e-15   1.402e-15  -1.000e+00   2.000e+00]
+\end{lstlisting}
+
+\bf{(iv)} \\
+
+$[A^*]^{-1} = [M^o][\lambda]^{-1}[M^o]^T =$ 
+\begin{lstlisting}
+ [ 5.  4.  3.  2.  1.]
+ [ 4.  4.  3.  2.  1.]
+ [ 3.  3.  3.  2.  1.]
+ [ 2.  2.  2.  2.  1.]
+ [ 1.  1.  1.  1.  1.]
+\end{lstlisting}
+
+\bf{(v)} \\
+
+$[A^*]^{-1}[A] =$ 
+\begin{lstlisting}
+ [  1.000e+00  -3.469e-17   6.509e-15  -1.166e-14   7.772e-15]
+ [ -9.437e-16   1.000e+00   6.287e-15  -1.177e-14   8.660e-15]
+ [ -1.388e-15   2.186e-15   1.000e+00  -9.437e-15   7.772e-15]
+ [ -8.049e-16  -2.567e-16   2.734e-15   1.000e+00   4.663e-15]
+ [ -7.216e-16   9.506e-16   1.735e-15  -3.664e-15   1.000e+00]
+\end{lstlisting}
+\edd
+
+\bdd{(b)  Use Gershgorin's theorem to obtain bounds on the eigenvalues of [A]}\\
+The following script was written to calculate the Gershgorin circles.
+
+\begin{lstlisting}
+	nrow = A.shape[0]
+	ncol = A.shape[1]
+	center = np.diagonal(A)
+	radius = np.zeros(ncol)
+
+	for i in xrange(nrow):
+	    for j in xrange(ncol):
+	        if i != j:
+	            radius[i] = radius[i] + np.abs(A[i,j])
+\end{lstlisting}
+
+Based on this analysis, the eigenvalues of [A] are $0 \le \lambda_i \le 4$
+
+\Figure{htp}{4}{plot_3b.pdf}{Gershgorin circles showing the bounds of eigenvalues for [A].}
+\edd
+
+\bdd{(c) Obtain the Rayleigh quotient R({v}) for $<v> = <1, 2, 3, 2, 1>$. Is the inequality
+$\lambda_1 \le R \le \lambda_n$ satisfied}
+
+The Rayleigh quotient R({v}) = 0.263, and yes the inequality is satisfied.
+\edd
+
+\bdd{(d) Obtain the norms:}
+let $a_j = $ the columns of [A], then
+\as{
+	\norm{[A]}_{1} &= \left( \sum_{j=1}^{n} \abs{a_j} \right)^{1/1} = 4.0\\
+	\norm{[A]}_{2} &= \left( \sum_{j=1}^{n} \abs{a_j}^2 \right)^{1/2}= 3.7\\
+	\norm{[A]}_{\infty} &= max(\abs{a_{ij}})= 2	}
+
+	The  $\norm{[A]}_2$ forms an upper bound to the maximum eigenvalue.
+\edd
+
+\bdd{(e) What is the condition number of [A]?}
+The condtion number of [A] is $\frac{\lambda_{max}}{\lambda_{min}}=45.5$
+\edd
+
+\bdd{(f) Pick a solution {x} for the linear algebraic problem and calculate the solutions using different mode approximations.} \\
+
+Letting $\{x\} = <1,2,3,4,5>$ resulted in $\{b\} = <-1,0,0,0,6>$, and using the definition of the spectral decomposition of [A]:
+
+$$[A]^{-1} = \sum_{i=1}^{n} \lambda_i^{-1} \{p_i\}<p_i>$$
+
+approximations were made by letting $n$ range from 1 to 5 and solving $$\{x_{ap}\} = [A]^{-1}\{b\}$$.  Approximate solutions for $x$ are shown below, where each of the columns (one to five) is the respective approximation (one-mode, two-mode, etc.).  The associated error with each of the approximations is shown below also, the five-mode approximation resulted in the smallest error by far.
+
+\begin{lstlisting}
+
+{x_ap} = [ 0.082 -0.334  2.778  3.609  1.   ]
+	 [-0.221  0.542  3.402  2.808  2.   ]
+	 [ 0.29   0.072  2.449  1.449  3.   ]
+	 [-0.266 -0.848  0.852  1.161  4.   ]
+	 [ 0.158  0.859  1.745  2.833  5.   ]
+
+error = [9.979e-01   9.829e-01   6.867e-01   6.413e-01   7.400e-15]
+\end{lstlisting}
+\edd
+
+
+\section{Hilbert matrices}
+Hilbert matrices ranging in size of n = 2,3,5,7,9,11,13,15 were analyzed, and the print out of (a) through (c) for each of these matrices is shown below. 
+
+For the linear algabraic problem, the solution $\{x\} = <1,2,3,4,5>$ was again chosen, which resulted in $\{b\} = <-1,0,0,0,6>$ . Figure \ref{fig:plot_4.pdf} displays how the error in the linear algebraic problem increases with condition number... until it blows up (unsure why).
+
+\Figure{htp}{4}{plot_4.pdf}{Plot of condtions number versus error in the solution to the linear algebraic problem.}
+
+\begin{lstlisting}
+Size of Hilbert Matix: 2x2
+Eigenvalues:
+[ 1.268  0.066]
+Condition Number
+1.928147e+01
+approximate solution and error
+[ -6.752e-15   1.000e+00] error: 1.57039437051e-15
+----------------------------------------------------------------------
+Size of Hilbert Matix: 3x3
+Eigenvalues:
+[ 1.408  0.122  0.003]
+Condition Number
+5.240568e+02
+approximate solution and error
+[ -1.168e-12   1.000e+00   2.000e+00] error: 1.56539504238e-14
+----------------------------------------------------------------------
+Size of Hilbert Matix: 5x5
+Eigenvalues:
+[  1.567e+00   2.085e-01   1.141e-02   3.059e-04   3.288e-06]
+Condition Number
+4.766073e+05
+approximate solution and error
+[ -1.353e-06   1.000e+00   2.000e+00   3.000e+00   4.000e+00] 
+error: 1.67635118738e-10
+----------------------------------------------------------------------
+Size of Hilbert Matix: 7x7
+Eigenvalues:
+[  1.661e+00   2.719e-01   2.129e-02   1.009e-03   2.939e-05   4.857e-07
+   3.494e-09]
+Condition Number
+4.753674e+08
+approximate solution and error
+[  1.096e+00  -4.410e+01   4.460e+02  -1.751e+03   3.258e+03  -2.834e+03
+   9.455e+02] error: 2.84920789322e-06
+----------------------------------------------------------------------
+Size of Hilbert Matix: 9x9
+Eigenvalues:
+[  1.726e+00   3.216e-01   3.104e-02   1.979e-03   8.758e-05   2.673e-06
+   5.386e-08   6.461e-10   3.500e-12]
+Condition Number
+4.931537e+11
+approximate solution and error
+[  1.602e+00  -6.010e+01   5.751e+02  -2.201e+03   4.080e+03  -3.664e+03
+   1.378e+03  -6.298e+01  -9.741e+00] error: 5.95702344812e-06
+----------------------------------------------------------------------
+Size of Hilbert Matix: 11x11
+Eigenvalues:
+[  1.775e+00   3.624e-01   4.031e-02   3.114e-03   1.774e-04   7.542e-06
+   2.372e-07   5.368e-09   8.283e-11   7.807e-13   3.399e-15]
+Condition Number
+5.221964e+14
+approximate solution and error
+[  9.610e+00  -3.522e+02   3.237e+03  -1.227e+04   2.260e+04  -2.046e+04
+   7.845e+03  -4.589e+02  -6.220e+01  -1.788e+01  -7.197e+00] 
+   error: 4.43459592127e-05
+----------------------------------------------------------------------
+Size of Hilbert Matix: 13x13
+Eigenvalues:
+[  1.814e+00   3.968e-01   4.903e-02   4.349e-03   2.952e-04   1.562e-05
+   6.466e-07   2.076e-08   5.077e-10   9.141e-12   1.144e-13   8.892e-16
+   2.042e-18]
+Condition Number
+8.883830e+17
+approximate solution and error
+[  3.277e+01  -1.278e+03   1.276e+04  -5.431e+04   1.171e+05  -1.337e+05
+   7.600e+04  -1.607e+04  -3.769e+02  -8.054e+01  -2.808e+01  -1.262e+01
+  -6.651e+00] error: 0.000114437392935
+----------------------------------------------------------------------
+Size of Hilbert Matix: 15x15
+Eigenvalues:
+[  1.846e+00   4.266e-01   5.721e-02   5.640e-03   4.365e-04   2.711e-05
+   1.362e-06   5.529e-08   1.803e-09   4.658e-11   9.322e-13   1.394e-14
+   1.421e-16   8.051e-18  -1.052e-17]
+Condition Number
+-1.754630e+17
+approximate solution and error
+[  1.195e+02  -4.681e+03   4.717e+04  -2.040e+05   4.496e+05  -5.279e+05
+   3.122e+05  -7.090e+04  -1.103e+03  -2.295e+02  -7.889e+01  -3.508e+01
+  -1.833e+01  -1.071e+01  -6.790e+00] error: 0.00036353130919
+----------------------------------------------------------------------
+\end{lstlisting}
+
+\end{document}

@@ -1,0 +1,1863 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ME 562 - Assignment 5: Plasticity
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Abstract
+The objective of this assignment was to add additional subroutines to the
+ Driver program allowing for the analysis of elastic-plastic constitutive
+ equations.
+ These additional subroutines allow for the simulation of an elasatic-plastic
+ constitutive equation with various yield functions (F), hardening functions
+ (H).
+ 
+\end_layout
+
+\begin_layout Section
+Add Plasticity Capability to Driver Program
+\end_layout
+
+\begin_layout Subsubsection
+Summary of Elastic-Plastic Constitutive Equations
+\end_layout
+
+\begin_layout Standard
+During plastic deformation, the following equations describe the constitutive
+ relationships:
+\end_layout
+
+\begin_layout Itemize
+Elasticity: 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\dot{\underline{\underline{\sigma}}}=\underline{\underline{\underline{\underline{E}}}}\cdot\cdot(\underline{\underline{e}}-\underline{\underline{e}}^{p})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\underline{\underline{e}}^{e}=\underline{\underline{e}}-\underline{\underline{e}}^{p}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Evolution (Flow Rule): 
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\dot{\underline{\underline{e}}}^{p}=\dot{\lambda}\underline{\underline{M}}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\dot{\overline{e}}^{p}=\dot{\lambda}\overline{m}$
+\end_inset
+
+, or a more general form of 
+\begin_inset Formula $\{\dot{\overline{\epsilon}}\}=\dot{\lambda}\{\overline{m}\}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Consistency:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\dot{F}=0$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Subsubsection
+Summary of Subroutines
+\end_layout
+
+\begin_layout Standard
+Four different subroutines were written to enable the calculation of a general
+ elastic-plastic constitutive equation.
+ Those subroutines were:
+\end_layout
+
+\begin_layout Itemize
+Strs_Meas(strsv): input is a vector of the six stress components and the
+ output is a 27 vector of various stress measures.
+ The output is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+strs_measv[0:2] = principal components of the stress tensor 
+\begin_inset Formula $(\sigma_{1,}\sigma_{2},\sigma_{3})$
+\end_inset
+
+ ;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[3:5] = principal components of the deviatoric stress tensor,
+ which are the principal stress components minus the mean stress 
+\begin_inset Formula $(\sigma_{1}^{dv},\sigma_{2}^{dv},\sigma_{3}^{dv})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[6] = maximum shear stress 
+\begin_inset Formula $(\frac{\sigma_{1}-\sigma_{3}}{2})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[7] = first invariant of the stress tensor 
+\begin_inset Formula $(I_{1})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[8:9] = second and third invariants of the deviatoric stress tensor
+ 
+\begin_inset Formula $(J_{2},J_{3})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[10] = mean stress or pressure 
+\begin_inset Formula $(p)$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[11:13] = repeated values, principal components of the deviatoric
+ stress tensor, which are the principal stress components minus the mean
+ stress 
+\begin_inset Formula $(\sigma_{1}^{dv},\sigma_{2}^{dv},\sigma_{3}^{dv})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[14:15] = horizontal (x) and vertical directions (y) directions
+ on the deviatoric stress plane 
+\begin_inset Formula $(q_{1},q_{2})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[16:17] = both values are the same (use alternate calculation
+ methods) Mises stress, which is the magnitude from the origin of the deviatoric
+ stress plane 
+\begin_inset Formula $(q)$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[18:20] = Lode coordinates 
+\begin_inset Formula $(r,z,\theta)$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[21] = stress triaxiality, which is the ratio of the mean stress
+ to mises stress 
+\begin_inset Formula $(\frac{p}{q})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+strs_measv[22:27] = six components of the deviatoric stress tensor 
+\begin_inset Formula $(\sigma_{11}^{dv},\sigma_{22}^{dv},\sigma_{33}^{dv},\sigma_{12}^{dv},\sigma_{23}^{dv},\sigma_{31}^{dv})$
+\end_inset
+
+;
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hard_Func(yield_0, eff_pstrn, harden_model, harden_exp, harden_type, harden_asso
+c, lambda_0, eff_pstrn_ref): input are the initial yield stress (yield_0)
+ and the current set of plastic parameter values describing the yield condition
+ (eff_pstrn, lambda_0) and specific hardening rule (hardent_model, harden_exp,
+ harden_type, harden_assoc, eff_pstrn_ref).
+ The output is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+H = value of the hardening parameter which defines the current yield stress;
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Yield_Func_02(strs_measv, model, yield_0, H, theta, c, path): input for
+ this function are the stress measures (strs_measv), identification of the
+ yield model (model), initial yield stress (yield_0), current yield stress
+ (H), along with model and path specific parameters (theta, c, path).
+ The output is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+F = value of the current yield function.
+ Where:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+F < 0: deformation is elastic;
+\end_layout
+
+\begin_layout Itemize
+F = 0: deformation is plastic;
+\end_layout
+
+\begin_layout Itemize
+F > 0: not admissible;
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Elastic_Plastic(matpropv, strn_incv, strnv, estrnv, pstrnv, strsv, term_type,
+ p_max, p_min, SM, irow, path): input consists of the material parameters
+ (matpropv), prescribed strain increment (strn_incv), along with current
+ states of strain and stress (strnv, estrn, pstrnv, strsv).
+ Additionally, various other parameters defining specific paths (path),
+ how a leg is terminated (term_type, p_max, p_min) and previous values (SM)
+ are also called.
+ The output is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+pstrnv = six vector containing the current values of plastic strain;
+\end_layout
+
+\begin_layout Itemize
+estrnv = six vector containing the current values of elastic strain;
+\end_layout
+
+\begin_layout Itemize
+strsv = six vector containing the current values of stress;
+\end_layout
+
+\begin_layout Itemize
+plastic_storage = five vector containing plasticity specific parameters
+ to be stored in SM;
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Module for von Mises Plasticity
+\end_layout
+
+\begin_layout Standard
+The subroutines Hard_Func and Yield_Func_02 were modified to allow for the
+ appropriate calculation of von Mises plasticity with an associated flow
+ rule and isotropic-linear hardening:
+\end_layout
+
+\begin_layout Itemize
+Hard_Func was modified to allow for linear-isotropic hardening: 
+\begin_inset Formula $H=\sigma_{0}(1+\frac{\overline{e}^{p}}{\overline{e}_{ref}^{p}})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Yield_Func_02 was to allow for Mises plasticity with an associated flow
+ rule via:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Mises plasticity: 
+\begin_inset Formula $F=\frac{q-H}{\sigma_{0}}$
+\end_inset
+
+, whch has been normalized by the initial yield stress 
+\begin_inset Formula $(\sigma_{0})$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+associated flow:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $\underline{\underline{M}}=\sqrt{\frac{3}{2}}\Big(\frac{\underline{\underline{\sigma}}^{dv}}{q}\Big)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\overline{m}=\sqrt{3}$
+\end_inset
+
+, note: this is a different value that presented in class on April 23, 2015,
+ lecture 28, page 2.
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Subsection
+Match Uniaxial Stress-Strain Curve
+\end_layout
+
+\begin_layout Standard
+Parameters were chosen such that the initial (pure elastic) stress-strain
+ curve had a slope of 18, and the stress-strain curve in the elastic-plastic
+ regime had a slope of approximately 4.5 (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_ii_fit"
+
+\end_inset
+
+).
+ Parameter values used for fitting were:
+\end_layout
+
+\begin_layout Itemize
+Effective plastic strain reference value 
+\begin_inset Formula $(\overline{e}_{ref}^{p})=3.5$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Initial increment size in the plastic parameter lambda 
+\begin_inset Formula $(\dot{\lambda_{0}})=10^{-10}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Initial yield stress 
+\begin_inset Formula $(\sigma_{0})=10$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Tolerance of 
+\begin_inset Quotes eld
+\end_inset
+
+F
+\begin_inset Quotes erd
+\end_inset
+
+ to equal zero 
+\begin_inset Formula $(\epsilon)=10^{-3}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Constant strain increment size in the 
+\begin_inset Quotes eld
+\end_inset
+
+11
+\begin_inset Quotes erd
+\end_inset
+
+ direction 
+\begin_inset Formula $(\dot{e}_{11})=0.05$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Additionally, Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_ii_a"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:1_ii_b"
+
+\end_inset
+
+ verify that a uniaxial state of stress was maintained during all strain
+ increments and that the plastic strains in the 22 and 33 directions were
+ each half the magnitude in the opposoite direction of the strain in the
+ 11 (loading) direction.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1_ii_strs-strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ versus 
+\begin_inset Formula $e_{11}$
+\end_inset
+
+ data for the theoretical 
+\begin_inset Quotes eld
+\end_inset
+
+fit
+\begin_inset Quotes erd
+\end_inset
+
+ to data.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_ii_fit"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1_ii-strs11-strs22_vs_inc.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{22}$
+\end_inset
+
+ versus strain increment.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_ii_a"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1_ii-Pstrn11-Pstrn22_vs_inc.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $e_{11}^{p}$
+\end_inset
+
+ and 
+\begin_inset Formula $e_{22}^{p}$
+\end_inset
+
+ versus strain increment.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:1_ii_b"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Evaluation of Algorithm Robustness
+\end_layout
+
+\begin_layout Standard
+The influence of toleranace 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $(\epsilon)$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ and strain increment 
+\begin_inset Formula $(\dot{e}_{11})$
+\end_inset
+
+ parameters were evalauated to see how they influenced the convergence of
+ my algorithm to a numerically 
+\begin_inset Quotes eld
+\end_inset
+
+exact
+\begin_inset Quotes erd
+\end_inset
+
+ solution, i.e., a solution obtained using a very small tolerance and increment.
+\end_layout
+
+\begin_layout Subsection
+Calculation of a Numerically 
+\begin_inset Quotes eld
+\end_inset
+
+Exact
+\begin_inset Quotes erd
+\end_inset
+
+ Solution
+\end_layout
+
+\begin_layout Standard
+Below are a listing for the parameters used in the calculation of the 
+\begin_inset Quotes eld
+\end_inset
+
+exact
+\begin_inset Quotes erd
+\end_inset
+
+ solution:
+\end_layout
+
+\begin_layout Itemize
+Effective plastic strain reference value 
+\begin_inset Formula $(\overline{e}_{ref}^{p})=3.5$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Initial increment size in the plastic parameter lambda 
+\begin_inset Formula $(\dot{\lambda_{0}})=10^{-10}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Initial yield stress 
+\begin_inset Formula $(\sigma_{0})=10$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Tolerance of 
+\begin_inset Quotes eld
+\end_inset
+
+F
+\begin_inset Quotes erd
+\end_inset
+
+ to equal zero 
+\begin_inset Formula $(\epsilon)=10^{-4}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Constant strain increment size in the 
+\begin_inset Quotes eld
+\end_inset
+
+11
+\begin_inset Quotes erd
+\end_inset
+
+ direction 
+\begin_inset Formula $(\dot{e}_{11})=0.05$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 2_i_strs-strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ versus 
+\begin_inset Formula $e_{11}$
+\end_inset
+
+ data for the numerically 
+\begin_inset Quotes eld
+\end_inset
+
+exact
+\begin_inset Quotes erd
+\end_inset
+
+ solution.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Evaluation of Tolerance Restriction for F = 0
+\end_layout
+
+\begin_layout Standard
+Theoretically, during plastic deformation the consistency conditions implies
+ that F = 0.
+ However, when this is numerically implemented, F is rarely equal to to
+ zero and is actually equal to zero plus or minus a tolerance.
+ I have written my algorithm such that F will never be less than zero during
+ plastic deformation; therefore my defined tolerance 
+\begin_inset Formula $(\epsilon)$
+\end_inset
+
+ controls the potential magnitude of F greater than zero.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 2_ii_strs-strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ versus 
+\begin_inset Formula $e_{11}$
+\end_inset
+
+ data over a range of 
+\begin_inset Formula $\epsilon's$
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Evaluation of Strain Increment Size 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 2_iii_strs-strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ versus 
+\begin_inset Formula $e_{11}$
+\end_inset
+
+ data over a range of 
+\begin_inset Formula $\dot{e}_{11}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Analysis of Results
+\end_layout
+
+\begin_layout Standard
+Based on these observed results with linear hardening, my algorithm appears
+ to require a reasonable small tolerance 
+\begin_inset Formula $(\epsilon=0.01)$
+\end_inset
+
+ for continuous plastic stress increments.
+ Large strain increments resulted in erronious results because the elastic-plast
+ic transition (intial yield stress) value was overshot when large strains
+ were used.
+ Therefore, the upper limit of the strain increment size will be a function
+ of the intial yield stress and bulk modulus of the modeled material.
+ Because 
+\end_layout
+
+\begin_layout Section
+Implementation of a Nonlinear Hardening Function
+\end_layout
+
+\begin_layout Standard
+The hardening function as provided in problem three was implemented in my
+ Driver program.
+\end_layout
+
+\begin_layout Subsection
+Evaluation of 
+\begin_inset Formula $n$
+\end_inset
+
+ on the Yield Stress (H) as a Function of the Normalized Effective Plastic
+ Strain 
+\begin_inset Formula $(\hat{\overline{e}})$
+\end_inset
+
+ Curve
+\end_layout
+
+\begin_layout Standard
+\align left
+Parameter used for this analysis were:
+\end_layout
+
+\begin_layout Itemize
+Initial Yield Stress: 
+\begin_inset Formula $H_{0}=5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Yield Stress: 
+\begin_inset Formula $H_{L}=8$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Final Minimum Yield Stress: 
+\begin_inset Formula $H_{a}=2$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Effective Plastic Strain (defines softening boundary): 
+\begin_inset Formula $\overline{e}_{L}^{p}=5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Softening Shape Factor: 
+\begin_inset Formula $s=1$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Standard
+\align left
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_i_H-effPstrnHat.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Evaluation of 
+\begin_inset Formula $n$
+\end_inset
+
+ on the Hardening Function.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Incorporation of Nonlinear Hardening Function into Mises Plasticity
+\end_layout
+
+\begin_layout Standard
+The nonlinear hardening function was implemented into my Mises plasticity
+ algorithm, and resutls are shown below for a strain prescribed path.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_ii-H.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Results of Implementatin of Nonlinear Hardening with Mises Plasticity.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Evaluation of Different Stress Paths
+\end_layout
+
+\begin_layout Subsubsection
+Uniaxial Strain
+\end_layout
+
+\begin_layout Standard
+\align left
+Parameter used for this analysis were:
+\end_layout
+
+\begin_layout Itemize
+Initial Yield Stress: 
+\begin_inset Formula $H_{0}=5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Yield Stress: 
+\begin_inset Formula $H_{L}=10$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Final Minimum Yield Stress: 
+\begin_inset Formula $H_{a}=2$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Effective Plastic Strain (defines softening boundary): 
+\begin_inset Formula $\overline{e}_{L}^{p}=4$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Softening Shape Factor: 
+\begin_inset Formula $s=1$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Hardening Shape Factor: 
+\begin_inset Formula $n=1$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Strain Increment Size: 
+\begin_inset Formula $\dot{e}_{11}=0.1$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Matrix of Elasticity Coefficients: 
+\begin_inset Formula $E=\begin{bmatrix}20 & 4 & 4 & 0 & 0 & 0\\
+4 & 20 & 4 & 0 & 0 & 0\\
+4 & 4 & 20 & 0 & 0 & 0\\
+0 & 0 & 0 & 4 & 0 & 0\\
+0 & 0 & 0 & 0 & 4 & 0\\
+0 & 0 & 0 & 0 & 0 & 4
+\end{bmatrix}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_a_strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Stress 
+\begin_inset Formula $(\sigma_{11}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{22})$
+\end_inset
+
+ Versus Strain 
+\begin_inset Formula $(e_{11})$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_a_paths.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Mean Stress 
+\begin_inset Formula $(p)$
+\end_inset
+
+ Versus Mises Stress 
+\begin_inset Formula $(q)$
+\end_inset
+
+ and 
+\begin_inset Formula $q_{1}$
+\end_inset
+
+ Versus 
+\begin_inset Formula $q_{2}$
+\end_inset
+
+ Stress Paths.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_a_q1q2.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Yield Surface in the 
+\begin_inset Formula $q_{1}-q_{2}$
+\end_inset
+
+ Plane at Specific Points During Deformation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Triaxial Compression
+\end_layout
+
+\begin_layout Standard
+\align left
+Parameter used for this analysis were:
+\end_layout
+
+\begin_layout Itemize
+Initial Yield Stress: 
+\begin_inset Formula $H_{0}=5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Yield Stress: 
+\begin_inset Formula $H_{L}=8$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Final Minimum Yield Stress: 
+\begin_inset Formula $H_{a}=2$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Effective Plastic Strain (defines softening boundary): 
+\begin_inset Formula $\overline{e}_{L}^{p}=5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Softening Shape Factor: 2;
+\end_layout
+
+\begin_layout Itemize
+Hardening Shape Factor: 
+\begin_inset Formula $n=1.5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Strain Increment Size:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hydrostatic Leg: 
+\begin_inset Formula $\dot{e}_{11}=-0.01$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Triaxial Compression Leg:
+\begin_inset Formula $\dot{e}_{11}=-0.1$
+\end_inset
+
+;
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrix of Elasticity Coefficients: 
+\begin_inset Formula $E=\begin{bmatrix}10 & 2 & 2 & 0 & 0 & 0\\
+2 & 10 & 2 & 0 & 0 & 0\\
+2 & 2 & 10 & 0 & 0 & 0\\
+0 & 0 & 0 & 8 & 0 & 0\\
+0 & 0 & 0 & 0 & 8 & 0\\
+0 & 0 & 0 & 0 & 0 & 8
+\end{bmatrix}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_b_strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Stress 
+\begin_inset Formula $(\sigma_{11}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{22})$
+\end_inset
+
+ Versus Strain 
+\begin_inset Formula $(e_{11})$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_b_paths.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Mean Stress 
+\begin_inset Formula $(p)$
+\end_inset
+
+ Versus Mises Stress 
+\begin_inset Formula $(q)$
+\end_inset
+
+ and 
+\begin_inset Formula $q_{1}$
+\end_inset
+
+ Versus 
+\begin_inset Formula $q_{2}$
+\end_inset
+
+ Stress Paths.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_b_q1q2.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Yield Surface in the 
+\begin_inset Formula $q_{1}-q_{2}$
+\end_inset
+
+ Plane at Specific Points During Deformation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Triaxial Extension
+\end_layout
+
+\begin_layout Standard
+\align left
+Parameter used for this analysis were:
+\end_layout
+
+\begin_layout Itemize
+Initial Yield Stress: 
+\begin_inset Formula $H_{0}=5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Yield Stress: 
+\begin_inset Formula $H_{L}=8$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Final Minimum Yield Stress: 
+\begin_inset Formula $H_{a}=2$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Limit Effective Plastic Strain (defines softening boundary): 
+\begin_inset Formula $\overline{e}_{L}^{p}=10$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Softening Shape Factor: 2;
+\end_layout
+
+\begin_layout Itemize
+Hardening Shape Factor: 
+\begin_inset Formula $n=1.5$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Strain Increment Size:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Hydrostatic Leg: 
+\begin_inset Formula $\dot{e}_{11}=-0.02$
+\end_inset
+
+;
+\end_layout
+
+\begin_layout Itemize
+Triaxial Compression Leg:
+\begin_inset Formula $\dot{e}_{11}=0.01$
+\end_inset
+
+;
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Matrix of Elasticity Coefficients: 
+\begin_inset Formula $E=\begin{bmatrix}10 & 2 & 2 & 0 & 0 & 0\\
+2 & 10 & 2 & 0 & 0 & 0\\
+2 & 2 & 10 & 0 & 0 & 0\\
+0 & 0 & 0 & 8 & 0 & 0\\
+0 & 0 & 0 & 0 & 8 & 0\\
+0 & 0 & 0 & 0 & 0 & 8
+\end{bmatrix}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_c_strn.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Stress 
+\begin_inset Formula $(\sigma_{11}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{22})$
+\end_inset
+
+ Versus Strain 
+\begin_inset Formula $(e_{11})$
+\end_inset
+
+.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_c_paths.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Mean Stress 
+\begin_inset Formula $(p)$
+\end_inset
+
+ Versus Mises Stress 
+\begin_inset Formula $(q)$
+\end_inset
+
+ and 
+\begin_inset Formula $q_{1}$
+\end_inset
+
+ Versus 
+\begin_inset Formula $q_{2}$
+\end_inset
+
+ Stress Paths.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement t
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_iii_c_q1q2.pdf
+	width 5in
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Yield Surface in the 
+\begin_inset Formula $q_{1}-q_{2}$
+\end_inset
+
+ Plane at Specific Points During Deformation.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,45 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+ 
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{\thesection.\alph{subsection}}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{ASSIGNMENT 1}%replace X with the appropriate number
+\author{Brandon Lampe\\ %replace with your name
+ME 512 - Continuum Mechanics} %if necessary, replace with your course title
+ 
+\maketitle
+ 
+\section{Given:}  %You can use theorem, exercise, problem, or question here.  Modify x.yz to be whatever number 
+	\begin{equation*} 
+		T_{pq}  \Rightarrow
+		 \begin{bmatrix} -4 & 2 & 3 \\ 2 & 3 & 1 \\ 4 & 3 & 1\\
+		 \end{bmatrix}; \qquad
+		u_i \Rightarrow (0, -1, 2); \qquad
+		v_i \Rightarrow (1, -2, -3).
+	\end{equation*}
+	\subsection{What index (indices) should be associated with $ w $?}
+	\subsection{For each case obtain the set of numbers associated with $ w$.}
+	\subsection{For each case construct the corresponding matrix expression.}
+		\indent
+
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}

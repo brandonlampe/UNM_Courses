@@ -1,0 +1,677 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\columnsep 0.25in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 2
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Preliminary Submission: Numerical Modeling of Granular Salt
+\end_layout
+
+\begin_layout Author
+Brandon Lampe and Laxmi Paneru
+\end_layout
+
+\begin_layout Section*
+Nomenclature
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $\dot{\epsilon}=$
+\end_inset
+
+ Strain rate
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $Q_{a}=$
+\end_inset
+
+Activation energy
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $R=$
+\end_inset
+
+ Universal gas constant
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $T=$
+\end_inset
+
+ Absolute temperature
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $C_{1}=$
+\end_inset
+
+ Constant factor
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Granular (or crushed) salt is a candidate material for sealing the Waste
+ Isolation Pilot Plant's (WIPP) shafts, drifts, and boreholes; therefore,
+ the ability of crushed salt to prevent fluid migration is of interest.
+ The objective of our research is to better understand the mechanical properties
+ of crushed salt as they pertain to its transport properties, most notably
+ its intrinsic permeability, which will provide a direct measure of its
+ adequacy as a sealing material.
+ Because a materials permeability is directly related to the pore volume
+ of the material (along with connectivity of the pores), we are currently
+ focusing on the ability of a constitutive model to accurately predict volumetri
+c strain.
+ In a effort to complete this objective, we have performed a suite of laboratory
+ tests on crushed salt over a variety of conditions and have measured it's
+ transient deformation.
+\end_layout
+
+\begin_layout Standard
+The following sections will first familiarize the reader with existing constitut
+ive models.
+ Then a description of typical test methods and results are presented.
+ A brief description of the currently employed constitutive models is provided
+ followed by the model description and results.
+ We will compare the results of different constitutive models to our measured
+ data and quantify the ability of these models to predict the measured strain
+ values.
+ 
+\end_layout
+
+\begin_layout Section
+Literature Review
+\end_layout
+
+\begin_layout Standard
+Mechanical properties of in situ salt were first well characterized by Munson
+ and Dawson during the early 1970's
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Munson1979"
+
+\end_inset
+
+, where they first utilized an Arrhenius type equation to describe the time
+ dependent deformation of salt, which is now common practice, this relationship
+ is shown below: 
+\begin_inset Formula 
+\[
+\dot{\epsilon}=C_{1}*exp\Bigg(\frac{-Q_{a}}{RT}\Bigg)
+\]
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+During that same period, crushed salt became of interest to the engineering
+ community also, predominately for use as a seal material around nuclear
+ wast packages, shafts, and other openings associated with the storage of
+ nuclear waste.
+ The first recorded laboratory tests, performed for obtaining constitutive
+ parameters were uniaxial compression tests completed in 1978 on samples
+ that were 5 centimeters in diameter 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hansen1976"
+
+\end_inset
+
+.
+ However, the small specimen sizes utilized in these early tests had nonuniform
+ stress fields (from side and end friction) producing inconsistent results.
+ Since the first tests on crushed salt were performed, testing techniques
+ have advanced greatly and we are now able to accurately measures strains
+ at at high temperatures and pressures that are representative of downhole
+ conditions in a nuclear waste storage facility
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Broome2014"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+During the last 39 years, over ten constitutive models have been developed
+ for crushed salt, each based on varying degrees of phenomenology, micro
+ mechanics, and/or empiricism
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Callahan1995"
+
+\end_inset
+
+.
+ During the mid-1990's, the Crushed Salt (CS) model was developed, with
+ funding from the US Dept.
+ of Energy, which was the first model to combine several dominant deformation
+ attributes of crushed salt, such as grain boundary pressure solutioning
+ and dislocation creep, which are believed to be dominant deformation mechanisms
+ of crushed salt 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Spiers1993,Zeuch1990,Callahan1998IJRM"
+
+\end_inset
+
+.
+ Including these different deformation mechanisms is critical to accurately
+ predicting the deformation of salt, as the dominant mechanism varies with
+ local conditions
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Frost1982"
+
+\end_inset
+
+.
+ The CS model has the ability to predict the deformation of crushed salt
+ reasonably well at low temperatures, but at high temperatures Broome et
+ al.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Broome2014"
+
+\end_inset
+
+ showed the model predictions did not well represent the true deformations.
+ An additional shortcoming of the CS model is the large number of material
+ parameters (constants) associated with it, 31 independent parameters in
+ total, which produce a highly nonlinear result that makes fitting parameters
+ to a specific salt deposit very difficult.
+ The US Dept.
+ of Energy currently utilizes the CS model to aid in there planning and
+ development of storage facilities; therefore this model is of particular
+ interest to us.
+ 
+\end_layout
+
+\begin_layout Standard
+More recently, Olivella and Gens 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Olivella2002"
+
+\end_inset
+
+ developed an additional constitutive model that utilizes a nonlinear viscous
+ approach that again focused on capturing the deformation associated with
+ the active deformation mechanisms at different conditions.
+ This model is currently employed by the THERESA project, which is a European
+ based group aimed at developing, verifying and improving the modeling capabilit
+ies associated with the storage of nuclear waste.
+ We do not currently have access to this model; therefore, this model will
+ not be analyzed at this time.
+\end_layout
+
+\begin_layout Section
+Test Methods and Results
+\end_layout
+
+\begin_layout Standard
+The laboratory data was obtained during a hydrostatic and shear compression
+ tests of a crushed salt, approximate specimen geometry is shown in Figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sample"
+
+\end_inset
+
+.
+ Axial displacements were measured via linear variable differential transformers
+ (LVDTs) placed external to the specimen, lateral displacements were measured
+ with a pair of Shuler gages placed circumferentially around the specimen,
+ and metering of the confining fluid volume.
+ Results from the measured strains are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:StrainMeas"
+
+\end_inset
+
+ along with the resulting reduction in porosity shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:PorosityMeas"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename TriaxialSetup_bcl.pdf
+	height 7cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representation of crushed-salt specimen in the triaxial cell.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sample"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename strain.pdf
+	width 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Strain measures during the hydrostatic compression test.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:StrainMeas"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename porosity.pdf
+	width 8.5cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Calculated porosity during a hydrostatic compression test.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:PorosityMeas"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Constitutive Models
+\end_layout
+
+\begin_layout Standard
+We plan to predict the deformation measured during laboratory tests using
+ the following constitutive models:
+\end_layout
+
+\begin_layout Itemize
+Generalized Hooke's law for linear elasticity
+\end_layout
+
+\begin_layout Itemize
+Drucker-Prager/cap plasticity
+\end_layout
+
+\begin_layout Itemize
+CS Model
+\end_layout
+
+\begin_layout Standard
+The first two constitutive models may be implemented using Abaqus once the
+ material parameters are obtained from tests data
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Abaqus2012"
+
+\end_inset
+
+.
+ However, Abaqus does not contain the CS model in its library, but we wish
+ to compare results of the CS model to other existing models.
+ Therefore, we have programmed the CS model in the R language, and our algorithm
+ produces the predicted strains from the CS model.
+ This implementation of the CS model allows for the comparisons with other
+ constitutive models in the Abaqus library when a single element is utilized.
+\end_layout
+
+\begin_layout Section
+Model Description
+\end_layout
+
+\begin_layout Standard
+Numerical analyses were performed using the program Abaqus/CAE 6.14-1 to
+ perform the finite element analyses.
+ Abaqus contains a range of constitutive models and elements to choose from.
+ Currently, our finite element model contains 1,566 nodes and 1170 8-node
+ brick elements.
+ We plan on complete multiple meshes of our model with both less and more
+ elements to determine how many elements are needed for convergence of a
+ solution.
+\end_layout
+
+\begin_layout Standard
+Our model geometry consists of two end platens modeled as linear elastic
+ aluminum and the test specimen, which is (*will be) be modeled as both
+ an elastic and viscoplastic material.
+ The test specimen was assumed to contain two orthogonal planes of symmetry,
+ each with essential boundary conditions (zero displacement).
+ The upper platen was also defined with an essential boundary condition
+ of zero displacement.
+ The lower platen and the curved face of the specimen were both defined
+ as having natural boundary conditions (prescribed force).
+ The boundary condition on the curved face of the specimen were defined
+ as a constant pressure (no shear component) that represents the confining
+ fluid.
+ Additionally, the lower platen was prescribed an constant pressure.
+ Magnitudes of the prescribed natural boundary conditions varied depending
+ on the simulated test scenario (e.g., were equal for hydrostatic compression
+ test and not equal shear compression test).
+ Interactions between the salt specimen and the end platens were also modeled
+ in attempt to capture the influence of end affects.
+ 
+\end_layout
+
+\begin_layout Section
+Numerical Results
+\end_layout
+
+\begin_layout Standard
+Very limited results have been obtained thus far, below Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fea01"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fea02"
+
+\end_inset
+
+ show the deformed mesh with contour plots of the numerical results.
+ These results were obtained from modeling a linear elastic specimen under
+ a hydrostatic stress of 200 pounds per square inch (psi).
+ These initial results verified that essential boundary conditions are acting
+ as intended, i.e.
+ zero displacement at the upper platen and across the planes of symmetry.
+ Natural boundary conditions also appear to be correctly implemented as
+ the material as uniformly deformed in and up as was expected from a linear
+ elastic model.
+ Frictional affects between the platens and specimen also appear to be captured,
+ as the stress distribution is not radially uniform at the specimen ends,
+ which was expected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Out_ElasticDisp.pdf
+	width 8.25cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Numerical displacement (inch) results from a linear elastic simulation performed
+ in Abaqus.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fea01"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Out_ElasticStress.pdf
+	width 8.25cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Numerical stress (psi) results from a linear elastic simulation performed
+ in Abaqus.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fea02"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "ProjectBib"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

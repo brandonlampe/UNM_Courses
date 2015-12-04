@@ -1,0 +1,42 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+ 
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{\thesection.\alph{subsection}}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{Bonus 3}%replace X with the appropriate number
+\author{Brandon Lampe\\ %replace with your name
+ME 571 - Material Science} %if necessary, replace with your course title
+ 
+\maketitle
+ 
+\section{How are twinning and slip systems related to stacking fault energy (SFE)}
+
+\subsection{Stacking Fault}
+ A stacking faults are created when a dislocation (slip, cross slip, twin, etc.) decomposes in partials and creates an interruption in a stacking sequence (e.g., ABC ABC $\rightarrow$ ABC AC ABC).  Therefore, the stacking fault creates a region where the stacking sequence is dissimilar to the predominate crystal structure.  Just as the equilibrium HCP structure has a higher Gibbs free energy than that of the FCC structure, the stacking fault will have a higher energy associated with it than the surrounding structure.
+
+\subsection{Dislocation Slip}
+Materials with high SFEs typically deform via the movement of full dislocations i.e., slip.  
+
+\subsection{Twinning}	 
+Materials with low SFEs typically deform via twinning, where only small movement of atoms occurs.  Twinning typically occurs when there are few slip systems available, which is the case in low symmetry crystals (HCP and monoclinic). 
+% --------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}

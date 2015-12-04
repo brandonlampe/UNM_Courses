@@ -1,0 +1,62 @@
+\documentclass{article}
+
+\usepackage[margin = 1in]{geometry}
+\usepackage{float}
+\usepackage{graphicx}
+
+\begin{document}
+\section{ME 571 - HW 2 - Problem 3.16 - Brandon Lampe}
+
+<<calc, echo=FALSE>>=
+######## PROBLEM 3.16
+
+# compressive stress / tensile stress [MPa]
+sc.st <- matrix(c(0.9, .8, .7, .6, .5, .4, .35, .325, .32))
+
+# x 10^(-2)
+ep <- matrix(c(0.1, .25, .4, .65, .95, 1.5, 2, 2.5, 3))
+
+e <- ep * 10 ^ (-2)
+@
+
+<<func,echo=TRUE>>=
+# function to evaluate
+fsigma.T <- function (e){
+        300 + 450 * e ^ 0.5 }
+
+# compressive stress [MPa]
+sigma.C <- sc.st * fsigma.T(e)
+
+# tensile stress [MPa]
+sigma.T <- fsigma.T(e)
+@
+\vspace{-.5in}
+\begin{figure}[H] \begin{center}
+<<plot1, echo=FALSE, fig.height=7 >>=
+plot(ep, sc.st, xlab = "Strain",
+     ylab ="Ratio of Compressive-to-Axial Stress [MPa]")
+lines(ep, sc.st)
+@
+\end{center} \vspace{-.5in} \caption{Data From Figure 3.17 of Class Textbook} \end{figure}
+
+\vspace{-.5in}
+
+\begin{figure}[H] \vspace{-.5in} \begin{center}
+<<plot2, echo=FALSE, fig.height=5>>=
+plot(e, sigma.C, xlab = "Strain",
+     ylab = "Compressive Stress [MPa]")
+lines(e, sigma.C)
+@
+\end{center} \vspace{-.5in} \caption{Compressive Stress Versus Strain} \end{figure}
+
+\vspace{-.5in}
+
+\begin{figure}[H] \begin{center}
+<<plot3, echo=FALSE,fig.height=5>>=
+plot(e, sigma.T, xlab = "Strain",
+     ylab = "Tensile Stress [MPa]")
+lines(e,sigma.T)
+@
+\end{center} \vspace{-.5in} \caption{Tensile Stress Versus Strain} \end{figure}
+
+\end{document}

@@ -1,0 +1,1515 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ME 562 - Assignment 4
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Abstract
+The objectve of this assignment was to implement a viscoelastic subroutine
+ for use with the driver program.
+ Multiple loading paths, such as creep, relaxation, and cyclic loading were
+ simulated in an attempt to verify the numerical algorithms.
+ Additionally, subroutines were written to provide values of defined yield
+ surfaces when a material subjected to a prescribed state of stress.
+\end_layout
+
+\begin_layout Section
+Write Viscoelastic Subroutine and Verification
+\end_layout
+
+\begin_layout Subsection
+Add Viscoelastic Subroutine to Driver Program
+\end_layout
+
+\begin_layout Standard
+A viscoelastic subroutine that numerically calculates results of the Standard
+ Viscoelastic Model (both linear and nonlinear) was created.
+ The current formulation of subroutine is in one dimension only.
+ The subroutine was titled 
+\begin_inset Quotes eld
+\end_inset
+
+Visco_1d
+\begin_inset Quotes erd
+\end_inset
+
+ and is called by the driver.
+ 
+\end_layout
+
+\begin_layout Itemize
+Visco_1d(matpropv, strn_inc, strnv, estrnv, bstrnv, strsv, path, SM, irow,
+ t_inc, alpha)
+\end_layout
+
+\begin_layout Standard
+A brief description of the calling arguments for Visco_1d is provided below:
+\end_layout
+
+\begin_layout Enumerate
+matpropv: vector of material properties.
+\end_layout
+
+\begin_layout Enumerate
+strn_inc: prescribed strain increment.
+\end_layout
+
+\begin_layout Enumerate
+strnv: vector of current total strain values.
+\end_layout
+
+\begin_layout Enumerate
+estrnv: vector of current elastic strain values.
+\end_layout
+
+\begin_layout Enumerate
+bstrnv: vector of current back strain values (i.e.
+ viscoelastic or time-dependent strain values).
+\end_layout
+
+\begin_layout Enumerate
+path: specific loading path.
+\end_layout
+
+\begin_layout Enumerate
+creep and relaxation paths require specific designation, while cyclic loading
+ requires the description of a strain function).
+\end_layout
+
+\begin_layout Enumerate
+SM: matrix of stored values.
+\end_layout
+
+\begin_layout Enumerate
+irow: identificaiton of current step, used for storing values in the correct
+ row of SM.
+\end_layout
+
+\begin_layout Enumerate
+t_inc: size of time increment, which is used for numerical integration.
+ Typical value is 
+\begin_inset Formula $t_{inc}=\frac{\tau_{1}^{b}}{10}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Enumerate
+alpha: prescribes the type of numerical integration.
+\end_layout
+
+\begin_deeper
+\begin_layout Enumerate
+\begin_inset Formula $\alpha=0\rightarrow$
+\end_inset
+
+ explicit integration method that is conditionally stable (Euler-Forward
+ method).
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $\alpha=1\rightarrow$
+\end_inset
+
+ implicit integration method that unconditionally stable (Euler-Backward
+ method).
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Formula $0<\alpha<1\rightarrow$
+\end_inset
+
+ semi-implicit Euler methods, typically 
+\begin_inset Formula $\alpha=0.5$
+\end_inset
+
+ provides an increased rate of convergence with reasonable stability.
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+General Formulation of One-Dimensional Viscoelasticity
+\end_layout
+
+\begin_layout Standard
+The following set of equations outline the Standard Viscoelastic Model.
+ Letting 
+\begin_inset Formula $c^{*}$
+\end_inset
+
+ equal zero results in the Standard Linear Viscoelastic Model.
+ In addition to the elastic material parameters (contained in 
+\begin_inset Formula $E$
+\end_inset
+
+), an additional set of material parameters (
+\begin_inset Formula $\tau$
+\end_inset
+
+and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+) have been added to describe the viscous (time dependent) strain, referred
+ to here as backstrain (
+\begin_inset Formula $e^{b}$
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{Stress:} &  & \sigma=E(e-e^{b})\\
+\text{Backstrain Rate:} &  & \dot{e}^{b}=(1+\bar{\sigma}_{ve})\bigg(\frac{1}{\tau}e-\frac{1}{\tau^{b}}e^{b}\bigg)\\
+\text{Viscoelastic Effective Stress:} &  & \bar{\sigma}_{ve}=\frac{\big((\sigma-\sigma_{r})^{2}\big)^{0.5}}{\sigma^{*}}=c^{*}\big((\sigma-\sigma_{r})^{2}\big)^{0.5}\\
+\text{Relaxation Stress:} &  & \sigma_{r}=E\bigg(1-\frac{\tau^{b}}{\tau}\bigg)e
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Verification of Relaxation Problem
+\end_layout
+
+\begin_layout Standard
+The analytical solution to the relaxation (constant strain) problem was
+ utilized in the verification of the Visco_1d subroutine.
+ The problem prescribed a constant total strain of 
+\begin_inset Formula $e_{0}=0.1$
+\end_inset
+
+ , and the associated stress was calculated.
+ Material parameters 
+\begin_inset Formula $Y$
+\end_inset
+
+, 
+\begin_inset Formula $\tau$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+ were assigned values of 5, 101 and 100, respectively.
+ Results of this verification are shown below in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Analytical-and-Numerical_relax"
+
+\end_inset
+
+.
+ The analytical solution to the to the SLVM relaxation problem is:
+\begin_inset Formula 
+\begin{eqnarray*}
+ & \sigma(t)=\frac{\sigma_{0}}{\tau}\Bigg(\tau-\tau^{b}+\tau^{b}exp\Big(\frac{-t}{\tau^{b}}\Big)\Bigg)\\
+ & \sigma_{0}=Ye_{0}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1_Relax_Ver.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Analytical and Numerical Results to a Relaxation Problem.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Analytical-and-Numerical_relax"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Verification of Creep Problem
+\end_layout
+
+\begin_layout Standard
+The analytical solution to the creep (constant stress) problem was also
+ used for verification.
+ This problem prescribed a constant stress of 
+\begin_inset Formula $\sigma_{0}=0.5$
+\end_inset
+
+, and the associated strains were calculated.
+ Material parameters 
+\begin_inset Formula $Y$
+\end_inset
+
+, 
+\begin_inset Formula $\tau$
+\end_inset
+
+, and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+ were again assigned values of 5, 10.1 and 10, respectively.
+ Results of this verification are shown below in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Analytical-and-Numerical_creep"
+
+\end_inset
+
+.
+ 
+\begin_inset Formula 
+\begin{eqnarray*}
+ & e(t)=\frac{e_{0}}{\tau-\tau^{b}}\Bigg(\tau-\tau^{b}exp\Big(\frac{-t}{\tau^{*}}\Big)\Bigg)\\
+ & e_{0}=\sigma_{0}/Y\\
+ & \tau^{*}=\frac{\tau\tau^{b}}{\tau-\tau^{b}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1_creep_strn_Ver.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Analytical and Numerical Results to a Creep Problem.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Analytical-and-Numerical_creep"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The definition of a creep problem is that of a prescribed constant stress;
+ however, the Driver program has been written in terms of a prescribed strain
+ increment.
+ Therefore, path specific modifications were made in order to evaluate a
+ creep path.
+ Those modifications include:
+\end_layout
+
+\begin_layout Itemize
+prescribe a constant stress value
+\end_layout
+
+\begin_layout Itemize
+assume all strains resulting from the prescribed stress were elastic
+\end_layout
+
+\begin_layout Itemize
+calculate a stress value based on this value of elastic strain, which is
+ the typical method for a strain prescribed problem
+\end_layout
+
+\begin_layout Itemize
+define an an error tolerance between the prescribed and calculate stress
+ values and compare
+\end_layout
+
+\begin_layout Itemize
+if the difference between the two stress values is greater than the tolerance,
+ then allocate a portion of the elastic strain to the back strain while
+ keeping the total strain constant
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Stress is increased by the addition of elastic strain; therefore, by decreasing
+ the elastic strain the calculated stress value will also decrease
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+continue this process until the difference between the two stress values
+ is within the desired tolerance.
+\end_layout
+
+\begin_layout Standard
+Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Variation-of-Stress_creep"
+
+\end_inset
+
+ shows the variation of the actual stress, where the prescribed stress value
+ was 0.5.
+ The calculated stress starts at a value of 4.999996 + 0.5e-7 (tolerance limit)
+ and gradually approaches the prescribed value.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 1_Creep_strs_Ver.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Variation of Calculated Stress During Creep Problem.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Variation-of-Stress_creep"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Show the Effects of Choosing Differenent Values of Backstrain Terms 
+\begin_inset Formula $\tau$
+\end_inset
+
+and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Influence of the independent backstrain parameters 
+\begin_inset Formula $\tau$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+ on creep and relaxation simulations for the linear viscoelastic model were
+ analyzed.
+ The choice of 
+\begin_inset Formula $\tau$
+\end_inset
+
+has a large effect on the predicted strain and stress rates for both creep
+ and relaxation simulations, respectively (Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Creep_tau"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Relax_tau"
+
+\end_inset
+
+).
+ This is because 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+ must be chosen such that is has a value that is less than the value of
+ 
+\begin_inset Formula $\tau$
+\end_inset
+
+.
+ That is, for stability to be maintained, the restriction of 
+\begin_inset Formula $\tau^{b}<\tau$
+\end_inset
+
+ has been applied, the reason for this restriction is evident in the definition
+ of 
+\begin_inset Formula $\tau^{*}$
+\end_inset
+
+ above.
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 2_creep.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Results of Creep Analysis with Differing Values of 
+\begin_inset Formula $\tau$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Creep_tau"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 2_relax_Ver.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Results of Relaxation Analysis with Differing Values of 
+\begin_inset Formula $\tau$
+\end_inset
+
+and 
+\begin_inset Formula $\tau^{b}$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Relax_tau"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Show the Effects of Adding a Second Set of Backstrain Terms
+\end_layout
+
+\begin_layout Standard
+Influence of a second set of independent backstrain terms 
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{2}^{b}$
+\end_inset
+
+ on the linear viscoelastic model for creep and relaxation were analyzed.
+ These additional terms were incorporated into the viscoelastic model by
+ simply summing the additional terms as:
+\begin_inset Formula 
+\begin{eqnarray*}
+ & \dot{e}^{b}=(1+\bar{\sigma}_{ve})\bigg(\frac{1}{\tau_{1}}e-\frac{1}{\tau_{1}^{b}}e^{b}\bigg)+(1+\bar{\sigma}_{ve})\bigg(\frac{1}{\tau_{2}}e-\frac{1}{\tau_{2}^{b}}e^{b}\bigg)
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The results of these additional backstrain terms (
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{2}^{b}$
+\end_inset
+
+) on the predicted creep and relaxation simulation results are shown below
+ (Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:tw0_term_Creep"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:two_term_Relaxation"
+
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_two_term_creep.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Results of Creep Analysis with Differing Values of 
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{2}^{b}$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:tw0_term_Creep"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 3_two_term_relax.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Results of Relaxation Analysis with Differing Values of 
+\begin_inset Formula $\tau_{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{2}^{b}$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:two_term_Relaxation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Show the Effects of a Nonlinear Backstrain Term
+\end_layout
+
+\begin_layout Standard
+As discussed above, by letting 
+\begin_inset Formula $c^{*}$
+\end_inset
+
+ have a value greater than zero results in a nonlinear viscoelastic model.
+ The following figures show the influence of 
+\begin_inset Formula $\sigma^{*}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{0}$
+\end_inset
+
+ values on the predicted creep and relaxation results (Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sigma_star_relax"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:sigma_0_relax"
+
+\end_inset
+
+).
+ Definitions of 
+\begin_inset Formula $\sigma^{*}$
+\end_inset
+
+ and 
+\begin_inset Formula $\sigma_{0}$
+\end_inset
+
+ are provided below:
+\begin_inset Formula 
+\begin{eqnarray*}
+\text{Nonlinear Magnitude:} &  & \sigma^{*}=\frac{1}{c^{*}}\\
+\text{Initial Stress:} &  & \sigma_{0}=Ee_{0}^{e}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 4_cstar_relax.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Influence of 
+\begin_inset Formula $\sigma^{*}$
+\end_inset
+
+ on the Results of a Nonlinear Relaxation Analysis.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sigma_star_relax"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 4_s0_relax.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Influence of 
+\begin_inset Formula $\sigma_{0}$
+\end_inset
+
+ on the Results of a Nonlinear Relaxation Analysis.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:sigma_0_relax"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Cyclic Loading
+\end_layout
+
+\begin_layout Standard
+The effects of a high strain rate on the were analyzed with the use of the
+ prescribed strain as a function of time (
+\begin_inset Formula $t$
+\end_inset
+
+):
+\begin_inset Formula 
+\begin{eqnarray*}
+ & e=\frac{e_{max}}{2}\bigg[1+cos\big(2\pi\big(\frac{t}{T}-\frac{1}{2}\big)\big)\bigg] & 0\le t\le T\\
+ & \dot{e}_{max}=\pm(\pi/T)e_{max}\\
+ & T=\pi\frac{e_{max}}{\dot{e}_{max}}
+\end{eqnarray*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Analysis of cyclic loading was completed with maximum strain rates (
+\begin_inset Formula $\dot{e}_{max}$
+\end_inset
+
+) of 0, 250/sec, 500/sec, and 1000/sec, and results from these analyses
+ are shown in Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:emax_0"
+
+\end_inset
+
+ through 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:emax_0-3"
+
+\end_inset
+
+.
+ For ease of analysis, 
+\begin_inset Formula $\dot{e}_{max}$
+\end_inset
+
+ was defined as having a value of 
+\begin_inset Formula $1e-8/sec$
+\end_inset
+
+ instead of 
+\begin_inset Formula $0/sec$
+\end_inset
+
+.
+ This approximation results the defined strain cycle occuring over appoximately
+ 
+\begin_inset Formula $10^{6}$
+\end_inset
+
+ seconds (11 days), which may be considered a quasi-static analysis.
+ The backstrain parameters were held constant during these analyses, with
+ 
+\begin_inset Formula $\tau_{1}=1e-6$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{1}^{b}=8e-7$
+\end_inset
+
+, where both 
+\begin_inset Formula $\tau_{1}$
+\end_inset
+
+ and 
+\begin_inset Formula $\tau_{1}^{b}$
+\end_inset
+
+ have units of seconds.
+ In order for stable integration, the size of time increment was modified
+ based on 
+\begin_inset Formula $\dot{e}_{max}$
+\end_inset
+
+ according to:
+\begin_inset Formula 
+\[
+t_{inc}=\frac{\tau_{1}^{b}}{\big(\dot{e}_{max}/200\big)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One and a half strain cycles were analyzed for each of the defined values
+ of 
+\begin_inset Formula $\dot{e}_{max}$
+\end_inset
+
+, this allowed for the observation of hysteretic responses at higher strain
+ rates.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 5_edot_1e-10.pdf
+	height 6cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted stress and strains for cyclic loads, 
+\begin_inset Formula $\dot{e}_{max}=1e-8/sec$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:emax_0"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 5_edot_250.pdf
+	height 6cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted stress and strains for cyclic loads, 
+\begin_inset Formula $\dot{e}_{max}=250/s$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:emax_0-1"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 5_edot_500.pdf
+	height 6cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted stress and strains for cyclic loads, 
+\begin_inset Formula $\dot{e}_{max}=500/s$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:emax_0-2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 5_edot_1000.pdf
+	height 6cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Predicted stress and strains for cyclic loads, 
+\begin_inset Formula $\dot{e}_{max}=1000/s$
+\end_inset
+
+.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:emax_0-3"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Subroutine For Plotting Yield Surfaces
+\end_layout
+
+\begin_layout Standard
+Two subroutines were developed for the plotting of yield surfaces, those
+ are:
+\end_layout
+
+\begin_layout Itemize
+Yield_Func(P1, P2, P3, q, func, sigma_test, theta, c)
+\end_layout
+
+\begin_layout Itemize
+Yield_Surface(model, yield_stress, theta_cr, chohesion)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+output from the Yield_Surface subroutine includes:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+principal stress values (
+\begin_inset Formula $P_{1},P_{2},P_{3})$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+coordinates in the deviatoric plane (
+\begin_inset Formula $q_{1},q_{2}$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+mean stress (
+\begin_inset Formula $p$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+Lode coordinates (or Haigh-Westergaard coordinates) in the deviatoric plane
+ (
+\begin_inset Formula $r,z,\theta$
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Itemize
+stress triaxiality (
+\begin_inset Formula $p/\bar{\sigma}$
+\end_inset
+
+ )
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Standard
+The user defines the specific yield function (Mises, Tresca, Mohr-Coulomb,
+ etc) in the Yield_Func subroutine.
+ The Yield_Surface subroutine then allows the user to define which yield
+ function (model), yield stress, and specific material parameters to use
+ and then calls the Yield_Func subroutine.
+ Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Yield_s1-s2"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Yield_dev"
+
+\end_inset
+
+ show three yield surfaces, where each surface was defined according to:
+\end_layout
+
+\begin_layout Itemize
+Tresca: yield stress equal 2
+\end_layout
+
+\begin_layout Itemize
+Mises: yield stress equal 2
+\end_layout
+
+\begin_layout Itemize
+Mohr-Coulomb (M-C): ange of internal friction equal 
+\begin_inset Formula $15^{\circ}$
+\end_inset
+
+ and cohesion equal 0.8
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 6_yield_surf_sig.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Yield surfaces in the 
+\begin_inset Formula $\sigma_{1}-\sigma_{2}$
+\end_inset
+
+ plane.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Yield_s1-s2"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename 6_yield_surf_q.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Yield surfaces in the deviatoric plane.
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Yield_dev"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

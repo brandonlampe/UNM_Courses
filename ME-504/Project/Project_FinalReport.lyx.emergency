@@ -1,0 +1,1469 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\begin_preamble
+
+\usepackage{url}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\columnsep 0.25in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 2
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Author
+Numerical Modeling of Granular Salt
+\end_layout
+
+\begin_layout Author
+Brandon Lampe and Laxmi Paneru
+\end_layout
+
+\begin_layout Section*
+Nomenclature
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $\textbf{e},\textbf{\phi}=$
+\end_inset
+
+ Volumetric and deviatoric strains
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $\sigma_{1},\sigma_{3}=$
+\end_inset
+
+ Maximum and minimum principal stresses
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $Q_{a}=$
+\end_inset
+
+Activation energy
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $R=$
+\end_inset
+
+ Universal gas constant
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $T=$
+\end_inset
+
+ Absolute temperature
+\end_layout
+
+\begin_layout Standard
+\noindent
+\begin_inset Formula $C_{1}=$
+\end_inset
+
+ Constant factor
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+Granular (or crushed) salt is a candidate material for sealing the Waste
+ Isolation Pilot Plant's (WIPP) shafts, drifts, and boreholes 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Energy"
+
+\end_inset
+
+; therefore, the ability of crushed salt to prevent fluid migration is of
+ interest.
+ The objective of our research is to better understand the mechanical properties
+ of crushed salt as they pertain to its transport properties.
+ Most notably, we are interested in its intrinsic permeability, which will
+ provide a direct measure of its adequacy as a sealing material.
+ During recent laboratory tests, a correlation has been observed between
+ the volumetric strain and the instrinsic permeability of crushed salt,
+ where 20 percent volumetric strain has resulted in permeability decreaseing
+ by over nine orders of magnitude.
+ 
+\end_layout
+
+\begin_layout Standard
+We have performed a laboratory test on crushed salt where the time dependent
+ volumetric strain was measured while under a constant stress (creep).
+ The objective of this paper is to determine if Abaqus contains a constitutive
+ model capable of predicting the deformation observed during this experiment.
+ Additionally, a comparison is made between results obtained using a general
+ constitutive equation in Abaqus and results from a constitutive equation
+ designed specifically for the modeling of crushed salt deformation.
+\end_layout
+
+\begin_layout Standard
+The following sections will first familiarize the reader with the current
+ state of crushed-salt constitutive models.
+ Then a description of the laboratory experiment performed on a crushed-salt
+ specimen is given.
+ A brief description of the constitutive models utilized to simulate the
+ laboratory experiment are provided.
+ Numerical results are then compared between constitutive models and our
+ measured data in an attempt to determine if the selected models have the
+ ability to capture characteristics shown in the laboratory experiment.
+ 
+\end_layout
+
+\begin_layout Section
+Literature Review
+\end_layout
+
+\begin_layout Standard
+Mechanical properties of in situ salt were well characterized by Munson
+ and Dawson during the early 1970's
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Munson1979"
+
+\end_inset
+
+, where they first utilized an Arrhenius type equation to describe the time
+ dependent deformation of salt as Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:Creep_01"
+
+\end_inset
+
+, which is now common practice.
+ 
+\begin_inset Formula 
+\begin{equation}
+\dot{e}_{11}=C_{1}*exp\Bigg(\frac{-Q_{a}}{RT}\Bigg)\label{eq:Creep_01}
+\end{equation}
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+During that same period, crushed salt became of interest to the engineering
+ community also, predominately for use as a seal material around nuclear
+ wast packages, shafts, and other openings associated with the storage of
+ nuclear waste.
+ The first recorded laboratory tests, performed for obtaining constitutive
+ parameters, were uniaxial compression tests completed in 1978 on samples
+ that were 5 centimeters in diameter 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hansen1976"
+
+\end_inset
+
+.
+ However, the small specimen sizes utilized in these early tests had nonuniform
+ stress fields (from side and end friction) producing inconsistent results.
+ Since the first tests on crushed salt were performed, testing techniques
+ have advanced greatly and we are now able to accurately measures strains
+ at at high temperatures and pressures that are representative of downhole
+ conditions in a nuclear waste storage facility
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Broome2014"
+
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+During the last 39 years, over ten constitutive models have been developed
+ for crushed salt, each based on varying degrees of phenomenology, micro
+ mechanics, and/or empiricism
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Callahan1995"
+
+\end_inset
+
+.
+ During the mid-1990's, the Crushed Salt (CS) model was developed, which
+ was the first model to combine several dominant deformation attributes
+ of crushed salt.
+ These attributes include grain boundary pressure solutioning and dislocation
+ creep, which are believed to be dominant deformation mechanisms of crushed
+ salt 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Spiers1993,Zeuch1990,Callahan1998IJRM"
+
+\end_inset
+
+.
+ Including these different deformation mechanisms is critical to accurately
+ predicting the deformation of salt, as the dominant mechanism varies with
+ local conditions
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Frost1982"
+
+\end_inset
+
+.
+ The CS model has the ability to predict the deformation of crushed salt
+ reasonably well at low temperatures, but at high temperatures Broome et
+ al.
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Broome2014"
+
+\end_inset
+
+ showed the model predictions did not well represent the true deformations.
+ An additional shortcoming of the CS model is the large number of material
+ parameters (constants) associated with it, 31 independent parameters in
+ total, which produce a highly nonlinear result that makes fitting parameters
+ to a specific salt deposit very difficult.
+ The US Dept.
+ of Energy currently utilizes the CS model to aid in there planning and
+ development of storage facilities; therefore this model is of particular
+ interest to us.
+ 
+\end_layout
+
+\begin_layout Standard
+More recently, Olivella and Gens 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Olivella2002"
+
+\end_inset
+
+ developed an additional constitutive model that utilizes a nonlinear viscous
+ approach that again focused on capturing the deformation associated with
+ the active deformation mechanisms at different conditions.
+ This model is currently employed by the THERESA project, which is a European
+ based group aimed at developing, verifying and improving the modeling capabilit
+ies associated with the storage of nuclear waste.
+ We do not currently have access to this model; therefore, this model will
+ not be analyzed at this time.
+\end_layout
+
+\begin_layout Section
+Test Method
+\end_layout
+
+\begin_layout Standard
+Experimental data was obtained during a hydrostatic creep (constant stress)
+ test of a crushed salt specimen, approximate specimen geometry is shown
+ in Figure
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Sample"
+
+\end_inset
+
+.
+ The test was performed over a 24-hour period (86,400 seconds) at mean pressure
+ of 20 MPa.
+ Axial force was applied via a hydraulic ram and lateral force was applied
+ via a low viscosity fluid that surrounded the vertical sides of hte specimen.
+ Axial displacements were measured with linear variable differential transformer
+s (LVDTs) placed external to the specimen.
+ Lateral deformations were measured with a pair of Schuler gages placed
+ circumferentially around the specimen, and volumetric strains were measured
+ directly with a dilatometer that metered the confining fluid volume in
+ the test chamber.
+\end_layout
+
+\begin_layout Standard
+Post test analyses revealed that deformations were approximately isotropic.
+ Although, uniform deformation did not occur near the ends of the specimen,
+ where signs of end friction were observed.
+ These signs inluded disntinct cone shape regions near near both ends of
+ the specimen.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename triaxial test jpeg.jpg
+	width 95col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Representation of crushed-salt specimen in the triaxial cell.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Sample"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement !t
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename IMG_0559.png
+	height 9cm
+
+\end_inset
+
+
+\begin_inset space \hfill{}
+\end_inset
+
+
+\begin_inset Graphics
+	filename IMG_0571.png
+	height 9cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Pre (left) and post (right) test images of specimen in the test frame.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:BeforeAndAfter"
+
+\end_inset
+
+ 
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Constitutive Models
+\end_layout
+
+\begin_layout Standard
+Simulations of the time-dependent deformation during a creep tests were
+ performed using the following constitutive models:
+\end_layout
+
+\begin_layout Itemize
+linear isotropic viscoelasticity
+\end_layout
+
+\begin_layout Itemize
+nonlinear isotropic viscoplasticity (CS Model)
+\end_layout
+
+\begin_layout Standard
+The above models were chosen because they both predict time dependent deformatio
+n, which is an observed phenomena with crushed salt.
+ Although a linear elastic constitutive model was not explicitly used, both
+ of the above constitutive models rely on a linear elastic model for stress
+ calculations.
+ Therefore, the following values were used in the formulation of the isotroic
+ elasticity tensor:
+\end_layout
+
+\begin_layout Itemize
+Young's Modulus: 5,625 MPa
+\end_layout
+
+\begin_layout Itemize
+Poisson's Ratio: -0.75
+\end_layout
+
+\begin_layout Standard
+The linear isotropic viscoelastic model was implemented in Abaqus 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Abaqus2012"
+
+\end_inset
+
+.
+ However, Abaqus does not contain the CS Model in its constitutive library.
+ Therefore, the constitutive equations for the CS Model were executed by
+ a driver program written in the Python language.
+ Abaqus utilized the finite element (FE) method to solve the complete set
+ of field equations associated model, where the driver program simply solve
+ the defined constitutive model with the prescribed boundary conditions.
+ Essentially, results from the driver program represent the solution for
+ a single element discretization with boundary conditions applied to the
+ element.
+\end_layout
+
+\begin_layout Standard
+The linear viscoelastic model in Abaqus is a very general model that may
+ be suited for modeling many different types of time dependent deformation.
+ This generality is made possible by the user defining material specific
+ material parameters.
+ Whereas the CS model was specifically developed for the modeling of crushed
+ salt.
+ Because of its purpose-built nature, the CS Model contains many parameters
+ not accounted for in the linear isotropoic viscoelastic model, such as
+ water content, grain size, and fractional density.
+ 
+\end_layout
+
+\begin_layout Subsection
+Linear Isotropic Viscoelasticity
+\end_layout
+
+\begin_layout Standard
+The hereditary integral form for linear isotropic viscoelasticity under
+ a hydrostatic stress state was utilized by Abaqus (Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:abaqus_visco"
+
+\end_inset
+
+).
+ Stress was defined in terms of a reduced time (
+\begin_inset Formula $\tau)$
+\end_inset
+
+ , which is related to the simulation time through Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:reduced_time"
+
+\end_inset
+
+.
+ The relaxation function and creep functions, (
+\begin_inset Formula $K(\tau)$
+\end_inset
+
+ and 
+\begin_inset Formula $G(\tau)$
+\end_inset
+
+, respectively) were defined in terms of a reduced time using a series of
+ exponenetials known as a Prony series (Equations 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:prony"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:prony_2"
+
+\end_inset
+
+).
+ Prony series parameters were fit using a least squares algorithm to creep
+ test data and are shown in Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:prony_parm"
+
+\end_inset
+
+.
+ The final constitutive equation utilized four material parameters.
+\begin_inset Formula 
+\begin{eqnarray}
+ & \sigma(t)=\intop_{0}^{t}2G(\tau-\tau')\textbf{\dot{e}}dt'+\textbf{I}\intop_{0}^{t}K(\tau-\tau')\dot{\phi}dt'\label{eq:abaqus_visco}
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\tau=\intop_{0}^{t}\frac{dt'}{A_{\theta}(\theta(t'))},\hspace{1em}\frac{d\tau}{dt}=\frac{1}{A_{\theta}(\theta(t))}\label{eq:reduced_time}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+K(\tau)=K_{\infty}+{\displaystyle \sum_{i=1}^{2}K_{i}*exp\bigg(\frac{-\tau}{\tau_{i}}\bigg)}\label{eq:prony}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+G(\tau)=G_{\infty}+{\displaystyle \sum_{i=1}^{2}G_{i}*exp\bigg(\frac{-\tau}{\tau_{i}}\bigg)}\label{eq:prony_2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{eqnarray}
+K_{1}=0.685 & \tau_{1}=2595.4\label{eq:prony_parm}\\
+K_{2}=-0.352 & \tau_{2}=5.414*10^{6}\nonumber 
+\end{eqnarray}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+CS Constitutive Model
+\end_layout
+
+\begin_layout Standard
+The CS Model contains mechanisms designed to capture the operature deformation
+ mechanisms in crushed salt, dislocation creep and pressure solutioning.
+ The dislocation creep equations are described in Equations 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CS_1"
+
+\end_inset
+
+ through 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:CS_4-1"
+
+\end_inset
+
+, where 
+\begin_inset Formula $\eta_{0},\eta_{1},\kappa_{0},\kappa_{1},n_{f},n,\text{ and }D_{t}$
+\end_inset
+
+ are material parameters.
+ Equation 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "eq:spiers_1"
+
+\end_inset
+
+ describes the predicted strain resulting from pressure solutioning, where
+ 
+\begin_inset Formula $r_{1,}r_{3},r_{4},a,p,$
+\end_inset
+
+ and 
+\begin_inset Formula $Q$
+\end_inset
+
+ are material parameters.
+ Measured data implemented into the constitutive model include fractional
+ density (
+\begin_inset Formula $D$
+\end_inset
+
+), water content (
+\begin_inset Formula $w$
+\end_inset
+
+), and grain size (
+\begin_inset Formula $d$
+\end_inset
+
+).
+ 
+\begin_inset Formula $\Gamma$
+\end_inset
+
+ is a strain dependent variable, which is held at unity for small volumetric
+ strain (
+\begin_inset Formula $exp(e_{v}<15\%$
+\end_inset
+
+), which was the case for our simulations.
+ The 13 parameters in the CS Model were fit using a Markov Chain Monte Carlo
+ (MCMC) method, which was performed in the R programming language using
+ the FME package 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "FME"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The general form of the CS model provides a formulation of the plastic strain
+ rate tensor (
+\begin_inset Formula $\dot{\boldsymbol{e}^{c}}$
+\end_inset
+
+), and the equivalent inelastic strain rate measures for dislocation creep
+ and pressure solution, 
+\begin_inset Formula $\dot{\boldsymbol{e}^{d}}$
+\end_inset
+
+ and 
+\begin_inset Formula $\dot{\boldsymbol{e}^{w}}$
+\end_inset
+
+, respectively.
+ The inelastic strains rates have been formulated as functions of an an
+ equivalent stress (
+\begin_inset Formula $\sigma_{eq}^{f}$
+\end_inset
+
+).
+ The flow potential in the CS Model has been formulated in terms of an equivalen
+t stress (
+\begin_inset Formula $\sigma_{eq}$
+\end_inset
+
+), which provides for a more flexible nonassociative type flow.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\text{\dot{\boldsymbol{e}^{c}}=\bigg(\dot{\boldsymbol{e}_{eq}^{d}}\big(\sigma_{eq}^{f}\big) +\dot{\boldsymbol{e}_{eq}^{w}}\big(\sigma_{eq}^{f}\big)\bigg)\frac{\partial\sigma_{eq}}{\partial\boldsymbol{\sigma}}}\label{eq:CS_1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{eq}^{f}=\Bigg(\eta_{0}\Omega_{f}^{\eta_{1}}\sigma_{m}+\bigg(\frac{2-D}{D}\Bigg)^{\frac{2n_{f}}{n_{f}+1}}(\sigma_{1}-\sigma_{3})^{2}\Bigg)^{1/2}\label{eq:CS_2}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\sigma_{eq}=\Bigg(\kappa_{0}\Omega_{f}^{\kappa_{1}}\sigma_{m}+\bigg(\frac{2-D}{D}\Bigg)^{\frac{2n_{f}}{n_{f}+1}}(\sigma_{1}-\sigma_{3})^{2}\Bigg)^{1/2}\label{eq:CS_3}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Omega_{f}=\Bigg[\frac{(1-D)_{n_{f}}}{(1-(1-D)^{\frac{1}{n_{f}}})^{n_{f}}}\Bigg]^{\frac{2}{n_{f}+1}}\label{eq:CS_4}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\Omega=\Bigg[\frac{(1-D_{v})_{n}}{(1-(1-D_{v})^{\frac{1}{n}})^{n}}\Bigg]^{\frac{2}{n+1}}\label{eq:CS_4-1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+\dot{\boldsymbol{e}_{w}}=\frac{r_{1}w^{a}}{d^{p}exp(e_{v})}\frac{exp\bigg(\frac{Q_{s}}{RT}\bigg)}{T}\Bigg[\frac{exp(r_{3}e_{v})}{\big(exp(e_{v})-1\big)^{r_{4}}}\Bigg]\Gamma\sigma_{eq}^{f}\label{eq:spiers_1}
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Finite Element Modeling
+\end_layout
+
+\begin_layout Standard
+The software Abaqus/CAE 6.14-1 was utilized to perform finite element analyses
+ using the linearly isotropic viscoelastic constitutive model.
+ Finite element discretizations of the salt speciment were created with
+ a varying number of 8-node brick elements.
+ Solutions for each of the discretizations were obtained and convergence
+ of a solution was confirmed.
+ Two planes of symmetry were utilized for the modeling, and because of this
+ symmetry only a quarter of the model was required to obtain a solution
+ to the three-dimensional problem (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Finite-element-discretization"
+
+\end_inset
+
+).
+ Simulations were performed with an array of discretizations to ensure sufficien
+t element density was used for convergence of the solution (Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:Mesh"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename LaxmiResults/new_GS5.png
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Finite element discretization of sample (h = 5 mm).
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Finite-element-discretization"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Element Length (h) [mm]
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Elements
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Nodes
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+100
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+62
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+50
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+12
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+108
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+20
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+30
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+246
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+5
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+1,160
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6028
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Description of the discretizations used to simulate the crush-salt specimen.
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:Mesh"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Our model geometry consistws of two end platens modeled as linear elastic
+ aluminum and the test specimen, which was modeled as an linearly viscoplastic
+ material.
+ Both materials were assumed to be isotropic.
+ Two orthogonal planes of symmetry were utilized for the model discretization,
+ each having essential boundary conditions (zero displacement) applied normal
+ to the plane of symmetry in radial directions (X and Y).
+ The upper platen was also defined with an essential boundary condition
+ of zero displacement in axial direction (Z).
+ The lower platen and the curved face of the specimen were both defined
+ as having natural boundary conditions (prescribed force).
+ The boundary condition on the curved face of the specimen were defined
+ as a constant pressure, which represents the normal stresses resulting
+ from the confining fluid.
+ Additionally, the lower platen was prescribed a constant pressure of 20
+ MPa.
+ 
+\end_layout
+
+\begin_layout Standard
+Physical observations of the specimen indicated that end friction was influence
+ the deformation of the speciment (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:BeforeAndAfter"
+
+\end_inset
+
+).
+ Therefore, interactions between the salt specimen and the end platens were
+ also modeled in attempt to capture the influence of these affects.
+ 
+\end_layout
+
+\begin_layout Section
+Numerical Results
+\end_layout
+
+\begin_layout Standard
+As part of the numerical analysis, a convergence study was completed to
+ ensure that a sufficiently fine discretization had been employed.
+ Data was obtained at a unique nodal point equidistant from the initial
+ specimen ends along the Z axis, on the axis of symmetry.
+ Very little deviation in results was shown across a large range of element
+ sizes.
+ The lack of deviation is likely a result of the problem definition, that
+ being a hydrostatic stress applied to an isotropic material.
+ Results from this study are shown in Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fea01"
+
+\end_inset
+
+, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement !t
+wide true
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename FEA.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Numerical results from the convergence study.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:ConvStudy"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Displacement occured in both the axial and radial directions during the
+ the test (Figures 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:fea01"
+
+\end_inset
+
+).
+ The influence of end friction was at least partially captured by the FE
+ model, which is apparent by the additional stresses near the end of the
+ specimen (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Shear-stresses-resulting"
+
+\end_inset
+
+) and the reduced deformation near the specimen ends ends (Figure 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Cross-section"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename AbaqusModeling/FullModel_Deformation_EndFriction.png
+	width 95col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Magnitude of numerical displacements (mm) results from the isotropic linear
+ viscoelastic simulation performed in Abaqus.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:fea01"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename AbaqusModeling/MisesStress_EndFriction.png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Mises resulting from friction between platens and specimen (dark blue indicates
+ zero Mises stress).
+ 
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Shear-stresses-resulting"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename AbaqusModeling/RadialDeformation_EndFriction.png
+	width 100col%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Cross-section of radial displacement, where red indicates zero.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Cross-section"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+placement !t
+wide true
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename Validation.pdf
+	width 100text%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Comparison between experimental and predicted volumetric creep strain.
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:validation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Because the problem involves a hydrostatic stress being applied to an isotropic
+ material, utilizing a more refined mesh resulted in negligible change in
+ predicted volumetric strain.
+ However, when end friction was accounted for, the shear stresses and strains
+ were only captured when a suitable fine mesh was utilized.
+\end_layout
+
+\begin_layout Section
+Conclusions
+\end_layout
+
+\begin_layout Standard
+Both consitutive models are capable of predicting volumetric strains similar
+ to those measured during a creep test.
+ The Abaqus model more closely represents the test data, but this is likely
+ because Prony series values were fit exclusively to this loading path,
+ whereas parameters of the CS Model were fit to a large range of loading
+ paths.
+ 
+\end_layout
+
+\begin_layout Standard
+To adequately validate the ability of the calculated Prony series to predict
+ the volumetric strains measured in crushed salt, more loading paths must
+ be simulated.
+ However, based on the present analysis, Abaqus is fully capable of predicting
+ the observed volumetric deformation of crushed salt during a creep test.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "ProjectBib"
+options "plain"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,1009 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ME 562 - Assignment 2
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Abstract
+Overview of assignment
+\end_layout
+
+\begin_layout Section
+Write a program that provides the matrix of elasticity coefficients with
+ respect to a given basis
+\end_layout
+
+\begin_layout Standard
+The function 
+\begin_inset Quotes eld
+\end_inset
+
+Elastic()
+\begin_inset Quotes erd
+\end_inset
+
+ was written to calculate the coefficients of the stiffness matrix for a
+ material having at least orthotropic symmetry (i.e., nine independent elastic
+ parameters).
+ If a material has greater symmetry (e.g., transverse isotropy (five in independen
+t parameters), cubic symmetry (3 independent parameters), complete isotropy
+ (2 independent parameters), etc), the input parameters into Elastic() must
+ be modified accordingly.
+ 
+\end_layout
+
+\begin_layout Standard
+Restrictions have been made on the input values to maintain a nonsingular
+ (invertible) flexibility matrix, those restrictions include:
+\end_layout
+
+\begin_layout Enumerate
+Poisson's ratios (
+\begin_inset Formula $\nu\mbox{) have been constrained to values greater than -1.0 and less than 0.5 \ensuremath{\Rightarrow-1.0<\nu<0.5}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Young's Moduli (
+\begin_inset Formula $M$
+\end_inset
+
+) have been constrained to positive values greater than zero 
+\begin_inset Formula $\Rightarrow Y>0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Shear Moduli (
+\begin_inset Formula $G$
+\end_inset
+
+) have been constrained to positive values greater than zero 
+\begin_inset Formula $\Rightarrow$
+\end_inset
+
+ 
+\begin_inset Formula $G>0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As verification of the Elastic() routine, parameters for a completely isotropic
+ material were used as input and the output was checked against hand calculation
+s.
+ Only three matrix components were needed to verify the isotropic parameters
+ because for such a material 
+\begin_inset Formula $E_{11}=E_{22}=E_{33}$
+\end_inset
+
+, 
+\begin_inset Formula $E_{12}=E_{23}=E_{31}$
+\end_inset
+
+, 
+\begin_inset Formula $E_{44}=E_{55}=E_{66}$
+\end_inset
+
+ and the matrix is symmetric, all remaining components take values of zero.
+ Only two isotropic parameters are independent (
+\begin_inset Formula $E_{11}$
+\end_inset
+
+ and 
+\begin_inset Formula $E_{12}$
+\end_inset
+
+), while the third (
+\begin_inset Formula $E_{44}$
+\end_inset
+
+) parameter is dependent upon the previous two.
+ Results from this verification are shown below and the numerical output
+ from Elastic() is shown in the attached code under Problem 1.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+E_{11}=\frac{{Y(1-\nu)}}{(1+\nu)(1-2\nu)}=12
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+E_{12}=E_{11}\frac{\nu}{(1-\nu)}=\frac{Y\nu}{(1+\nu)(1-2\nu)}=4
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+E_{44}=2G=E_{11}-E_{12}=\frac{Y}{(1+\nu)}=16
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Orthotropic Material
+\end_layout
+
+\begin_layout Standard
+Material planes of symmetry may be defined as planes on which only normal
+ stresses are present (i.e., no shear stress).
+ Therefore, a plane of symmetry may be viewed as a principal direction of
+ the material, this problem was approached with concept at hand.
+ 
+\end_layout
+
+\begin_layout Standard
+An elastic-orthotropic material has three orthogonal planes of elastic symmetry.
+ If a cube is cut with two orthogonal edges aligned with two planes of symmetry,
+ the third edge must also be aligned with a plane of symmetry.
+ The linear-elastic constitutive equation for an elastic-orthotropic material
+ is shown below in V-M notation, where this representation implies that
+ material planes of symmetry are aligned with the chosen basis.
+ Regarding the constitutive relationship shown below, 
+\begin_inset Formula $\bigl[E^{nn}\bigr]$
+\end_inset
+
+ represents a full-symmetric 3x3 matrix and 
+\begin_inset Formula $\bigl[E^{ss}\bigr]_{D}$
+\end_inset
+
+ represents a diagonal 3x3 matrix and the 
+\begin_inset Formula $[E^{ns}]$
+\end_inset
+
+ and 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\strikeout off
+\uuline off
+\uwave off
+\noun off
+\color none
+
+\begin_inset Formula $[E^{sn}]$
+\end_inset
+
+
+\family default
+\series default
+\shape default
+\size default
+\emph default
+\bar default
+\strikeout default
+\uuline default
+\uwave default
+\noun default
+\color inherit
+ matrices represent 3x3 null matrices (only when the bases are aligned with
+ planes of orthotropic symmetry).
+ Additionally, 
+\begin_inset Formula $\{\sigma^{nn}\}$
+\end_inset
+
+ and 
+\begin_inset Formula $\{\sigma^{ss}\}$
+\end_inset
+
+ are 3x1 mathematical vectors of the normal and shear components, respectively,
+ of the Cauchy stress tensor and 
+\begin_inset Formula $\{e^{nn}\}$
+\end_inset
+
+and 
+\begin_inset Formula $\{e^{ss}\}$
+\end_inset
+
+ are their corresponding strain components.
+ When the constitutive equation below is not represented in a bases aligned
+ with the material planes of symmetry, the constitutive relation 
+\begin_inset Formula $[E]_{6x6}$
+\end_inset
+
+ will likely be a full rank matrix (e.g., the matrix will likely contain all
+ nonzero values because 
+\begin_inset Formula $[E^{sn}]$
+\end_inset
+
+ = 
+\begin_inset Formula $[E^{ns}]^{T}\ne[0]$
+\end_inset
+
+ ).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\begin{Bmatrix}\{\sigma^{nn}\}\\
+\{\sigma^{ss}\}
+\end{Bmatrix}=\begin{bmatrix}[E^{nn}] & [E^{ns}]\\{}
+[E^{sn}] & [E^{ss}]_{D}
+\end{bmatrix}\begin{Bmatrix}\{e^{nn}\}\\
+\{e^{ss}\}
+\end{Bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\paragraph_spacing single
+\noindent
+\align left
+For the cube cut with edges aligned with the planes of symmetry 
+\begin_inset Formula $([E^{sn}]$
+\end_inset
+
+ = 
+\begin_inset Formula $[E^{ns}]^{T}=[0])$
+\end_inset
+
+ :
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+a.
+\end_layout
+
+\end_inset
+
+Yes, the normal components of the strain are the same because the normal
+ components stress are all the same and 
+\begin_inset Formula $[E^{nn}]$
+\end_inset
+
+is symmetric.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+b.
+\end_layout
+
+\end_inset
+
+Yes, the shear components of strain are zero.
+\end_layout
+
+\begin_layout Standard
+For the cube with edges not aligned with a plan of symmetry
+\begin_inset Formula $([E^{sn}]$
+\end_inset
+
+ = 
+\begin_inset Formula $[E^{ns}]^{T}\ne[0])$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+a.
+\end_layout
+
+\end_inset
+
+No, the normal components of the strain will not be the same (although the
+ normal stress components will still be) because 
+\begin_inset Formula $[E]_{6x6}$
+\end_inset
+
+ is a full matrix 
+\begin_inset Formula $[E^{ns}]$
+\end_inset
+
+ is not symmetric.
+\end_layout
+
+\begin_layout Enumerate
+\begin_inset Argument item:1
+status open
+
+\begin_layout Plain Layout
+b.
+\end_layout
+
+\end_inset
+
+No, the shear components of strain are nonzero, again this results from
+ 
+\begin_inset Formula $[E]_{6x6}$
+\end_inset
+
+ being a full matrix.
+\end_layout
+
+\begin_layout Section
+Material of Choice
+\end_layout
+
+\begin_layout Standard
+I chose rock salt (halite) as my anisotropic material.
+ Halite has a cubic crystalline structure; therefore, it has cubic symmetry
+ (three independent elastic parameters).
+ The following values for engineering moduli were obtained:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Y$
+\end_inset
+
+ = 30.8 GPa
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\nu$
+\end_inset
+
+ = 0.347
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $G$
+\end_inset
+
+ = 11.3 GPa
+\end_layout
+
+\begin_layout Itemize
+Reference: Robertson, E., R.
+ Robie, K.
+ Books.
+ 1958.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Physical Properties of salt, Anhydrite, and Gypsum -- Preliminary Results,
+\begin_inset Quotes erd
+\end_inset
+
+ Trace Elements Memorandum Report 1048, US Dept.
+ of the Interior Geological Survey, 40 pages.
+\end_layout
+
+\begin_layout Standard
+I also found published values for the elastic constants directly.
+ The author used Lamés parameters for the stiffness matrix; therefore, I
+ converted these values to be in terms consistent with those used in class
+ (i.e., Young's Modulus, Poission's Ratio, and Shear Modulus), both sets of
+ values are provided below.
+ Additionally, to verify the 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E_{11}$
+\end_inset
+
+ = 49 GPa
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E_{12}$
+\end_inset
+
+ = 13 GPa
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $E_{44}$
+\end_inset
+
+ = 13 GPa
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Y$
+\end_inset
+
+ = 32.5 GPa
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\nu$
+\end_inset
+
+ = 0.25
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $G$
+\end_inset
+
+ = 13 GPa
+\end_layout
+
+\begin_layout Itemize
+Reference: Meyers, M.
+ and K.
+ Chawla.
+ 2009.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Mechanical Behavior of Materials, Second Edition,
+\begin_inset Quotes erd
+\end_inset
+
+ Table 2.6 on page 114 titled: Elastic Coefficients of Ceramics, published
+ by University Cambridge Press, 856 pages.
+\end_layout
+
+\begin_layout Subsection
+Construct Corresponding Matrix
+\end_layout
+
+\begin_layout Standard
+Shear and Young's moduli values from both authors are within 15 percent
+ of each other, although the reported values for Poission's ratio vary substanti
+ally.
+ The components of the stiffness matrix obtained using engineering moduli
+ as described by Robertson et al.
+ are shown below.
+ Calculations for the stiffness and flexibility 
+\begin_inset Formula $([F]=[E]^{-1})$
+\end_inset
+
+ matrices are shown in the attached code under Problem 3.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+[E]\text{ in the E-E basis: }\begin{bmatrix}48.8 & 25.9 & 25.9 & 0 & 0 & 0\\
+25.9 & 48.8 & 25.9 & 0 & 0 & 0\\
+25.9 & 25.9 & 48.8 & 0 & 0 & 0\\
+0 & 0 & 0 & 22.6 & 0 & 0\\
+0 & 0 & 0 & 0 & 22.6 & 0\\
+0 & 0 & 0 & 0 & 0 & 22.6
+\end{bmatrix}GPa
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Best Isotropic Approximation
+\end_layout
+
+\begin_layout Standard
+The best possible choices for the bulk (B) and shear (G) moduli are shown
+ below:
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Y_{iso}$
+\end_inset
+
+ = 18.3 Gpa
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\nu_{iso}$
+\end_inset
+
+ = 0.409
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+goodness
+\begin_inset Quotes erd
+\end_inset
+
+ of the isotropic approximation was based on a residual (R) scaled from
+ 0 to 1, where 1 indicates a very poor approximation and 0 indicates the
+ elasticity components are perfectly represented by the isotropic approximation.
+ The R value for the isotropic approximation was 0.32.
+\end_layout
+
+\begin_layout Section
+Elasticity Components in an Alternate Basis
+\end_layout
+
+\begin_layout Standard
+The components of the fourth order stiffness tensor, 
+\begin_inset Formula $\underline{\underline{\underline{\underline{E}}}}$
+\end_inset
+
+, were transformed from a basis with axes aligned with the orthotropic planes
+ of symmetry
+\begin_inset Formula $\Big(\overset{E-E}{[E]}\Big)$
+\end_inset
+
+ to a different orthonormal basis with an arbitrary orientation 
+\begin_inset Formula $\Big(\overset{e-e}{[E]}\Big)$
+\end_inset
+
+ in V-M notation.
+ This was accomplished by performing the operation shown below, where 
+\begin_inset Formula $\overset{e-E}{[A]}$
+\end_inset
+
+ is the transformation matrix for fourth order tensors (represented in V-M
+ notation) to represent components in the 
+\begin_inset Formula $e$
+\end_inset
+
+ and 
+\begin_inset Formula $E$
+\end_inset
+
+ bases.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overset{e-e}{[E]}=\overset{e-E}{[A]}\overset{E-E}{[E]}\overset{E-e}{[A]}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The results of this operation are shown in the attached code under problem
+ 4, and the stiffness matrix 
+\begin_inset Formula $\overset{e-e}{[E]}$
+\end_inset
+
+ takes the variable 
+\begin_inset Quotes eld
+\end_inset
+
+E_ee
+\begin_inset Quotes erd
+\end_inset
+
+ in the numerical calculations.
+ The matrix of components resulting from this transformation contained no
+ zero values, where the matrix of components aligned with the orthotropic
+ planes of symmetry had upper right and lower left quarters of all zero
+ values and the lower right quarter contained only diagonal nonzero components.
+ 
+\end_layout
+
+\begin_layout Standard
+An isotropic approximation of the 
+\begin_inset Formula $\overset{e-e}{[E]}$
+\end_inset
+
+ components was again made.
+ This approximation resulted in the same values of engineering moduli 
+\begin_inset Formula $Y_{iso}$
+\end_inset
+
+ and 
+\begin_inset Formula $\nu_{iso}$
+\end_inset
+
+ as were obtained from the 
+\begin_inset Formula $\overset{E-E}{[E]}$
+\end_inset
+
+ components.
+ This is to be expected as both fits were to the same tensor 
+\begin_inset Formula $\underline{\underline{\underline{\underline{E}}}}$
+\end_inset
+
+, which is constant regardless of basis.
+ 
+\end_layout
+
+\begin_layout Section
+Find Material Axes
+\end_layout
+
+\begin_layout Subsection
+Find Eigenvectors of Elasticity Matrix
+\end_layout
+
+\begin_layout Standard
+The eigenvalues and eigenvectors of 
+\begin_inset Formula $\underline{\underline{\underline{\underline{E}}}}$
+\end_inset
+
+ were obtained with respect to the 
+\begin_inset Formula $e-e-e-e$
+\end_inset
+
+ basis, and these values are shown under Problem 5 in the attached code.
+ Of the six eigenvalues obtained, only 3 are unique.
+ All six eigenvectors appear unique when viewed in V-M notation as a 6x1
+ vector and converted to the components of second-order eigentensors.
+ The components of these eigentensors provide a transformation relationship
+ between the the principal basis of 
+\begin_inset Formula $\underline{\underline{\underline{\underline{E}}}}$
+\end_inset
+
+ and the 
+\begin_inset Formula $e-e-e-e$
+\end_inset
+
+ basis 
+\begin_inset Formula $\Big(\overset{P-e}{[A]}\Big)$
+\end_inset
+
+.
+ Although I am unsure of this reasoning as typically the transformation
+ matrices have been orthonormal, but my calculations show that 
+\begin_inset Formula $\overset{P-e}{[A]}$
+\end_inset
+
+ is not orthonormal.
+\end_layout
+
+\begin_layout Subsection
+Convert Eigenvectors from V-M Notation to Second Order Eigentensors
+\end_layout
+
+\begin_layout Standard
+Each eigenvector of 
+\begin_inset Formula $\underline{\underline{\underline{\underline{E}}}}$
+\end_inset
+
+ , or row of 
+\begin_inset Formula $\overset{P-e}{[A]}$
+\end_inset
+
+, was converted from a to a second-order eigentensor.
+ The components of each of these six second-order eigentensors relate the
+ specific eigenvector to the original arbitrarily orientated basis (i.e.,
+ the transformation matrices
+\begin_inset Formula $\overset{P_{1}-e}{[a]}$
+\end_inset
+
+, 
+\begin_inset Formula $\overset{P_{2}-e}{[a]}$
+\end_inset
+
+ , etc.).
+ 
+\end_layout
+
+\begin_layout Subsection
+Determine Eigenvectors for Each of the 6 Second Order Eigentensors
+\end_layout
+
+\begin_layout Standard
+The eigenvectors for each of the six second-order eigentensors were determined,
+ where these eigenvectors are defined to be the 
+\begin_inset Quotes eld
+\end_inset
+
+material vectors
+\begin_inset Quotes erd
+\end_inset
+
+.
+ I believe this implies that each of these material vectors lies within
+ a plan of material symmetry.
+ These material vectors are associated with the basis as defined by the
+ six eigentensors, and the six eigentensors were associated with the arbitrarily
+ orientated 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+ basis; therefore, the material vectors are also associated with the 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+ basis.
+ Therefore, components of each respective material vector set relate a material
+ basis to the arbitrary basis 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+\overset{M-e}{[a]}\Rightarrow\begin{bmatrix}M_{1}^{1}\textbf{e}_{1} & M_{2}^{1}\textbf{e}_{2} & M_{3}^{1}\textbf{e}_{3}\\
+M_{1}^{2}\textbf{e}_{1} & M_{2}^{2}\textbf{e}_{2} & M_{3}^{2}\textbf{e}_{3}\\
+M_{1}^{3}\textbf{e}_{1} & M_{2}^{3}\textbf{e}_{2} & M_{3}^{3}\textbf{e}_{3}
+\end{bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Obtain V-M Components of the Elasticity Matrix With Respect to Two Orthonormal
+ Material Bases
+\end_layout
+
+\begin_layout Standard
+Results from this are shown in the attached code.
+ Elasticity matrices with respect to material bases 4 and 5 (i.e., those calculate
+d from the fourth and fifth eigenvectors of the elasticity matrix) reproduce
+ the matrix exactly.
+ However, components of the elasticity matrix in the remaining four material
+ bases do not reproduce the original components.
+ Additionally, the material basis from the first elasticity eigenvector
+ is not orthonormal.
+\end_layout
+
+\begin_layout Subsection
+Obtain Components of the Material Vectors
+\end_layout
+
+\begin_layout Standard
+Componenets of the material vectors are shown in the attached code, and
+ the figures below show their relationship with both the 
+\begin_inset Formula $\textbf{E}$
+\end_inset
+
+ and 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+bases.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename MatBasis_01.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Orientations with respect to the 
+\begin_inset Formula $\textbf{E}$
+\end_inset
+
+ basis, where yellow is the first material basis (not orthonormal) and blue
+ represents the 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+ basis.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename MatBasis_02.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Orientations with respect to the 
+\begin_inset Formula $\textbf{E}$
+\end_inset
+
+ basis, where cyan and magenta bases are the fourth and fifth material bases,
+ and the blue represents the 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+ basis.
+ The fourth and fifth bases are mirrored images of each other about a plane
+ of symmetry.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename MatBasis_03.pdf
+	height 8cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Orientations with respect to the 
+\begin_inset Formula $\textbf{E}$
+\end_inset
+
+ basis, where the black, red, and green vectors represent the remaining
+ material bases, and the blue represents the 
+\begin_inset Formula $\textbf{e}$
+\end_inset
+
+ basis.
+ I don't recognize the relationships here?
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

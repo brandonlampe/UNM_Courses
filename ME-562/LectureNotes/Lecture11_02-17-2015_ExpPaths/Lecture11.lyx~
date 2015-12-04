@@ -1,0 +1,304 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+ME562 - Constitutive Modeling Course Notes (Feb.
+ 17, 2015)
+\end_layout
+
+\begin_layout Section
+Experimental Loading Paths and Additional Stress Parameters
+\end_layout
+
+\begin_layout Standard
+Buck is basing the premise of this course on the principle that we are analyzing
+ a material with somewhat unique properties that are not represented in
+ an existing constitutive equation.
+ For example, no satisfactory constitutive equations exist in Sierra, Abaqus,
+ etc.
+ 
+\end_layout
+
+\begin_layout Subsection
+How to determine if a constitutive equation is suitable?
+\end_layout
+
+\begin_layout Standard
+You must compare experimental data to the results predicted from the constitutiv
+e model.
+ How many different stress paths are needed to validate a particular constitutiv
+e equation...
+ an infinite amount.
+ However, we typically only have one or two if we are lucky! You must check
+ the constitutive equation against data to validate that it is of use.
+ If an existing version of a constitutive equation is not satisfactory,
+ you must develop your own version and then validate it! This assumes your
+ constitutive equation represents certain features that are not currently
+ represented by existing models.
+ For example, if you only have access to an isotropic model but experimental
+ results show that the material of interest is anisotropic, then you may
+ need to develop a new constitutive equation.
+\end_layout
+
+\begin_layout Standard
+With these ideas in mind, we must be aware of how experimental data is obtained,
+ and that is why we are reviewing stress paths.
+\end_layout
+
+\begin_layout Subsubsection
+How constitutive equations are written in 
+\begin_inset Quotes eld
+\end_inset
+
+big
+\begin_inset Quotes erd
+\end_inset
+
+ codes
+\end_layout
+
+\begin_layout Standard
+Typically the constitutive equation subroutine is called with strain increments,
+ from which stress increments are computed.
+ For complicated constitutive equations, the calculation of stress increments
+ is very computationally expensive.
+ Once the stress increments are computed, the stresses are updated with
+ this increments.
+ On the contrary, experimental data often has prescribed stress increments,
+ not strain; therefore, we must adjust our calculations to accommodate this
+ fact.
+ Also, a stress or strain increment does not necessarily imply transient
+ behavior (i.e.
+ varying with time).
+ Even in a static analysis, stresses will be modeled as increasing monotonically
+ over a defined number of increments and with each stress increment is an
+ associated strain increment...
+ nothing happens instantaneously.
+\end_layout
+
+\begin_layout Subsection
+Underlying assumptions
+\end_layout
+
+\begin_layout Standard
+Almost all constitutive equations implicitly assume that stress and strain
+ are homogenous (e.g., values do not vary throughout the material).
+ This assumption means that stress components and all strain components
+ are the same! This assumption is violated typically near the limit point,
+ which is the maximum stress that a material can maintain, and this assumption
+ is definitely violated when a material begins to soften (e.g., stress decreases
+ and the strain rate increases).
+ The homogeneity assumption is violated near the limit point because localizatio
+n of stresses and strains occurs e.g., necking, bulging, or shear banding.
+ 
+\end_layout
+
+\begin_layout Standard
+Experimentalists can get around violated this assumption by measuring displaceme
+nts.
+ This way, strains may be defined in such a way that averaged over the entire
+ body e.g., by calculating strains via LVDTs at the end of the specimen rather
+ than using strain rosettes over small regions.
+ If LVDTs are used, then the experimentalists reports AVERAGE strains (displacem
+ent over the length)! Another alternative would be to present displacement
+ (not strain) versus force (no stress).
+\end_layout
+
+\begin_layout Subsection
+Common experimental paths and features of experimental data
+\end_layout
+
+\begin_layout Subsubsection
+Uniaxial stress in tension (see hand notes page 11-2)
+\end_layout
+
+\begin_layout Standard
+Commonly applied to metals (cohesive materials), that have strength derived
+ from metallic bonds (i.e., an electron cloud) that have isotropic strength
+ (i.e., not directional dependent).
+ For this test, 
+\begin_inset Formula $\sigma_{11}\ne0$
+\end_inset
+
+ (where the 
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ is in the axial direction) and all other stress components are zero.
+ Additionally, 
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+ is assumed to be homogenous (uniform) across the center of the specimen.
+\end_layout
+
+\begin_layout Standard
+Note, the calculation of stress in the region of a loading or confining
+ device (grips on end caps) is nearly impossible without the use if the
+ FEM.
+ But that's okay, because are are not concerned with the ends of specimen
+ but rather the middle where stresses and strains are assumed uniform.
+ Because the surface traction in the region of concern is zero (a boundary
+ condition), 
+\begin_inset Formula $\textbf{{\bf \tau}=\underbar{0}}$
+\end_inset
+
+ , then 
+\begin_inset Formula $\sigma_{22}=\sigma_{33}=\sigma_{12}=\sigma_{13}=\sigma_{23}=0$
+\end_inset
+
+ at the surface of the material (note, the 
+\begin_inset Formula $\sigma_{23}=0$
+\end_inset
+
+ argument is made based on symmetry of the horizontal plane).
+ The argument is then that because the cross-sectional region of concern
+ is so small, the internal stresses will not have sufficient area to grow.
+ Therefore, we want the diameter of width of the specimen to be small over
+ a large length ( 
+\begin_inset Formula $\frac{D}{L}<<1$
+\end_inset
+
+) .
+ If the diameter is not small, stresses not aligned with 
+\begin_inset Formula $\sigma_{11}$
+\end_inset
+
+may develop and violate assumptions.
+\end_layout
+
+\begin_layout Subsubsection
+Uniaxial stress in compression
+\end_layout
+
+\begin_layout Standard
+Typically a length to diameter ration >> 2 is used.
+ Effort should be made to minimize end effects, i.e., minimize the friction
+ between loading platens and specimen.
+ Shear tractions are inevitable 
+\end_layout
+
+\begin_layout Subsubsection
+Hydrostatic Compression
+\end_layout
+
+\begin_layout Subsubsection
+Triaxial Compression
+\end_layout
+
+\begin_layout Subsubsection
+Triaxial Extension
+\end_layout
+
+\begin_layout Subsubsection
+Torsion - Pure Shear 
+\end_layout
+
+\begin_layout Subsubsection
+Uniaxial Strain
+\end_layout
+
+\begin_layout Subsubsection
+One and Two Point Bending Tests
+\end_layout
+
+\begin_layout Subsubsection
+Creep and Relaxation Tests
+\end_layout
+
+\begin_layout Subsubsection
+Hopkinson Bar and Flyer Plate Tests
+\end_layout
+
+\begin_layout Section
+Terminology
+\end_layout
+
+\begin_layout Standard
+Enhanced Ductility: occurs when the deformation becomes more ductile (i.e.
+ greater plastic deformation).
+ This occurs in geologic materials when the mean pressure is increased.
+ This implies that the amount of strain energy stored up to the limit point
+ in greater with greater mean pressures.
+ 
+\end_layout
+
+\begin_layout Standard
+Hydrostat: loading path during hydrostatic compression
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,412 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.15 (TeX Live 2014) (preloaded format=pdflatex 2014.6.17)  8 SEP 2014 18:43
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**ADA1_HW01.tex
+(./ADA1_HW01.tex
+LaTeX2e <2014/05/01>
+Babel <3.9k> and hyphenation patterns for 78 languages loaded.
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/size10.clo
+File: size10.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2014/04/25 v1.0g Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/05/08 v1.15 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count87
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2014/04/23 v1.1a Standard LaTeX Color (DPC)
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 137.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/framed/framed.sty
+Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
+\OuterFrameSep=\skip43
+\fb@frw=\dimen105
+\fb@frh=\dimen106
+\FrameRule=\dimen107
+\FrameSep=\dimen108
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/alltt.sty
+Package: alltt 1997/06/16 v2.0g defines alltt environment
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count88
+\Gm@cntv=\count89
+\c@Gm@tempcnt=\count90
+\Gm@bindingoffset=\dimen109
+\Gm@wd@mp=\dimen110
+\Gm@odd@mp=\dimen111
+\Gm@even@mp=\dimen112
+\Gm@layoutwidth=\dimen113
+\Gm@layoutheight=\dimen114
+\Gm@layouthoffset=\dimen115
+\Gm@layoutvoffset=\dimen116
+\Gm@dimlist=\toks15
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count91
+\float@exts=\toks16
+\float@box=\box26
+\@float@everytoks=\toks17
+\@floatcapt=\box27
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/upquote/upquote.sty
+Package: upquote 2012/04/19 v1.3 upright-quote and grave-accent glyphs in verba
+tim
+)
+(./ADA1_HW01.aux)
+\openout1 = `ADA1_HW01.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
+LaTeX Font Info:    ... okay on input line 55.
+
+(/usr/local/texlive/2014/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count92
+\scratchdimen=\dimen117
+\scratchbox=\box28
+\nofMPsegments=\count93
+\nofMParguments=\count94
+\everyMPshowfont=\toks18
+\MPscratchCnt=\count95
+\MPscratchDim=\dimen118
+\MPnumerator=\count96
+\makeMPintoPDFobject=\count97
+\everyMPtoPDFconversion=\toks19
+) (/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/ifluatex.sty
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+)
+(/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/kvdefinekeys.sty
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+))
+(/usr/local/texlive/2014/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/kvsetkeys.sty
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+
+(/usr/local/texlive/2014/texmf-dist/tex/generic/oberdiek/etexcmds.sty
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+)))
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(72.26999pt, 469.75502pt, 72.26999pt)
+* v-part:(T,H,B)=(72.26999pt, 650.43001pt, 72.26999pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=469.75502pt
+* \textheight=650.43001pt
+* \oddsidemargin=0.0pt
+* \evensidemargin=0.0pt
+* \topmargin=-37.0pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <12> on input line 59.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 59.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 59.
+Package color Info: Redefining color shadecolor on input line 69.
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 71.
+Package color Info: Redefining color shadecolor on input line 85.
+
+Underfull \hbox (badness 10000) in paragraph at lines 82--85
+
+ []
+
+Package color Info: Redefining color shadecolor on input line 106.
+Package color Info: Redefining color shadecolor on input line 118.
+<figure/1p_hist.pdf, id=1, 505.89pt x 216.81pt>
+File: figure/1p_hist.pdf Graphic file (type pdf)
+ <use figure/1p_hist.pdf>
+Package pdftex.def Info: figure/1p_hist.pdf used on input line 119.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+
+[1
+
+{/usr/local/texlive/2014/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Package color Info: Redefining color shadecolor on input line 125.
+Package color Info: Redefining color shadecolor on input line 137.
+
+<figure/1p_box.pdf, id=14, 505.89pt x 216.81pt>
+File: figure/1p_box.pdf Graphic file (type pdf)
+ <use figure/1p_box.pdf>
+Package pdftex.def Info: figure/1p_box.pdf used on input line 138.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 146.
+
+
+(/usr/local/texlive/2014/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 146.
+Package color Info: Redefining color shadecolor on input line 152.
+ [2 <./figure/1p_hist.pdf> <./figure/1p_box.pdf>]
+Package color Info: Redefining color shadecolor on input line 198.
+
+<figure/1p_den.pdf, id=29, 505.89pt x 216.81pt>
+File: figure/1p_den.pdf Graphic file (type pdf)
+ <use figure/1p_den.pdf>
+Package pdftex.def Info: figure/1p_den.pdf used on input line 199.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+Package color Info: Redefining color shadecolor on input line 213.
+
+Underfull \hbox (badness 10000) in paragraph at lines 210--213
+
+ []
+
+[3 <./figure/1p_den.pdf>]
+Package color Info: Redefining color shadecolor on input line 239.
+Package color Info: Redefining color shadecolor on input line 251.
+ <figure/2p_hist.pdf, id=41, 505.89pt x 216.81pt>
+File: figure/2p_hist.pdf Graphic file (type pdf)
+
+<use figure/2p_hist.pdf>
+Package pdftex.def Info: figure/2p_hist.pdf used on input line 252.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+Package color Info: Redefining color shadecolor on input line 258.
+Package color Info: Redefining color shadecolor on input line 270.
+ <figure/2p_box.pdf, id=42, 505.89pt x 216.81pt>
+File: figure/2p_box.pdf Graphic file (type pdf)
+
+<use figure/2p_box.pdf>
+Package pdftex.def Info: figure/2p_box.pdf used on input line 271.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+ [4 <./figure/2p_hist.pdf>]
+Package color Info: Redefining color shadecolor on input line 285.
+Package color Info: Redefining color shadecolor on input line 327.
+
+<figure/2p_den.pdf, id=51, 505.89pt x 216.81pt>
+File: figure/2p_den.pdf Graphic file (type pdf)
+ <use figure/2p_den.pdf>
+Package pdftex.def Info: figure/2p_den.pdf used on input line 328.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+
+[5 <./figure/2p_box.pdf>]
+Package color Info: Redefining color shadecolor on input line 341.
+Package color Info: Redefining color shadecolor on input line 353.
+
+Underfull \hbox (badness 10000) in paragraph at lines 350--353
+
+ []
+
+Package color Info: Redefining color shadecolor on input line 376.
+Package color Info: Redefining color shadecolor on input line 388.
+<figure/3p_hist.pdf, id=60, 505.89pt x 216.81pt>
+File: figure/3p_hist.pdf Graphic file (type pdf)
+ <use figure/3p_hist.pdf>
+Package pdftex.def Info: figure/3p_hist.pdf used on input line 389.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+
+[6 <./figure/2p_den.pdf>]
+Package color Info: Redefining color shadecolor on input line 395.
+Package color Info: Redefining color shadecolor on input line 407.
+ <figure/3p_box.pdf, id=72, 505.89pt x 216.81pt>
+File: figure/3p_box.pdf Graphic file (type pdf)
+
+<use figure/3p_box.pdf>
+Package pdftex.def Info: figure/3p_box.pdf used on input line 408.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+Package color Info: Redefining color shadecolor on input line 422.
+ [7 <./figure/3p_hist.pdf> <./figure/3p_box.pdf>]
+Package color Info: Redefining color shadecolor on input line 465.
+
+<figure/3p_den.pdf, id=87, 505.89pt x 216.81pt>
+File: figure/3p_den.pdf Graphic file (type pdf)
+ <use figure/3p_den.pdf>
+Package pdftex.def Info: figure/3p_den.pdf used on input line 466.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+Package color Info: Redefining color shadecolor on input line 479.
+Package color Info: Redefining color shadecolor on input line 492.
+
+Underfull \hbox (badness 10000) in paragraph at lines 489--492
+
+ []
+
+[8 <./figure/3p_den.pdf>]
+Package color Info: Redefining color shadecolor on input line 512.
+Package color Info: Redefining color shadecolor on input line 524.
+ <figure/4p_hist.pdf, id=99, 505.89pt x 216.81pt>
+File: figure/4p_hist.pdf Graphic file (type pdf)
+
+<use figure/4p_hist.pdf>
+Package pdftex.def Info: figure/4p_hist.pdf used on input line 525.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+Package color Info: Redefining color shadecolor on input line 531.
+
+Overfull \hbox (35.72714pt too wide) in paragraph at lines 533--533
+[][]\OT1/cmtt/m/n/10 logmass.box[] []<-[] []ggplot[][](logmass.df,[] []aes[][](
+[][]x[] []=[] []"Mammals"[][],[] []y[] []= logmass))[] []\OT1/cmtt/m/it/10 # bo
+xplot of logmass[][] 
+ []
+
+Package color Info: Redefining color shadecolor on input line 543.
+<figure/4p_box.pdf, id=100, 505.89pt x 216.81pt>
+File: figure/4p_box.pdf Graphic file (type pdf)
+ <use figure/4p_box.pdf>
+Package pdftex.def Info: figure/4p_box.pdf used on input line 544.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+
+[9 <./figure/4p_hist.pdf>]
+Package color Info: Redefining color shadecolor on input line 558.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 593.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 593.
+Package color Info: Redefining color shadecolor on input line 603.
+ <figure/4p_den.pdf, id=109, 505.89pt x 216.81pt>
+File: figure/4p_den.pdf Graphic file (type pdf)
+
+<use figure/4p_den.pdf>
+Package pdftex.def Info: figure/4p_den.pdf used on input line 604.
+(pdftex.def)             Requested size: 469.75502pt x 201.32684pt.
+ [10 <./figure/4p_box.pdf>] [11 <./figure/4p_den.pdf>]
+(./ADA1_HW01.aux) ) 
+Here is how much of TeX's memory you used:
+ 2247 strings out of 493117
+ 32939 string characters out of 6135433
+ 102202 words of memory out of 5000000
+ 5672 multiletter control sequences out of 15000+600000
+ 7924 words of font info for 29 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 38i,6n,32p,287b,441s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmbx10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfon
+ts/cm/cmbx12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmitt10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmmi10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmr10.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr12.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmr17.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cm
+r7.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/local/texlive/2014/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10
+.pfb>
+Output written on ADA1_HW01.pdf (11 pages, 188463 bytes).
+PDF statistics:
+ 165 PDF objects out of 1000 (max. 8388607)
+ 116 compressed objects within 2 object streams
+ 0 named destinations out of 1000 (max. 500000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
+

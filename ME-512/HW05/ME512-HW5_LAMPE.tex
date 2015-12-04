@@ -1,0 +1,219 @@
+% --------------------------------------------------------------
+% This is all preamble stuff that you don't have to worry about.
+% Head down to where it says "Start here"
+% --------------------------------------------------------------
+ 
+\documentclass[10pt, letterpaper]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{mathtools, amsthm, amssymb, changepage, enumitem}
+\usepackage[english]{babel}
+\usepackage{bm}
+\usepackage{tensor}
+\usepackage{xfrac}
+\usepackage{gensymb}
+\usepackage{MnSymbol}
+
+\renewcommand\thesection{ \arabic{section}}
+\renewcommand\thesubsection{(\alph{subsection})}
+\renewcommand\thesubsubsection{(\roman{subsubsection})}
+ 
+\begin{document}
+ 
+% --------------------------------------------------------------
+%                         Start here
+% --------------------------------------------------------------
+ 
+\title{ASSIGNMENT 5}%replace X with the appropriate number
+\author{Brandon Lampe\\ %replace with your name
+ME 512 - Continuum Mechanics} %if necessary, replace with your course title
+ 
+\maketitle
+
+%=====================================
+% PROBLEM 1
+%===================================== 
+\section{Find the derivatives with respect to components of the independent variable with the bases assumed constant.}
+\begin{enumerate}[label = (\roman*)]
+% ---- i -----
+	\item Show that for $\phi = (\bm{v} \cdot \bm{v} )^{3/2} ; 
+		\qquad (\phi) \overset{\leftharpoonup}{ \nabla}_{\bm{v}}=
+		\frac{3 }{2}(\bm{v} \cdot \bm{v} )^{1/2} \bm{v}$
+			
+		\begin{itemize}
+		\item $\phi = (v_j v_j)^{3/2}$
+		\item $(\phi) \overset{\leftharpoonup}{ \nabla}_{\bm{v}} 
+			= \frac{\partial \phi}{\partial \bm{v}} 
+			\Rightarrow \frac{d \phi}{d v_i} = \frac{3}{2}(v_j v_j)^{1/2}  \frac{d(v_k v_k)}{dv_i}$
+		\item$ \frac{d(v_k v_k)}{dv_i} = 2 v_l \frac{\partial v_l}{\partial v_i} = 2 v_l \delta_{il} = 2v_l$
+		\item $(\phi) \overset{\leftharpoonup}{ \nabla}_{\bm{v}} =
+				\frac{3}{2}(v_j v_j)^{1/2} 2v_l = 3(v_j v_j)^{1/2}v_l =
+				 3(\bm{v} \cdot \bm{v})^{1/2}\bm{v}$
+	\end{itemize}
+				
+% ---- ii ----
+	\item Show that for $\phi = tr(\bm{T}) + tr(\bm{T}^2) + (\bm{T} \cdot \cdot \bm{T})^{1/2}; \qquad
+		(\phi) \overset{\leftharpoonup}{\nabla}_{\bm{T}} = \bm{I} + 2 \bm{I}^T + \frac{\bm{T}}{(\bm{T} \cdot \cdot \bm{T})^{1/2}}$
+	\begin{itemize}
+		\item$\phi= T_{pp} + T_{pq}T_{qp} + (T_{pq}T_{qp})^{1/2}$
+		
+		\item \begin{flalign*} (\phi) \overset{\leftharpoonup}{\nabla}_{\bm{T}} &= \frac{\partial \phi}{\partial \bm{T}} &\\
+			 & = \frac{\partial T_{pp}}{ \partial T_{ij}} + \left(T_{pq} \frac{T_{qp}}{\partial T_{ij}} +
+				 T_{qp} \frac{T_{pq}}{\partial T_{ij}} \right) + \frac{1}{2} \left( T_{pq} T_{qp} \right)^{-1/2} 
+			 	\frac{\partial (T_{rs}T_{sr})}{\partial T_{ij}}\\
+			& = \delta_{pi} \delta_{pj} + 2T_{pq} \delta_{pi} \delta_{qj} + \frac{1}{2(T_{pq} T_{qp})^{1/2}}
+				2T_{rs}\delta_{ri} \delta_{sj}\\
+			& = \delta_{ij} + 2T_{ij} + \frac{T_{ij}}{(T_{pq}T_{pq})^{1/2}} \Rightarrow
+			\bm{I} + 2 \bm{T}^T + \frac{\bm{T}}{(\bm{T} \cdot \cdot \bm{T})^{1/2}}
+		\end{flalign*}
+	\end{itemize}
+	
+% ---- iii ----
+	\item  Show that for $\phi = \bm{v}(\bm{v} \cdot \bm{v})^{3/2}; \qquad
+			(\bm{\phi})\overset{\leftharpoonup}{\nabla}_{\bm{v}} = \Big[ \bm{I}(\bm{v} \cdot \bm{v})^{3/2} + 3 (\bm{v}
+			\cdot \bm{v})^{1/2} (\bm{v} \otimes \bm{v})\Big]$
+	\begin{itemize}
+		\item Postulate: $(\bm{\phi})\overset{\leftharpoonup}{\nabla}_{\bm{v}} =
+			\frac{\partial \bm{\phi}}{\partial v_i} \otimes  \bm{e}_i$
+		\item $\bm{\phi} = v_k \bm{e}_k(v_l v_l)^{3/2}$
+		\item \begin{flalign*}
+			\frac{\partial \bm{\phi}}{\partial v_i} &= \frac{\partial v_k}{\partial v_i} \bm{e}_k(v_l v_l)^{3/2} + 
+			v_k \bm{e}_k \frac{\partial(v_l v_l)}{\partial v_i}&\\
+			&= \delta_{ki} \bm{e}_k (v_l v_l)^{3/2} + v_k \bm{e}_k (3/2)(v_l v_l)^{1/2} 
+			\left( v_m \frac{\partial v_m}{\partial v_i} + \frac{\partial v_m}{\partial v_i} v_m \right) \\
+			&= \delta_{ki} \bm{e}_k (v_l v_l)^{3/2} + v_k \bm{e}_k (3/2)(v_l v_l)^{1/2} (2v_m \delta_{mi})\\
+			&=(\bm{v} \cdot \bm{v})^{3/2} \bm{e}_i+ 3 (\bm{v} \cdot \bm{v})^{1/2} v_k \bm{e}_k v_i
+		\end{flalign*}
+		
+		\item \begin{flalign*} \frac{\partial \bm{\phi}}{\partial v_i} \otimes \bm{e}_i &=  
+			(\bm{v} \cdot \bm{v})^{3/2} \bm{e}_i \otimes \bm{e}_i+ 
+				3 (\bm{v} \cdot \bm{v})^{1/2} v_k\bm{e}_k v_i \otimes \bm{e}_i&\\
+			&=(\bm{v} \cdot \bm{v})^{3/2} \bm{e}_i \otimes \bm{e}_i+ 
+				3 (\bm{v} \cdot \bm{v})^{1/2} ( \bm{v} \otimes \bm{v})\\
+			&=\bm{I} (\bm{v} \cdot \bm{v})^{3/2} + 
+				3 (\bm{v} \cdot \bm{v})^{1/2} ( \bm{v} \otimes \bm{v})\\
+		\end{flalign*}
+	\end{itemize}	
+\end{enumerate}
+
+%=====================================
+% PROBLEM 2
+%===================================== 	
+\section{ if $F$ and $\phi$ are scalars, use indicial  notation to show:}
+	\begin{enumerate}[label = (\roman*)]
+		\item $(F \bm{v}) \cdot \overset{\leftharpoonup}{\nabla} = \bm{v} \cdot (F\overset{\leftharpoonup}{\nabla}) +
+			F(\bm{v} \cdot \overset{\leftharpoonup}{\nabla}) \Rightarrow
+			\frac{\partial (F v_i)}{\partial x_i} = \left(\frac{\partial F}{\partial x_i} \right) v_i + 
+			 F \left(\frac{\partial v_i}{\partial x_i}\right) = F_{,i}v_i + F v_{i,i}$
+			 
+		\item $(F \overset{\leftharpoonup}{\nabla}) \times \overset{\leftharpoonup}{\nabla} = 
+			\mathcal{E}_{ijk} \frac{\partial \left( \partial F / \partial x_k \right)}{\partial x_j} =
+			\mathcal{E}_{ijk} \frac{ \partial^2 F}{\partial x_j \partial x_k} = \mathcal{E}_{ijk} F_{,jk}= \bm{0}$
+			
+		\item $(\bm{v} \times \overset{\leftharpoonup}{\nabla}) \cdot \overset{\leftharpoonup}{\nabla} = 
+			\frac{\partial}{\partial x_i}\left(\mathcal{E}_{ijk} \frac{\partial v_k }{\partial x_j} \right)=
+			\mathcal{E}_{ijk} \frac{\partial^2 v_{k}}{\partial x_i \partial x_j} = \mathcal{E}_{ijk} v_{k,ij}$
+			
+		\item $(\bm{v} \times \overset{\leftharpoonup}{\nabla}) \times \overset{\leftharpoonup}{\nabla} = 
+			\mathcal{E}_{mni} \mathcal{E}_{ijk} v_{k,jn} = (\delta_{mj} \delta_{nk} - \delta_{mk} \delta_{jn})v_{k,jn}=
+			\delta_{mj} \delta_{nk}v_{k,jn} - \delta_{mk} \delta_{jn}v_{k,jn} = v_{k,mk} - v_{m,nn}$\\
+			$(\bm{v} \cdot \overset{\leftharpoonup}{\nabla})\overset{\leftharpoonup}{\nabla} = v_{k,mk} \\
+			\bm{v} \overset{\leftharpoonup}{\nabla^2} = Laplacian = v_{m,nn}\\
+			(\bm{v} \times \overset{\leftharpoonup}{\nabla}) \times \overset{\leftharpoonup}{\nabla} = 
+			(\bm{v} \cdot \overset{\leftharpoonup}{\nabla})\overset{\leftharpoonup}{\nabla} -
+			\bm{v} \overset{\leftharpoonup}{\nabla^2} $
+			
+		\item $(\bm{u} \otimes \bm{v}) \cdot \overset{\leftharpoonup}{\nabla} = 
+			(\bm{u} \overset{\leftharpoonup}{\nabla}) \cdot \bm{v} + \bm{u} (\bm{v} \cdot \overset{\leftharpoonup}{\nabla} )\\
+			Product \text{ }rule:  \frac{\partial( \bm{u} \bm{v})}{\partial x_i} = 
+			\frac{\partial( \bm{u})}{\partial x_i} \bm{v}  + \frac{\partial( \bm{v})}{\partial x_i} \bm{u}\\
+			\bm{uv} \Rightarrow T_{ij} \qquad$ then $T_{ij,j} = u_{j,j}v_i + v_{j,j}u_i  
+			$ 
+		
+		\item curl(grad$\phi$)) $\Rightarrow \mathcal{E}_{ijk} \phi_{,jk} = \bm{0} $
+						
+	\end{enumerate}	
+
+%=====================================
+% PROBLEM 3
+%===================================== 	
+\section{Determine the gradient, divergence, and curl of $\bm{u}$}
+	\begin{itemize}
+	\item $ \bm{u} = x_1 x_2 x_3 \bm{e}_1 + x_1 x_2 \bm{e}_2 + x_1 \bm{e}_3$
+	\item Gradient: $\bm{u} \overset{\leftharpoonup}{\nabla} = u_{i,j} \bm{e}_i \otimes \bm{e}_j \Rightarrow \begin{bmatrix}
+		\frac{\partial u_1}{\partial x_1} & \frac{\partial u_1}{\partial x_2} & \frac{\partial u_1}{\partial x_3} \\ 
+		\frac{\partial u_2}{\partial x_1} & \frac{\partial u_2}{\partial x_2} & \frac{\partial u_2}{\partial x_3} \\ 
+		\frac{\partial u_3}{\partial x_1} & \frac{\partial u_3}{\partial x_2} & \frac{\partial u_3}{\partial x_3} \\ 
+		\end{bmatrix} = 
+		\begin{bmatrix}
+			x_2 x_3 & x_2 & 1 \\
+			x_1 x_3 & x_1 & 0 \\
+			x_1 x_2 & 0     & 0 \\
+			\end{bmatrix}$
+			
+	\item Divergence: $\bm{u} \cdot \overset{\leftharpoonup}{\nabla} = u_{i,i} =  
+		\frac{\partial u_1}{\partial x_1} + \frac{\partial u_2}{\partial x_2} + \frac{\partial u_3}{\partial x_3} =
+		x_2 x_3 + x_1 + 0$
+	
+	\item Curl: $\bm{u} \times \overset{\leftharpoonup}{\nabla} = u_{i,i} =  \mathcal{E}_{ijk} u_{j,k} \bm{e}_i \Rightarrow
+		\begin{Bmatrix}
+			\frac{\partial u_2}{\partial x_3} - \frac{\partial u_3}{\partial x_2} \\
+			\frac{\partial u_2}{\partial x_3} - \frac{\partial u_3}{\partial x_2} \\
+			\frac{\partial u_2}{\partial x_3} - \frac{\partial u_3}{\partial x_2} \\
+		\end{Bmatrix} = \begin{Bmatrix}
+			0 - 0 \\
+			1 - x_1 x_2\\
+			x_1 x_2 - x_2
+		\end{Bmatrix}$
+		
+	\item Verify that (iv) of Problem 2 is satisfied:
+	
+	\end{itemize}
+
+%=====================================
+% PROBLEM 4
+%===================================== 
+\section{Express in terms of components and base vectors.}
+	\begin{enumerate}[label = (\roman*)]
+	\item $\bm{T} \times \overset{\leftharpoonup}{\nabla} \Rightarrow \mathcal{E}_{jkl} T_{ij,k} \bm{e}_i \otimes \bm{e}_l 
+		\Rightarrow \begin{bmatrix}
+			\left( \frac{\partial T_{12}}{\partial x_3} - \frac{\partial T_{13}}{\partial x_2} \right) \bm{e}_1 \otimes \bm{e}_1 &
+			\left( \frac{\partial T_{13}}{\partial x_1} - \frac{\partial T_{11}}{\partial x_3} \right) \bm{e}_1 \otimes \bm{e}_2 &
+			\left( \frac{\partial T_{11}}{\partial x_2} - \frac{\partial T_{12}}{\partial x_1} \right) \bm{e}_1 \otimes \bm{e}_3 \\
+			
+			\left( \frac{\partial T_{22}}{\partial x_3} - \frac{\partial T_{23}}{\partial x_2} \right) \bm{e}_2 \otimes \bm{e}_1 &
+			\left( \frac{\partial T_{23}}{\partial x_1} - \frac{\partial T_{21}}{\partial x_3} \right) \bm{e}_2 \otimes \bm{e}_2 &
+			\left( \frac{\partial T_{21}}{\partial x_2} - \frac{\partial T_{22}}{\partial x_1} \right) \bm{e}_2 \otimes \bm{e}_3 \\
+			
+			\left( \frac{\partial T_{32}}{\partial x_3} - \frac{\partial T_{33}}{\partial x_2} \right) \bm{e}_3 \otimes \bm{e}_1 &
+			\left( \frac{\partial T_{33}}{\partial x_1} - \frac{\partial T_{31}}{\partial x_3} \right) \bm{e}_3 \otimes \bm{e}_2 &
+			\left( \frac{\partial T_{31}}{\partial x_2} - \frac{\partial T_{32}}{\partial x_1} \right) \bm{e}_3 \otimes \bm{e}_3 \\
+		\end{bmatrix}$
+		
+	\item $C_{13}(\bm{I} \times \bm{T})$ ???
+	\end{enumerate}
+
+%=====================================
+% PROBLEM 5
+%===================================== 
+\section{Express in indicial form and longhand.}
+
+\begin{itemize}
+	\item $\bm{T} \cdot \overset{\leftharpoonup}{\nabla} + \bm{f} = \bm{0} \Rightarrow
+		T_{ij,j} \bm{e}_i + f_i \bm{e}_i$
+	\item $\bm{T} \cdot \overset{\leftharpoonup}{\nabla} + \bm{f} = \bm{0} \Rightarrow 
+		\begin{Bmatrix}
+			\frac{\partial T_{11}}{\partial x_1} + \frac{\partial T_{12}}{\partial x_2} +\frac{\partial T_{13}}{\partial x_3}  \\
+			\frac{\partial T_{21}}{\partial x_1} + \frac{\partial T_{22}}{\partial x_2} +\frac{\partial T_{23}}{\partial x_3}  \\
+			\frac{\partial T_{31}}{\partial x_1} + \frac{\partial T_{32}}{\partial x_2} +\frac{\partial T_{33}}{\partial x_3}  \\
+		\end{Bmatrix} + \begin{Bmatrix}
+			f_1 \\ f_2 \\ f_3
+		\end{Bmatrix} = \begin{Bmatrix}
+			0 \\ 0 \\ 0
+		\end{Bmatrix}$
+\end{itemize}
+%--------------------------------------------------------------
+%     You don't have to mess with anything below this line.
+% --------------------------------------------------------------
+ 
+\end{document}

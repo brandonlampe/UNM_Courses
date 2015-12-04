@@ -1,0 +1,120 @@
+\documentclass[letterpaper, 10pt, oneside]{article}
+
+\usepackage{tikz}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{framed} % for framed equations
+\usepackage{empheq} % for framed equations
+\usepackage{mathrsfs} % for script fonts
+\usepackage[section]{placeins} % keeps figures in the section where they were placed
+
+%%%%% new environment and new command definitions
+\newenvironment{dd}[1]{
+	\noindent
+	\textbf{\normalsize{#1}}
+	\hspace{0.1in}
+	\small
+	\rmfamily
+	}
+	{\medskip}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}} 
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}} 
+\newcommand{\as}[1]{\begin{align*}#1\end{align*}}
+\newcommand{\an}[1]{\begin{align}#1\end{align}}
+\newcommand{\bdd}{\begin{dd}}
+\newcommand{\edd}{\end{dd}} 
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}  
+\newcommand{\boxedeq}[2]{\begin{empheq}[box={\fboxsep=6pt\fbox}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\coloredeq}[2]{\begin{empheq}[box=\colorbox{lightgreen}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\Figure}[4]{
+  \begin{figure}[#1]
+    \centering
+    \includegraphics[width=#2in]{figs/#3}
+    \caption{#4.}\label{fig:#3}
+  \end{figure}}
+
+\makeatletter
+\setlength{\@fptop}{0pt}
+\makeatother
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% begin the document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\title{CEE 598\\ Practical Peridynamics\\ Assignment 6}
+\author{Brandon Lampe}
+% \date{October 3, 2015} % delete this line to display the current date
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{} 
+\bdd{Unzip the attached the zip file to your computer. Run and debug the MatLab function “cableExample.m”. Provide plots of the final configuration and of the time history of the vertical displacement of the rightmost particle.}\\
+
+
+Results are shown in Figures \ref{fig:1_1.pdf} and \ref{fig:1_2.pdf}.
+
+\Figure{htp}{4}{1_1.pdf}{Results of the final configuration from \emph{cableExample.m}, where the abscissa and ordinate represent the final simulated horizontal and vertical displacements, respectively.}
+
+\Figure{htp}{4}{1_2.pdf}{Results from \emph{cableExample.m} are shwon, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\edd
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}
+\bdd{Open the SimplyFortran project called “cableExample.prj”. Compile, run, and debug the program. Then run the MatLab functions “makeMovie.m” and “plotTimeHist.m”. Provide plots of the final configuration and of the time history of the vertical displacement of the rightmost particle.} \\
+
+Results are shown in Figures \ref{fig:2_1.pdf} and \ref{fig:2_2.pdf}.  Results from problem one are identical to those provided here in problem two, although the plotting scales are slightly different.
+
+\Figure{htp}{5}{2_1.pdf}{Results of the final configuration from \emph{cableExample.exe}, where the abscissa and ordinate represent the final simulated horizontal and vertical displacements, respectively.}
+
+
+\Figure{htp}{5}{2_2.pdf}{Results of the final configuration from \emph{cableExample.exe}, where the abscissa and ordinate represent the finalsimulated horizontal and vertical displacements, respectively.}
+
+\edd
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}
+\bdd{Copy “cableExample.m” to “prob3.m”. Change the boundary conditions so that the right-most particle in the reference configuration is now fixed in the x-direction, but free to move vertically. Provide plots of the final configuration and of the time history of the vertical displacement of the rightmost particle. Compare these plots for various time step sizes.} \\
+
+Figure \ref{fig:3_1.pdf} shows the deformed configuration after 1000 time steps, where each time step $(\Delta t)$ was defined as:
+\as{\Delta t &= \sqrt{\frac{m}{K}} \\ m &= \text{mass of each paricle} \\ K &= \text{stiffness of bond between particles}}
+
+The right-most particle had a Dirichlet type boundary condition applied to its horizontal displacement; this reulted in its horizontal position being forced to remain at the original location of positive 11 units (Figure \ref{fig:3_1.pdf}). Time versus vertical displacements for this problem are shown in Figures \ref{fig:3_2_1dt.pdf}, \ref{fig:3_2_2dt.pdf} and \ref{fig:3_2_4dt.pdf}. Where the time increment was doubled between each of these simulations.  Results for time increments of $\Delta t$ and $2\Delta t$ are identical, but a critical time increment of $4\Delta t$ was observed and is shown by the nonphysical results displayed in Figure \ref{fig:3_2_4dt.pdf}.
+
+\Figure{htp}{4}{3_1.pdf}{Results of the final configuration from \emph{cableExample.m}, where the abscissa and ordinate represent the final simulated horizontal and vertical displacements, respectively.  The right-most particle was forced to remain at a horizontal distance of 11}
+
+\Figure{htp}{4}{3_2_1dt.pdf}{Results from \emph{prob3.m} are shown for time increments of $\Delta t$, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\Figure{htp}{4}{3_2_2dt.pdf}{Results from \emph{prob3.m} are shown for time increments of $2\Delta t$, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\Figure{htp}{4}{3_2_4dt.pdf}{Results from \emph{prob3.m} are shown for time increments of $4\Delta T$, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\edd
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{}
+\bdd{Copy “cableExample.prj” to “prob3.prj”. Copy “cable.f90” to “prob3cable.f90”. Remove “cable.f90” from the project, and add “prob3cable.f90”. Change (and save) the project so that it now creates the executable file “prob3.exe”. Now, change the boundary conditions so that the right-most particle in the reference configuration is now fixed in the x-direction, but free to move vertically. Provide plots of the final configuration and of the time history of the vertical displacement of the rightmost particle. Compare these plots for various time step sizes.} \\
+
+Again, the right-most particle had a Dirichlet type boundary condition applied to its horizontal displacement; this reulted in its horizontal position being forced to remain at the original location of positive 11 units (Figure did not render well). Time versus vertical displacements for this problem are shown in Figures \ref{fig:4_2_1dt.pdf}, \ref{fig:4_2_4dt.pdf} and \ref{fig:4_2_8dt.pdf}. Where the time increment was approximately doubled between each of these simulations.  Results for time increments of $\Delta t$ and $4\Delta t$ are identical, but a critical time increment of $8\Delta t$ was observed and is shown by the nonphysical results displayed in Figure \ref{fig:4_2_8dt.pdf}. I am unsure as to why the critical time step for the simulation executed using FORTRAN differed from the simulation using MatLab, likely there exists a minor discrepancy between the two routines.
+
+\Figure{htp}{5}{4_2_1dt.pdf}{Results from \emph{prob3.exe} are shown for time increments of $\Delta t$, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\Figure{htp}{5}{4_2_4dt.pdf}{Results from \emph{prob3.exe} are shown for time increments of $4\Delta t$, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\Figure{t!}{5}{4_2_8dt.pdf}{Results from \emph{prob3.exe} are shown for time increments of $8\Delta T$, where the vertical displacement versus time of the right-most particle in the initial configuration.}
+
+\null
+\vfill
+\edd
+\end{document}

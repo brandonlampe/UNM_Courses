@@ -1,0 +1,254 @@
+\documentclass{article}
+
+\usepackage[margin = 0.5in]{geometry}
+\usepackage{float, enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\setlength{\topsep}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\partopsep}{1pt}
+
+\renewcommand\thesubsection{\thesection (\alph{subsection})}
+
+\begin{document}
+
+\title{ASSIGNMENT 8}
+\author{Brandon Lampe \\ STAT 527 \\ Advanced Data Analysis I}
+\maketitle
+
+<<Lib,echo=FALSE,warning=FALSE,results='hide',message=FALSE>>=
+# load needed libaries
+library(ggplot2)
+library(grid)
+library(gridExtra)
+library(reshape2)
+library(car)
+library(plyr)
+library(BSDA)
+source("ADA1_FUNC.R")
+@
+
+\section{Gas milage and automobile horsepower:}
+\subsection{(10 pts) Scatter Plots of Data.}
+
+<<1.load, echo=TRUE>>=
+# ￼# read the table in as a data.frame
+# # cars <- read.table("http://statacumen.com/teach/ADA1/ADA1_HW_08_F14-1.txt", header=TRUE)
+#
+# # write.table(cars, file = "/Users/Lampe/Documents/UNM_Courses/STAT-527_ADAI_ERHARDT/HW08/cars.txt",
+# #       sep = ",", col.names = TRUE)
+
+cars <- read.csv("/Users/Lampe/Documents/UNM_Courses/STAT-527_ADAI_ERHARDT/HW08/cars.txt", header = TRUE)
+@
+
+<<1a, echo=TRUE, fig.align='center',fig.width=4,fig.height=4>>=
+# plot mpg = f(hp)
+p1a <- ggplot(cars, aes(x = hp, y = mpg))
+p1a <- p1a + geom_point()
+p1a <- p1a + labs(y = "Miles Per Gallon", x = "Horsepower")
+p1a <- p1a + geom_smooth(method = lm, se = FALSE)
+p1a
+
+lm.mpg.hp <- lm(mpg ~ hp, data = cars)
+sum.lm.mpg.hp <- summary(lm.mpg.hp)
+summary(lm.mpg.hp)
+@
+
+<<1a2, echo=TRUE, fig.align='center', fig.width=4, fig.height=4>>=
+cars$log_hp <- log(cars$hp)
+cars$log_mpg <- log(cars$mpg)
+cars$log_wt <- log(cars$wt)
+
+p1b <- ggplot(cars, aes(x = log_hp, y = mpg))
+p1b <- p1b + geom_point()
+p1b <- p1b + labs(y = "Miles Per Gallon", x = "Log Horsepower")
+p1b <- p1b + geom_smooth(method = lm, se = FALSE)
+p1b
+
+p1c <- ggplot(cars, aes(x = hp, y = log_mpg))
+p1c <- p1c + geom_point()
+p1c <- p1c + labs(y = "Log Miles Per Gallon", x = "Horsepower")
+p1c <- p1c + geom_smooth(method = lm, se = FALSE)
+p1c
+
+lm.mpg.loghp <- lm(mpg ~ log_hp, data = cars)
+sum.lm.mpg.loghp <- summary(lm.mpg.loghp)
+summary(lm.mpg.loghp)
+
+lm.logmpg.hp <- lm(log_mpg ~ hp, data = cars)
+sum.lm.logmpg.hp <- summary(lm.logmpg.hp)
+summary(lm.logmpg.hp)
+@
+
+<<1a3, echo=TRUE, fig.align='center', fig.width=4, fig.height=4>>=
+
+p1d <- ggplot(cars, aes(x = log_hp, y = log_mpg))
+p1d <- p1d + geom_point()
+p1d <- p1d + labs(y = "Log Miles Per Gallon", x = "Log Horsepower")
+p1d <- p1d + geom_smooth(method = lm)
+p1d
+
+lm.logmpg.loghp <- lm(log_mpg ~ log_hp, data = cars)
+sum.lm.logmpg.loghp <- summary(lm.logmpg.loghp)
+summary(lm.logmpg.loghp)
+@
+
+Based on these graphical representations of data, a log-log transformation of the data (both
+x and y) is most appropriate for a straight-line regression.  Additionally, the R-squared value for the log-log transformation is the highest of the four fits at 0.84, which means the log(mpg) vs log(hp) transformation most closely follows a straight-line regression model.
+
+\subsection{(10 pts) Using the more appropriate of the two pairs of variables from (a), that is original or log-
+transformed variables, fit a simple linear regression model.}
+
+The log-log transformation was determined to be the most appropriate form for a linear regression model, results of this model and the data are shown below.  A summary of this regression was provided in my response to part A of this problem.
+
+<<1bplot, echo=FALSE, fig.align='center', fig.width=4, fig.height=4>>=
+p1d
+@
+
+Residuals of this linear regression model and a bootstrap sampling of the residuals are shown below.  Additionally, a plot of residuals and a Q-Q plot of norm quantities are shown.
+
+<<1b1, echo=TRUE, fig.align='center', fig.height=4, fig.width=7, fig.show='hold'>>=
+
+par(mfrow = c(1,2))
+plot(lm.logmpg.loghp, which = 1)
+abline(h = 0, col = "gray75")
+
+qqPlot(lm.logmpg.loghp$residuals, las = 1, id.n = 3,
+       ylab = "Residuals")
+@
+Interpretation of Residuals:
+\begin{itemize}
+%  \item Based on the bootstrap distribution, the residuals appear to be normally distributed.
+ \item There does not appear to be curvature associated with the residual plots.  From this observation, the quality of the fit does not vary with the independent variable (log(horsepower)).
+ \item No obvious outliers exist.
+ \item The Q-Q plot does not highlight any skewness in the resdiuals.
+ \item No obvious pattern for the residuals exists.
+\end{itemize}
+Based on these observations, the residuals appear random and normally distributed.
+
+\subsection{(5 pts) Investigate the leverages and Cook’s D. Use the 3p/n cutoff for large leverages, and the cutoff of 1 for large Cook’s D values. }
+
+<<1c1, echo=TRUE, fig.width=7, fig.height=4, fig.align='center'>>=
+par(mfrow=c(1,3))
+plot(lm.logmpg.loghp,which = c(4,6))
+plot(influence(lm.logmpg.loghp)$hat, ylab = "Influence")
+@
+
+Plots of Cook's distance, leverage versus Cook's distance, and influence / leverage are shown above.  Based on these visual analyses, no residual has a Cook's distance greater than 1, but three residual values have large leverages based on the 3p/n cutoff (leverage of 0.74).  No Values have both a Cook's distance greater than one and a leverage greater than 3p/n; therefore I do not think any observations have undue influence on the model fit.
+
+\subsection{(10 pts) Assuming the model fits well, present and interpret the ANOVA table and R2 value.}
+<<1d1, echo=TRUE>>=
+mpg.anova <- anova(lm.logmpg.loghp)
+mpg.anova
+
+f.crit <- qf(1 - 0.05/2, mpg.anova[1,1], mpg.anova[2,1])
+f.crit
+@
+
+<<1d2, echo=FALSE,results='asis',warning=FALSE>>=
+library(xtable)
+mpg.tbl <- xtable(mpg.anova, align = "r|ccccc")
+hlines.pair <- c(-1, 0, nrow(mpg.tbl))
+digits(mpg.tbl) <- 3
+print(mpg.tbl, hline.after = hlines.pair)
+@
+
+The ANOVA F-test may be used to determine if $\beta_1$ (slope of regression line) is equal to zero; i.e., the mileage is not related to horsepower.  That is, $H_0 : \beta_1 = 0$ against the alternative $H_A : \beta_1 \ne 0$.  Because the F value of 410 is much larger than the critical F value of 5.2 and because the p-value is much less than 0.05, I reject the null hypothesis in favor of the alternative.  That is, the variation of mileage is related to vehicle horsepower.  The Sum of Squares divided by the degrees of freedom for the residuals ($s^2_{X|Y}$) was 0.015.
+
+The $R^2$ value for the linear model was 0.837, which indicates that 83.7\% of the variation of mileage can be explained by variation of horsepower.
+
+\subsection{(10pts) Present the parameter estimate table and estimated regression equation. State what the hypothesis test is related to the log(hp) line in the parameter estimate table. State the conclusion
+of the hypothesis test. Interpret the slope coeffcient in the context of the model.}
+
+<<1e1, echo=TRUE>>=
+coef <- sum.lm.logmpg.loghp$coefficients
+@
+
+Parameter Estimate Table:
+
+<<1e2, echo=FALSE,results='asis'>>=
+library(xtable)
+par.tbl <- xtable(coef, align = "r|cccc")
+hlines.par <- c(-1, 0, nrow(par.tbl))
+digits(par.tbl) <- 3
+print(par.tbl, hline.after = hlines.par)
+@
+
+Estimated Regression Equation:  $\text{log(Mileage)} = -0.699 * \text{log(Horsepower)} + 6.599$.  That is, $b_0 = 6.599$ and $b_1 = -0.699$.
+\bigskip
+
+Hypothesis tests of the regression equation parameters $\beta_0$ (intercept) and $\beta_1$ (slope) both have a null hypothesis that these values are equal to zero.  That is, $H_0: \beta_0 = 0$ and $H_0: \beta_1 = 0$ with the alternative $H_A: \beta_0 \text{ and } \beta_1 \ne 0$.
+
+\bigskip
+
+Slope of the regression line indicates that for every one unit of increase in log(Horsepower) the log(Mileage) will decrease by 0.699.
+
+\subsection{(5pts) Using the R2 statistic and the slope of the regression line, what is the correlation between
+log(hp) and log(mpg)?}
+As was done previously:
+the $R^2$ value for the linear model was 0.837, which indicates that 83.7\% of the variation of mileage can be explained by variation of horsepower.
+The estimated regressioneEquation is:  $\text{log(Mileage)} = -0.699 * \text{log(Horsepower)} + 6.599$.  That is, $b_0 = 6.599$ and $b_1 = -0.699$.
+
+\section{Gas Mileage and Automobile Weight}
+\subsection{}
+
+<<2a, echo=TRUE, fig.align='center',fig.width=7,fig.height=4>>=
+# plot mpg = f(wt)
+p2a <- ggplot(cars, aes(x = wt, y = mpg))
+p2a <- p2a + geom_point()
+p2a <- p2a + labs(y = "Miles Per Gallon", x = "Weight")
+p2a <- p2a + geom_smooth(method = lm)
+
+p2b <- ggplot(cars, aes(x = log_wt, y = log_mpg))
+p2b <- p2b + geom_point()
+p2b <- p2b + labs(y = "Log Miles Per Gallon", x = "Log Weight")
+p2b <- p2b + geom_smooth(method = lm)
+
+grid.arrange(p2a, p2b, ncol = 2)
+@
+
+Based on these plots, little to no improvement in a linear fit would be gained from a log transformation of the data.  The linear model appears to fit both data sets equally well.
+\subsection{}
+<<2b, echo=TRUE, fig.height=4, fig.align='center'>>=
+# Weight vs Mileage
+lm.mpg.wt <- lm(mpg ~ wt, data = cars)
+sum.lm.mpg.wt <- summary(lm.mpg.wt)
+summary(lm.mpg.wt)
+
+par(mfrow = c(1,2))
+plot(lm.mpg.wt, which = 1)
+abline(h = 0, col = "gray75")
+
+qqPlot(lm.mpg.wt$residuals, las = 1, id.n = 3,
+       ylab = "Residuals")
+@
+
+<<2b2, echo=FALSE, results='asis'>>=
+library(xtable)
+wt.tbl <- xtable(sum.lm.mpg.wt$coefficients, align = "r|cccc")
+hlines.wt <- c(-1, 0, nrow(wt.tbl))
+digits(wt.tbl) <- 3
+print(wt.tbl, hline.after = hlines.wt)
+@
+
+<<2b3, echo=TRUE>>=
+shapiro.test(sum.lm.mpg.wt$residuals)
+library(nortest)
+ad.test(sum.lm.mpg.wt$residuals)
+@
+
+Based on both the Shapiro-Wilks and Anderson-Darling tests for normality and the Q-Q plot, the residuals are not normally distributed.  Also, the residual variance appears to increase in relationship to vehicle weight.
+\subsection{}
+
+<<3b1, echo=TRUE, fig.align='center', fig.height=4, fig.width=7, fig.show='hold'>>=
+par(mfrow=c(1,3))
+plot(lm.logmpg.loghp,which = c(4,6))
+plot(influence(lm.logmpg.loghp)$hat, ylab = "Influence")
+@
+
+Based on the leverage cuttoff and Cook's distance, no single point appears to have undue influence on the regression model.
+
+\subsection{}
+A weighted least squares model could be implemented to address the nonconstant variance of the residuals.  Also, a fit to a second order polynomial could be used instead of a straight-line model.  This seems reasonable, because the straight-line fit predicts that when you have a vehicle of zero weight the mileage will be 68 mpg, where intuitively I would interpret the mileage would assymptote to infinitely as vehicle weight approaches zero.
+\end{document}

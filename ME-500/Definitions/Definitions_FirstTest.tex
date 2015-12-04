@@ -1,0 +1,448 @@
+\documentclass[letterpaper,reqno,oneside]{amsart}
+% \usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{amsmath}
+
+\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+\let\oldnorm\norm
+\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+\newenvironment{dd}[1]{
+	\noindent
+	\textbf{\normalsize{#1}}
+	\hspace{0.1in}
+	\small
+	\rmfamily
+	}
+	{\medskip}
+
+\title{ME 500\\ Numerical Methods in Mechanical Engineering\\ Test Review}
+\author{Brandon Lampe}
+\date{October 3, 2015} % delete this line to display the current date
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Definitions}
+\subsection{Differential Equations\\}
+Terms are related to a \textbf{second-order linear equation} in one independent variable (\textbf{ordinary}) and two independent variables (\textbf{partial}) is of the form
+
+\begin{align}
+& Au_{xx} + Bu_x + Cu = D \\
+& Au_{xx} + Bu_{xy} + Cu_{xx} + Du_x +Eu_y + Fu = G
+\end{align}
+
+where $A,B,C,D,E,F, \text{ and } G$ are constants (often some are zero valued) or functions of the independent variable(s)
+
+\begin{align*}
+	u &= \text{dependent variable} \implies \text{temp., disp., head, etc.}\\
+	x,y &= \text{independent variable} \implies \text{spatial reference or time}
+\end{align*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Linear Algebra\\}
+The following definitions pertain to terminology associated with the field of linear algebra.\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Mathematical Vectors\\}
+Following terms are specific to mathematical vectors, which implies these vectors are not related to a physical basis (unlike physical vectors).\\
+
+\begin{dd}{column vector}
+$\{v \}$, a column of ordered terms with components $v_1, v_2,...,v_n$.
+\end{dd}
+
+\begin{dd}{row vector}
+$<v>$, a row of ordered terms with components $v_1, v_2,...,v_n$.
+\end{dd}
+
+\begin{dd}{size}
+$n$, the number of components in the vector; also referred to as the dimension of the vector
+\end{dd}
+
+\begin{dd}{transpose} $^T$, an operation that swaps column and row components:
+$$\{v\}^T = <v> \quad \text{and} \quad <v>^T = \{v\}$$
+\end{dd}
+
+\begin{dd}{inner product}
+results in a scalar and is only defined between vectors (or vector spaces) of the same dimension $n$, and is only defined if the vectors are of the same size
+	\begin{gather*}
+	<v>\{x\} = \langle v,x \rangle   = \sum_{i=1}^n v_i x_i \\ \text{analogous is:} \\
+	\mathbf{v \cdot x} = v_i x_j \mathbf{e}_i \cdot \mathbf{e}_j = v_i x_i \implies \text{ physical vectors}
+	\end{gather*}
+\end{dd}
+
+\begin{dd}{magnitude} $\abs{v}$, a nonnegative scalar value of a vector defined as the square root of the inner product of a vector with itself; analogous to the $L_2$ norm
+$$\abs{v} = \sqrt{<v>\{v\}}$$
+\end{dd}
+
+\begin{dd}{norm} $\lVert x \rVert$,
+a nonnegative scalar measure of a vector that can be zero only if every component of the vector is zero
+	\begin{align*}
+	\norm{x} &= \abs{x} \implies 1D\quad \text{Absolute Value norm}\\
+	\norm{x}_{L_1} &= \sum_{i=1}^{n} \abs{x_i} \implies \text{sum of positive values, Taxicab or Manhattan norms}\\
+	\norm{x}_{L_2} &= \sqrt{<x> \{x\}} \implies \text{square root of the sum of squares, magnitude or Euclidean norm} \\
+	\end{align*}
+\end{dd}
+
+\begin{dd}{unit vector}
+$\{\hat{v}\}$, a vector having magnitude of unity, which is the vector divided by its magnitude
+$$ \{\hat{v}\} = \frac{\{v\}}{\abs{v}}$$
+\end{dd}
+
+\begin{dd}{angle between vectors}
+$\theta$, defined as
+$$cos(\theta_{uv})=<\hat{u}>\{\hat{v}\} \implies \theta_{uv}=cos^{-1}(<\hat{u}>\{\hat{v}\})$$
+\end{dd}
+
+\begin{dd}{real vector space} a set of vectors together with eight rules for vector addition and multiplication by real numbers. The vector space is denoted as $R^n$ where $n$ indicates the number of components, and the sets of vectors that make up the space must be given; rules include
+	\begin{enumerate}
+		\item association of addition: $\mathbf{u + (v+w) = (u+v)+w}$
+		\item commutativity of addition: $\mathbf{u+v=v+u}$
+		\item identity element of addition: $\mathbf{v + 0=v \quad\forall \quad v}$
+		\item inverse elements of addition: $\mathbf{v + (-v)=0}$
+		\item compatibility of scalar multiplication with field multiplication: $a(b\mathbf{v})=(ab)\mathbf{v}$
+		\item identity element: $1\mathbf{v = v}$
+		\item distributivity of scalar multiplication with respect to vector addition: $a\mathbf{(u+v)}=a\mathbf{u} + a\mathbf{v}$
+		\item distributivity of scalar multiplication with respect to field addition: $(a+b)\mathbf{v}= a\mathbf{v}+b\mathbf{v}$
+	\end{enumerate}
+Within all vector spaces, two operations are possible that allow us to take \emph{linear combinations} of the vectors. These operations result in vectors that are in the same vector space:
+\begin{itemize}
+	\item we can add any two vectors
+	\item we can multiply all vectors by scalars
+\end{itemize}
+
+\end{dd}
+
+\begin{dd}{notation for a vector space}
+$R^n$, consists of \emph{all column vectors with n components}. $R$ is used to denote the space because the components are real numbers.  The number of components in the vector space is denoted by $n$. If the dimension of $R^n$ is $m$, then the set of given vectors also define a subspace $R^n_m$, where $m$  is the number of linearly independent vectors in the vector space and $m \le n$.
+
+Example: say we have a $3 \times 4$ matrix that defines a vector space that is $R^3$. A column $\{c\}$ of the matrix is a linear combination of two other columns e.g., $\{c\} = \{a\} + \{b\}$.  $\{c\}$ defines a subspace that is $R^1$, and that subspace is a one-dimensional line that lies on the two-dimensional plane defined by the columns $\{a\}$ and $\{b\}$.  
+\end{dd}
+
+\begin{dd}{span}
+if the vector subspace $\{c\}$ can be expressed in terms of a linear combination of vectors in the vector space $\{a\}^i$, then $\{a\}^i$ is said to span the subspace $\{c\}$. This concept holds in higher dimensions.
+\end{dd}
+
+\begin{dd}{dimension of a vector space}
+is  the number of linearly independent vectors given in the definition of the vector space, this is different than the size or dimension of a single vector. The dimension of a vector space may be determined via the Gram-Schmidt procedure.  Vectors in a vector space are linearly independent if
+$$\sum_{i=1}^m \alpha_i \{v\}^i = \{0\} \implies \alpha = 0 \text{ for } i=1...m$$
+\end{dd}
+
+\begin{dd}{linear independence of a vector}
+a set of vectors is not linearly independent one of the vectors in the set can be defined as a linear combination of other vectors in the set. If no vector in the set can be written in this way, then the vectors are linearly independent.
+\end{dd}
+
+\begin{dd}{basis of a vector space}
+unless otherwise state: $\mathbf{e_i}$ or $[I]$, is the frame of reference for the vector space.  That is, the components of vector $\{x\}$ are implicitly the components with respect to the coordinate basis.
+$$ [I] = \delta_{ij}$$
+\end{dd}
+
+\begin{dd}{projection} 
+the vector projection of $\{a\}$ onto $\{b\}$ results in vector $\{c\}$ having the components of $\{a\}$ that are parallel to $\{b\}$. $\{c\}$ is formed by multiplying the inner product between $\{a\}$ and the unit vector $\{\hat{b}\}$ by 
+$\{\hat{b}\}$ 
+$$\{c\} = (<a>\{\hat{b}\})\{\hat{b}\}$$
+\end{dd}
+
+\begin{dd}{orthonormal basis} the set of vectors defining the basis are orthonormal if
+	\begin{enumerate}
+		\item vectors are normal (magnitude of unity): $\abs{\{v\}}=1$ or $<v>^i\{v\}^i=1$
+		\item vectors in the space are orthogonal: $<v>^i\{v\}^j = 0 \quad \forall \quad i \ne j$
+		\item vectors are orthonormal if: $<v>^i\{v\}^j = \delta_{ij} \quad \forall \quad i \ \text{and} \ j$
+	\end{enumerate}
+	An orthonormal basis $(<e>)$ is particularly convenient if the components of a vector with respect to that basis $\{x\}^e$ are desired, the components of that vector are obtained via the inner product with each of the base vectors
+	$$x^e_i = <e>^i\{x\}$$
+
+\end{dd}
+
+\begin{dd}{Gram-Schmidt procedure}
+a method of obtaining an orthonormal set of vectors $\{Q\}^i$ that span the same vector space of a given set of vectors $\{A\}^i$. In essence, the $\{Q\}^1$  calculated from the unit vector of $\{A\}^1$ and each additional $\{Q\}^k$ results from subtracting out the sum of previously calculated values of $\{Q\}^k$
+
+\begin{align*}
+\{Q\}^{*k} &= \{A\}^k - \sum_{j=1}^{k-1} <\{Q\}^{jT}>\{A\}^k \\
+\{Q\}^k &= \frac{\{Q\}^{*k}}{\abs{\{Q\}^{*k}}}
+\end{align*}
+
+% \begin{verbatim}
+% def GS(A):
+%     Q = np.zeros((nrow, ncol))
+%     neg_terms = np.zeros(nrow)
+%     cnt = 0
+%     vspace = 0
+
+%     for i in xrange(ncol):
+%         for j in xrange(cnt):
+%             neg_terms = neg_terms - Q[:,j].dot(A[:,cnt]) * Q[:,j]
+%         Q_star = A[:,cnt] + neg_terms
+%         Q[:,i] = Q_star / np.sqrt(Q_star.dot(Q_star))
+%         # increment/clear terms
+%         cnt = cnt + 1
+%         neg_terms = np.zeros(nrow)
+%     return Q
+% \end{verbatim}
+ \end{dd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Matrices\\}
+Following terms are specific to matrices.\\
+
+\begin{dd}{matrix}
+$[A]_{m\times n}$, is an ordered array of column or row vectors with $m$ rows and $n$ columns.  Additionally, a matrix can be an ordered array of components (scalars). $R^{m\times n}$ denotes the vector space of all real $m \times n$ matrices, and the dimension of the vector space is the number of independent matrices used to fine the space. Note: dimensions of the matrix and dimensions of the vector space are different items.
+\end{dd}
+
+
+\begin{dd}{ordered array of column vectors}
+	\[ [A] =
+	\begin{bmatrix}
+	\{A\}^1 & \{A\}^2 & \{A\}^3 & \hdots & \{A\}^n 
+	\end{bmatrix}
+	\]
+\end{dd}
+
+\begin{dd}{ordered array of row vectors}
+	\[ [A] =
+	\begin{bmatrix}
+	<A>^1 \\ <A>^2 \\ <A>^3 \\ \vdots \\ <A>^m 
+	\end{bmatrix}
+	\]
+\end{dd}
+
+\begin{dd}{ordered array of scalars}
+	\[ [A] =
+	\begin{bmatrix}
+	A_{11} & A_{12} & \hdots & A_{1n} \\
+	A_{21} & \ddots & & \vdots\\
+	\vdots & & \ddots & \vdots\\
+	A_{m1} & \hdotsfor{2} & A_{mn}
+	\end{bmatrix}
+	\]
+\end{dd}
+
+\begin{dd}{transpose}
+$[A]^T$, rows and columns are exchanged. In indicinal form: $A_{ij}^T = A_{ji}$
+\end{dd}
+
+\begin{dd}{matrix product}
+$[A]_{m \times n} [B]_{p \times q}=[C]_{m \times q}$, is only defined if $n = p$
+$$C_{ij} = \sum_{k=1}^n A_{ik}B_{kj} = A_{i1}B_{1j}+ A_{i2}B_{2j} + \hdots + A_{in}B_{nj}$$
+\end{dd}
+
+\begin{dd}{transpose of a matrix product}
+transpose of the product of two matrices equals the product of the transpose of the two matrices in the reverse order
+\[
+\begin{bmatrix}
+[A][B]
+\end{bmatrix}^T
+ = [B]^T[A]^T \]
+\end{dd}
+
+\begin{dd}{multiplication with a vector} $<x>[A]$ or $[A]\{x\}$, results in a vector having the same length $\{x\}$, analogous to a dot product between a vector and a tensor.
+$$<x>[A] = [A]\{x\}=\sum_{j=1}^n a_{ij} x_j$$
+
+\end{dd}
+
+\begin{dd}{outer product of vectors} Suppose $\{u\} \in R^m$ and $\{v\} \in R^n$, then the outer product of this two vectors is the matrix $[A] \in R^{m \times n}$
+\[[A] = \{u\}<v> = 
+	\begin{bmatrix}
+	u_1 v_1 & u_1 v_2 & \hdots & u_1 v_n \\
+	u_2 v_1 & \ddots & & \vdots\\
+	\vdots & & \ddots & \vdots\\
+	u_m v_1 & \hdotsfor{2} & u_m v_n
+	\end{bmatrix}
+	\]
+\end{dd}
+
+\begin{dd}{partitioned matrix} results from partitioning a general matrix into an array of sub matrices and is useful because sub matrices follow the same rules as general matrices
+\[ [A] =
+	\begin{bmatrix}
+	[A]_{11} & \vdots & [A]_{12} \\
+	\hdotsfor{3} \\
+	[A]_{21} & \vdots &[A]_{22}\\
+	\end{bmatrix}
+	\]
+\end{dd}
+
+\begin{dd}{diagonal}
+
+\end{dd}
+
+\begin{dd}{lower triangular}
+
+\end{dd}
+
+\begin{dd}{upper triangular}
+
+\end{dd}
+
+\begin{dd}{range}
+vector space formed by the columns of a matrix, also known as the column space, which is a subspace of $R^m$ (the whole space)
+\end{dd}
+
+\begin{dd}{rank}
+\emph{r}, is the number of independent vectors in a given vector space, which may be obtained via the Gram-Schmidt procedure. $$\text{for } [A]_{m \times n} \ r \le n$$
+\end{dd}
+
+\begin{dd}{nullspace}
+a vector space of $[A]$ formed from the solution of $[A]\{x\} = 0$. The \emph{nullspace} of a matrix consists of all vectors $\{x\}$ 
+\end{dd}
+
+\begin{dd}{inverse of a product of matrices}
+the inverse of a product of matrices equals the product of the inverse of the two matrices in reverse order
+\[
+\begin{bmatrix}
+[A][B]
+\end{bmatrix}^{-1}
+ = [B]^{-1}[A]^{-1} \]
+\end{dd}
+
+\begin{dd}{transpose of the inverse}
+transpose of the inverse of a matrix is equal to the inverse of the transpose of the matrix
+\[
+\begin{bmatrix}
+[A]^T
+\end{bmatrix}^{-1}
+ = 
+ \begin{bmatrix}
+[A]^{-1}
+\end{bmatrix}^{T}
+\]
+
+\[
+\begin{bmatrix}
+[A][B]
+\end{bmatrix}^{-T}
+ = [A]^{-T}[B]^{-T} \]
+\end{dd}
+
+\begin{dd}{orthogonal}
+matrix composed of orthonormal columns and rows
+\begin{gather*}
+[Q][Q]^T=[I] \implies [Q]^T = [Q]^{-1}\\
+det[Q] = \pm 1
+\end{gather*}
+\end{dd}
+
+\begin{dd}{positive definite} 
+$<x>[A]\{x\} >0 \ \forall \ \{x\}$, additionally, a matrix is said to be positive definite if
+\begin{itemize}
+	\item its eigenvalues are all positive.
+	\item matrix is nonsingular (an inverse exists)
+	\item its determinant is positive
+	\item all diagonal components must be positive, $A_{ii} > 0 \ \forall \ i$
+\end{itemize}
+
+if a matris is symmetric-positive definite, then
+\begin{gather*}
+	\abs{A_{ij}} \le \frac{1}{2} \left( A_{ii} + A_{jj} \right) \\
+	\abs{A_{ij}} \le \sqrt{ A_{ii} + A_{jj}}
+\end{gather*} 
+\end{dd}
+
+\begin{dd}{elementary}
+$[E]$, is a matrix that differs from the identity matrix by one single elementary row operation. By pre or post multiplying a matrix by $[E]$ you can affect either a rows or columns 
+\begin{gather*}
+	[E][A] \rightarrow \text{elementary row operation}\\
+	[A][E] \rightarrow \text{elementary column operation}
+\end{gather*}
+\end{dd}
+
+\begin{dd}{determinant}
+
+\end{dd}
+
+\begin{dd}{minor}
+$M_{ij}$, the determinant obtained by deleting the $i^{th}$ row and $j^{th}$ column of a matrix.
+\end{dd}
+
+\begin{dd}{cofactor} the number obtained by
+$M_{ij}^C = (-1)^{i+j}M_{ij}$
+\end{dd}
+
+\begin{dd}{Inverse via cofactor}
+$[A]^{-1} = \frac{[M]^a}{det[A]}$ where $[M]^a$ (the adjoint matrix) is the transpose of $[M]^c$
+\end{dd}
+
+\begin{dd}{determinant of a matrix product} determinant of a product of matrices equals the product of the determinants of the matrices
+$$det\left([A][B]\right) = det[A] det[B]$$
+\end{dd}
+
+\begin{dd}{determinant of the identity matrix}
+$det[I]= 1$
+\end{dd}
+
+\begin{dd}{singular}
+a square matrix is not invertible, and a square matrix is not invertible iff its determinant is zero
+\end{dd}
+
+\begin{dd}{trace} sum of diagonal terms
+
+\end{dd}
+
+\begin{dd}{magnitude}
+Frobenius norm, which is a scalar measure of a matrix
+\begin{gather*}
+	\abs{[A]} = \left(tr\Big[ [A] [A]^T \Big] \right)\\
+	\abs{[I]} = \sqrt{n} 
+\end{gather*}
+\end{dd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{the Linear Algebraic Problem\\}
+Following terms relate specifically to: $[A]\{x\}=\{b\} \implies \text{the Linear Algebraic Problem}$\\
+
+\begin{dd}{Cramer's method}
+
+\end{dd}
+
+\begin{dd}{Iterative method}
+
+\end{dd}
+
+\begin{dd}{Direct methods}
+LU, QR, SE
+\end{dd}
+
+\begin{dd}{direct method procedures}
+forward, backward
+\end{dd}
+
+\begin{dd}{manufacture a solution}
+
+\end{dd}
+
+\begin{dd}{error analysis}
+
+\end{dd}
+
+\begin{dd}{error measure}
+
+\end{dd}
+
+\begin{dd}{exact error}
+
+\end{dd}
+
+\begin{dd}{residual error}
+
+\end{dd}
+
+\begin{dd}{normalized error}
+
+\end{dd}
+
+\begin{dd}{residual error of a matrix solution}
+
+\end{dd}
+\begin{dd}{}
+
+\end{dd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}

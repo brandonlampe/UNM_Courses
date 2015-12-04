@@ -1,0 +1,498 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass paper
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement h
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 1in
+\topmargin 1in
+\rightmargin 1in
+\bottommargin 1in
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Assignment 2
+\end_layout
+
+\begin_layout SubTitle
+ME-500: Numerical Methods in Mechanical Engineering
+\end_layout
+
+\begin_layout Author
+Brandon Lampe
+\end_layout
+
+\begin_layout Section
+Summary
+\end_layout
+
+\begin_layout Standard
+This assignment focused on forming problems and obtaining solutions to the
+ second order differential equation known as the heat equation.
+ Simple (one dimension) problems were formed in both cylindrical and cartesian
+ coordinates as:
+\begin_inset Formula 
+\[
+\frac{1}{r}\frac{d}{dr}\big(kr\frac{dT}{dr}\big)=0\,(1)\hspace{2cm}\frac{d}{dx}\big(k\frac{dT}{dx}\big)=0\,(2)
+\]
+
+\end_inset
+
+ The following are definitions of words used in this assignment (in no particula
+r order).
+\end_layout
+
+\begin_layout Description
+Delta: 
+\begin_inset Formula $(\delta[x-a]$
+\end_inset
+
+ , where 
+\begin_inset Formula $a$
+\end_inset
+
+ is the reference value
+\begin_inset Formula $)$
+\end_inset
+
+ a function often termed the 
+\emph on
+Dirac Delta
+\emph default
+ or 
+\emph on
+impulse symbol
+\emph default
+.
+ The function is defined:
+\begin_inset Formula 
+\[
+\int_{a-\epsilon}^{a+\epsilon}\delta[x-a]dx=1\,\forall\,\epsilon>0
+\]
+
+\end_inset
+
+ This definition results in the following:
+\begin_inset Formula 
+\[
+\delta[x-a]=\begin{Bmatrix}0 & if & x\ne a\\
+\infty & if & x=a
+\end{Bmatrix}
+\]
+
+\end_inset
+
+ This function is not differentiable and the integral of the 
+\emph on
+Delta 
+\emph default
+function is the 
+\end_layout
+
+\begin_layout Description
+Strong: a function is said to be 
+\emph on
+strong
+\emph default
+ if it is defined everywhere in the problem domain and in the context of
+ the problem.
+ That is, if the function is the solution to a second order differential
+ equation, then the function would be a strong solution only if the function
+ itself, its first derivative, and its second derivative are defined with
+ respect to the independent variable(s).
+ The term 
+\emph on
+strong
+\emph default
+ implies that a Dirac Delta 
+\begin_inset Formula $(\delta)$
+\end_inset
+
+ is not needed in the function definition.
+ Additionally, 
+\emph on
+strong 
+\emph default
+does not imply the function must be continuous, e.g., Heaviside functions
+ are admissible.
+ 
+\end_layout
+
+\begin_layout Description
+Weak: a function is said to be 
+\emph on
+weak
+\emph default
+ if it requires the use of the Delta for it to be defined.
+ In the context of a solution to a second-order differential equation, the
+ function is said to be 
+\emph on
+weak 
+\emph default
+if the function itself, its first derivative, or its second derivative require
+ the Delta
+\emph on
+ 
+\emph default
+function for a description.
+ 
+\end_layout
+
+\begin_layout Description
+Class: or function class 
+\begin_inset Formula $(C)$
+\end_inset
+
+ regarding the solution to a differential equation, i.e., a function.
+ This provides a description of the function and its derivatives.
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="3">
+<features rotate="0" tabularvalignment="middle">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<column alignment="center" valignment="top">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Function Class
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Derivatives Are Continuous
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Examples
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C^{0}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+none
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Primary variable is smooth, but may contain a Heaviside function
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C^{1}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+first
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Primary variable is smooth and its first derivative, may contain the Ramp
+ function
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C^{2}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+first and second
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Primary variable and its first two derivatives are smooth
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $C^{\infty}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+infinite
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Primary variable is smooth and all derivatives, e.g., T= sin(x)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Heaviside: 
+\begin_inset Formula $(H[x-a]$
+\end_inset
+
+, where 
+\begin_inset Formula $a$
+\end_inset
+
+ is the reference value
+\begin_inset Formula $)$
+\end_inset
+
+ a discontinuous function, but it is defined everywhere in the domain (i.e.,
+ does not necessarily result in a 
+\emph on
+weak
+\emph default
+ function).
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+H[x-a]=\begin{Bmatrix}1 & if & x\ge a\\
+0 & if & x<a
+\end{Bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Ramp: 
+\begin_inset Formula $(<x-a>$
+\end_inset
+
+, where 
+\begin_inset Formula $a$
+\end_inset
+
+ is the reference value
+\begin_inset Formula $)$
+\end_inset
+
+ a continuous function with the slope of 
+\begin_inset Formula $x$
+\end_inset
+
+.
+ The derivative of the 
+\emph on
+Ramp
+\emph default
+ function is the Heaviside function.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\[
+<x-a>=\begin{Bmatrix}x-a & if & x\ge a\\
+0 & if & x<a
+\end{Bmatrix}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Description
+Dirichlet: a boundary condition imposed on the primary independent variable.
+\end_layout
+
+\begin_layout Description
+Neumann: a boundary condition imposed on a derivative of the primary independent
+ variable.
+\end_layout
+
+\begin_layout Description
+Robin: a weighted combination of Dirichlet and Neumann type boundary conditions.
+\end_layout
+
+\begin_layout Description
+Forcing: a nonzero function that results in a nonhomogeneous differential
+ equation.
+ The solution to a differential equation with a nonzero forcing function
+ may be determined using superposition of solutions to the homogenous and
+ forcing (particular) terms.
+ 
+\end_layout
+
+\begin_layout Description
+Coeficient: or differential coefficient of a function.
+ Is the defined multplier to the derivative of the primary variable, e.g.,
+ for 
+\begin_inset Formula $q=-k\frac{dT}{dx}$
+\end_inset
+
+ , 
+\begin_inset Formula $k$
+\end_inset
+
+ is the coeficient function, which multiplies the differential.
+ 
+\end_layout
+
+\end_body
+\end_document

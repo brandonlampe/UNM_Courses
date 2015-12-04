@@ -1,0 +1,577 @@
+\documentclass[letterpaper, 10pt, oneside]{article}
+
+\usepackage{tikz}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{framed} % for framed equations
+\usepackage{empheq} % for framed equations
+\usepackage{mathrsfs} % for script fonts
+
+%%%%% new environment and new command definitions
+\newenvironment{dd}[1]{
+	\noindent
+	\textbf{\normalsize{#1}}
+	\hspace{0.1in}
+	\small
+	\rmfamily
+	}
+	{\medskip}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}} 
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}} 
+\newcommand{\as}[1]{\begin{align*}#1\end{align*}}
+\newcommand{\an}[1]{\begin{align}#1\end{align}}
+\newcommand{\bdd}{\begin{dd}}
+\newcommand{\edd}{\end{dd}} 
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}  
+\newcommand{\boxedeq}[2]{\begin{empheq}[box={\fboxsep=6pt\fbox}]{align}\label{#1}#2\end{empheq}}
+\newcommand{\coloredeq}[2]{\begin{empheq}[box=\colorbox{lightgreen}]{align}\label{#1}#2\end{empheq}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% begin the document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%	
+\title{CBE 521\\ Advanced Transport Phenomena\\ Examination 1}
+\author{Brandon Lampe}
+% \date{October 3, 2015} % delete this line to display the current date
+\begin{document}
+\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 1
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Temperature distribution in wire}
+
+\begin{dd}{Assumptions}
+	\begin{itemize}
+		\item wire has negligible resistance to radial conduction $\implies$ temperature fluctuates in axial direction only $\left( T=T(z) \right)$
+		\item $\rho, \hat{C}_p, k, v_z $ are all constant
+		\item no viscous heating $\left( \Phi_v = 0 \right)$
+		\item as z $\rightarrow \infty, \ \frac{dT}{dz} \rightarrow 0$
+	\end{itemize}
+\end{dd}
+
+\begin{dd}{General PDE}
+$$\rho \hat{C}_p \left( \frac{\partial T}{\partial t} + v_r \frac{\partial T}{\partial r} + v_{\theta} \frac{\partial T}{\partial \theta} + v_z \frac{\partial T}{\partial z} \right)  = k \left[\frac{1}{r} \frac{\partial}{\partial r} \left( \frac{r \partial T}{\partial r} \right) + \frac{1}{r^2} \frac{\partial ^2 T}{\partial \theta^2} + \frac{\partial^2 T}{\partial z^2}\right] + \mu \Phi_v$$
+
+after assumptions are applied:
+	\begin{equation}
+		\rho \hat{C}_p v_z \frac{d T}{d z}  = k \frac{d^2 T}{d z^2}
+	\end{equation}
+
+from the problem description:
+
+	\begin{gather}
+		v_z = -v \\
+		\text{Let } C = -\frac{\rho \hat{C}_p v}{k} \\
+		\Theta(z) = \frac{T(z) - T_{\infty}}{T_0 - T_{\infty}} \implies T(z) = \Theta(T_0 - T_{\infty})+T_{\infty} \quad (\text{dimensionless } T)
+	\end{gather}
+\end{dd}
+
+\begin{dd}{Problem Data}
+\begin{itemize}
+	\item problem domain: $0 \le z \le \infty$
+	\item coefficient function: $C$ is constant
+	\item forcing function: $Q = 0$, no external heat
+	\item boundary conditions: $$ T \Bigr|_{z=0} = T_0, \quad T\Bigr|_{z=\infty} = T_{\infty}, \quad \frac{dT}{dz}\Bigr|_{z=\infty} = 0$$
+	\item governing equation: $$C\frac{d T}{d z}  = \frac{d^2 T}{d z^2}$$
+\end{itemize}
+\end{dd}
+
+\begin{dd}{Solve the ODE}
+\begin{gather*}
+	C \int \frac{dT}{dz} dz = \int \frac{d^2T}{dz^2} dz \\
+	C T = \frac{dT}{dz} + C_1
+\end{gather*}
+
+Evaluate at $z = \infty$
+
+	$$CT\Bigr|_{z=\infty} = \frac{dT}{dz}\Bigr|_{z=\infty} + C_1 \implies C_1 = CT_{\infty}$$
+
+substitute in terms from equation $4$ and separate the variables
+\begin{gather*}
+	\frac{dT}{dz} = -C(T - T_{\infty}) \\
+	(T_0 - T_{\infty})\frac{d\Theta}{dz} + \frac{dT_{\infty}}{dz} = -C\Big(\Theta(T_0 - T_{\infty}) \Big) \\
+	\frac{d\Theta}{\Theta} = -C dz
+\end{gather*}
+
+integrate both sides
+$$	\int \frac{d\Theta}{\Theta} = -C\int dz$$
+$$ ln(\Theta) = -Cz + C_2 $$
+
+evaluate $\Theta \Bigr|_{z=0} = 1$ and solve for $C_2$
+$$ln(1) = 0 + C_2 \implies C_2 = 0$$
+$$ \Theta = exp(-Cz)$$
+
+substitute back in terms to obtained $T(z)$
+
+\boxedeq{1}{T(z)= exp\left(\frac{\rho \hat{C}_p vz}{k}\right)(T_0 - T_{\infty}) + T_{\infty}}
+
+\end{dd}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Derive 2-D temperature profile $T = T(x,y)$}
+\bdd{Problem Data} \bi
+	\item problem domain: $0\le x \le 1, \ 0 \le y \le 1$
+	\item coefficient function: k = 1
+	\item forcing function: Q = 0
+	\item boundary conditions: 
+		$$T \Bigr|_{x=0}=0, \quad T \Bigr|_{x=1}=g(y) \quad \Bigr|_{y=0}=0, \quad T \Bigr|_{y=1}=f(x) $$
+	\item governing equation:
+		$$\nabla^2 T = \frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2}=0$$
+\ei \edd
+
+\bdd{Solution Method}
+	Because the governing equation is linear in in $T$, the method of superposition may be used to obtain a solution. The solution will be obtained separating the problem into two subproblems, solving each with only one of the inhomogeneous boundary conditions, and summing the solutions of each subproblem to obtain the full solution: $$ T = T_1 + T_2$$
+\edd
+
+\bdd{Solve for $T_1$}
+
+	define the boundary conditions for the subproblem:
+	\as{T_1(x, 0) & = 0\\
+		T_1(x, 1) & = f(x) \\
+		T_1(0, y) & = 0 \\
+		T_1(1, y) & = 0}
+
+	assume a solution takes the form: $$T_1(x,y)=X(x)Y(y)$$
+
+	calculate the second derivatives of the new variables, and substitute these derivatives into the governing equation: 
+	\as{\frac{\partial^2T_1}{\partial X^2} = X''(x)Y(y) \\
+	\frac{\partial^2T_1}{\partial Y^2} = X(x)Y''(y)}
+
+	\bes
+	\frac{\partial^2T_1}{\partial X^2} + \frac{\partial^2T_1}{\partial Y^2}= X''(x)Y(y) + X(x)Y''(y) =0
+	\ees
+
+	rearrange the new equation, because $X$ is independent of $y$ and $Y$ is independent of $x$, then each side of the equation below is independent and therefore each side must equal a fixed constant $(\mu)$:
+	\bes -\frac{X''}{X} = \frac{Y''}{Y} = \mu^2 \ees
+
+	therefore, we now have two homogeneous ODEs: 
+	\an{X'' + \mu^2 X &= 0 \label{ode1} \\ Y''-\mu^2 Y &= 0\label{ode2}}
+
+	define the boundary conditions in terms of $X$ and $Y$:
+	\as{T_1(x, 0) & = X(x)Y(0) = 0 \ \forall \ x \in [0,1] \implies Y(0) = 0\\
+		T_1(x, 1) & = X(x)Y(1) = f(x) \ \forall \ x \in [0,1] \implies Y(1) = f(x) \\
+		T_1(0, y) & = X(0)Y(y) = 0 \ \forall \ y \in [0,1] \implies X(0) = 0 \\
+		T_1(1, y) & = X(1)Y(y) = 0 \ \forall \ y \in [0,1] \implies X(1) = 0}
+
+	Equation \ref{ode1} has homogeneous boundary conditions and is of the form of a Sturm-Liouville problem. The characteristic equation for Equation \ref{ode1} is $m^2 + \mu^2 = 0$.  The roots of this characteristic equation are complex, resulting in solutions of $m = \pm i \sqrt{\mu^2}$ and the general solution to the differential equation is $X(x) = e^{\alpha x} \left[B\; sin(\sqrt{\mu^2} x) + C\; cos(\sqrt{\mu^2} x) \right]$. Recognizing that $\alpha = 0$ and letting $\mu = \lambda$ results in:
+	\as{X(x) &= B\; sin(\lambda x) + C\; cos(\lambda x)} 
+
+	which  for any $\lambda, B, \text{ or } C$ will satisfy the differential equation. Now, obtain a solution that satisfies the particular boundary conditions:
+	\as{X(0)&=0 \\ X(1)&=0}
+
+	to satisfy the boundary conditions, $X(0) \implies C = 0$. If $B=0$, the solution reduces to the trivial solution $X(x)=0$. A non-trivial solution to $sin(\lambda (1))=0$ is obtained by letting $\lambda (1)=n\pi$ for $ n=1,2,...$ a solution for $\lambda$ may be obtained:
+	
+	\an{\lambda_n &= n\pi \text{ for } n = 1,2,3,\ldots \\
+	X_n(x) &= sin\left( n\pi x \right) \text{ for } n = 1,2,3,\ldots }
+
+
+	 where $X_n(x)$ are eigenfunctions and each $\lambda_n$ are corresponding eigenvalues.  The solution is now in terms of an infinite number of functions (fundamental solutions).  
+
+	 The solution to the remaining ODE must now be obtained, where characteristic equation for Equation \ref{ode2} is $m^2 - \mu^2 = 0$.  Solving this quadratic equation results in the solutions of $m = 1$. Again, Let $\mu = \lambda$ and the general solution to the differential equation is 
+	 $$Y(y) = D \; cosh(\lambda y) + E \; sinh(\lambda y)$$
+
+	 which  for any $\lambda, D, \text{ or } E$ will satisfy the differential equation. Now, obtain a solution that satisfies the homogeneous boundary condition only:
+	\as{Y(0)&=0}
+
+	$Y(0) \implies D = 0$. Let $E=1$, then a nontrivial solution to $sinh(\lambda y)=0$ is obtained by letting $\lambda =n\pi$ for $ n=1,2,...$ a solution for $\lambda$ may be obtained:
+	
+	\an{\lambda_n &= n\pi \text{ for } n = 1,2,3,\ldots \\
+	Y_n(y) &= sinh\left( n\pi y \right) \text{ for } n = 1,2,3,\ldots }
+
+	combine the pair of homogeneous soltions:
+
+	$$T_{1n}(x,y) = sinh\left( n\pi y \right) sin\left( n\pi x \right) $$
+
+	this function satisfies the three homogeneous boundary conditions.  To solve for the solution including the non-homogeneous boundary conditions, let the complete solution consist of the following terms:
+	\as{T_1(x,y) & \equiv \sum_{n=1}^\infty a_n T_{1n} \\
+	 & = \sum_{n=1}^\infty a_n sinh\left( n\pi y \right) sin\left( n\pi x \right)}
+
+	 at the non-homogeneous boundary conditions:
+	 \as{f(x) &= T_1(x,1) = \sum_{n=1}^\infty a_n sinh\left( n\pi \right) sin\left( n\pi x \right)\\
+	 &=\sum_{n=1}^\infty A_n sin\left( n\pi x \right)}
+
+	 this is an orthogonal expansion of $f(x)$ relative to the orthogonal basis of the sine function. $A_n$ is a Fourier coefficient which is defined as the inner product:
+
+	 $$A_n = \frac{\int_0^1 f(x) sin
+	 (n \pi x) dx }{\int_0^1 sin^2(n\pi x)} = 2 \int_0^1 f(x)sin(n\pi x) dx \text{ for } n = 1,2,3, \ldots$$
+
+	 therefore, $a_n$ must be:
+
+	 $$a_n = -\frac{2}{sinh(n\pi)}\int_0^1 f(x)sin(n \pi x) dx \text{ for } n = 1,2,3, \ldots$$
+
+	 and the solution to $T_1$ is:
+	 \an{T_1 = \sum_{n=1}^\infty \left[-\frac{2}{sinh(n\pi)}\int_0^1 f(x)sin(n \pi x) dx \right]sinh\left( n\pi y \right) sin\left( n\pi x \right)}
+\edd
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bdd{Solve for $T_2$}
+
+	define the boundary conditions for the subproblem:
+	\as{T_2(x, 0) & = 0\\
+		T_2(x, 1) & = 0 \\
+		T_2(0, y) & = 0 \\
+		T_2(1, y) & = g(y)}
+
+	assume a solution takes the form: $$T_2(x,y)=X(x)Y(y)$$
+
+	calculate the second derivatives of the new variables, and substitute these derivatives into the governing equation: 
+	\as{\frac{\partial^2T_2}{\partial X^2} = X''(x)Y(y) \\
+	\frac{\partial^2T_2}{\partial Y^2} = X(x)Y''(y)}
+
+	\bes
+	\frac{\partial^2T_2}{\partial X^2} + \frac{\partial^2T_2}{\partial Y^2}= X''(x)Y(y) + X(x)Y''(y) =0
+	\ees
+
+	rearrange the new equation, because $X$ is independent of $y$ and $Y$ is independent of $x$, then each side of the equation below is independent and therefore each side must equal a fixed constant $(\mu)$:
+	\bes -\frac{X''}{X} = \frac{Y''}{Y} = \mu^2 \ees
+
+	therefore, we now have two homogeneous ODEs: 
+	\an{X'' + \mu^2 X &= 0 \label{ode3} \\ Y''-\mu^2 Y &= 0 \label{ode4}}
+
+	define the boundary conditions in terms of $X$ and $Y$:
+	\as{T_2(x, 0) & = X(x)Y(0) = 0 \ \forall \ x \in [0,1] \implies Y(0) = 0\\
+		T_2(x, 1) & = X(x)Y(1) = 0 \ \forall \ x \in [0,1] \implies Y(1) = 0 \\
+		T_2(0, y) & = X(0)Y(y) = 0 \ \forall \ y \in [0,1] \implies X(0) = 0 \\
+		T_2(1, y) & = X(1)Y(y) = g(y) \ \forall \ y \in [0,1] \implies X(1) = g(y)}
+
+	Equation \ref{ode4} has homogeneous boundary conditions and is of the form of a Sturm-Liouville problem. The characteristic equation for Equation \ref{ode4} is $m^2 - \mu^2 = 0$ which as roots of $m = 1$ and the general solution to the differential equation is:
+	 $$Y(y) = B\; sinh(\lambda y) + C\; cosh(\lambda y) $$
+
+	which  for any $\lambda, B, \text{ or } C$ will satisfy the differential equation. Now, obtain a solution that satisfies the particular boundary conditions:
+	\as{Y(0)&=0 \\ Y(1)&=0}
+
+	to satisfy the boundary conditions, $Y(0) \implies C = 0$. If $B=0$, the solution reduces to the trivial solution $Y(y)=0$. A non-trivial solution to $sinh(\lambda (1))=0$ is obtained by letting $\lambda (1)=n\pi$ for $ n=1,2,...$ a solution for $\lambda$ may be obtained:
+	\an{\lambda_m &= m\pi \text{ for } m = 1,2,3,\ldots \\
+	Y_m(y) &= sinh\left( m\pi y \right) \text{ for } m = 1,2,3,\ldots }
+
+	 The solution to the remaining ODE must now be obtained, where characteristic equation for Equation \ref{ode3} is $m^2 + \mu^2 = 0$.  The roots of this characteristic equation are complex, resulting in solutions of $m = \pm i \sqrt{\mu^2}$ and the general solution to the differential equation is $X(x) = e^{\alpha x} \left[D\; sin(\sqrt{\mu^2} x) + E\; cos(\sqrt{\mu^2} x) \right]$. Recognizing that $\alpha = 0$ and letting $\mu = \lambda$ results in:
+	\as{X(x) &= D\; sin(\lambda x) + E\; cos(\lambda x)} 
+
+	 which  for any $\lambda, D, \text{ or } E$ will satisfy the differential equation. Now, obtain a solution that satisfies the homogeneous boundary condition only:
+	\as{X(0)&=0}
+
+	$X(0) \implies E = 0$. Let $D=1$, then a nontrivial solution to $sin(\lambda x)=0$ is obtained by letting $\lambda =m\pi$ for $ m=1,2,...$ a solution for $\lambda$ may be obtained:
+	
+	\an{\lambda_m &= m\pi \text{ for } m = 1,2,3,\ldots \\
+	X_m(x) &= sin\left( m\pi x \right) \text{ for } m = 1,2,3,\ldots }
+
+	combine the pair of homogeneous solutions:
+
+	$$T_{2m}(x,y) = sinh\left( m\pi y \right) sin\left( m\pi x \right) $$
+
+	this function satisfies the three homogeneous boundary conditions.  To solve for the solution including the non-homogeneous boundary conditions, let the complete solution consist of the following terms:
+	\as{T_2(x,y) & \equiv \sum_{m=1}^\infty a_m T_{2m} \\
+	 & = \sum_{m=1}^\infty a_m sinh\left( m\pi y \right) sin\left( m\pi x \right)}
+
+	 at the non-homogeneous boundary conditions:
+	 \as{g(y) &= T_2(y,1) = \sum_{m=1}^\infty a_m sinh\left( m\pi y \right) sin\left( m\pi  \right)\\
+	 &=\sum_{m=1}^\infty A_m sinh\left( n\pi y \right)}
+
+	 this is an orthogonal expansion of $g(y)$ relative to the orthogonal basis of the hyperbolic sine function. $A_m$ is a Fourier coefficient which is defined as the inner product:
+
+	 $$A_m = \frac{\int_0^1 g(y) sinh
+	 (m \pi y) dy }{\int_0^1 sinh^2(m\pi y)} = 2 \int_0^1 g(y)sinh(m\pi y) dy \text{ for } m = 1,2,3, \ldots$$
+
+	 therefore, $a_m$ must be:
+
+	 $$a_m = -\frac{2}{sin(m\pi)}\int_0^1 g(y)sinh(m \pi y) dy \text{ for } m = 1,2,3, \ldots$$
+
+	 and the solution to $T_2$ is:
+	 \an{T_2 = \sum_{m=1}^\infty \left[-\frac{2}{sin(m\pi)}\int_0^1 g(y)sinh(m \pi y) dy \right]sinh\left( m\pi y \right) sin\left( m\pi x \right)}
+\edd
+
+\bdd {Combine solutions to the subproblems}
+	\an{T &= T_1 + T_2 \\
+	&= \sum_{n=1}^\infty \left[-\frac{2}{sinh(n\pi)}\int_0^1 f(x)sin(n \pi x) dx \right]sinh\left( n\pi y \right) sin\left( n\pi x \right) + \\ \ & \ \ 
+	 \left[-\frac{2}{sin(n\pi)}\int_0^1 g(y)sinh(n \pi y) dy \right]sinh\left( n\pi y \right) sin\left( n\pi x \right)}
+\edd
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 3
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Slot coating analysis}
+
+\bdd{Assumptions}
+	\bi
+		\item steady-state flow
+		\item gravitation influence is negligible
+		\item flow occurs in x-direction only
+		\item external pressures $(p_0 \text{ and } p_1)$ are constant
+		\item total velocity profile is the sum of Couette $(v^c)$ and Poiseuille $(v^p)$ types
+		\item no-slip conditions exist at wall surfaces
+	\ei
+\edd
+
+\bdd{Governing Equations}
+	\bi
+		\item continuity: $$\frac{\partial v_x}{\partial x}= 0$$
+		\item Navier-Stokes EOM: $$ 0= -\frac{\partial p}{\partial x} + \mu  \frac{\partial^2 v_x}{\partial y^2}$$
+	\ei
+\edd
+
+\bdd{Problem Data}
+	\bi
+		\item problem domain: $-L_2\le x \le L_2, \quad 0 \le y \le h$
+		\item coefficient function: $\mu$ is constant
+		\item forcing function: $p_0$ is constant
+		\item boundary conditions:
+		$$ v_x^c \Bigr|_{y=0} = U, \quad v_x^c \Bigr|_{y=h}=0, \quad v_x^p \Bigr|_{y=0} = 0, \quad v_x^p \Bigr|_{y=h}=0$$
+		\item governing equations:
+		\an{\text{Couette flow} \quad 0 &= \mu \frac{\partial^2 v_x^c}{\partial y^2} \label{couette}\\
+		\text{Poiseuille flow} \quad 0 &= -\frac{\partial p}{\partial x} + \mu \frac{\partial^2 v_x^p}{\partial y^2} \label{hp} }
+	\ei
+\edd
+
+\bdd{Analyze Couette (viscous) contribution resulting form wall velocity}
+
+	integrate Equation \ref{couette} twice to obtain:
+	\as{\int \frac{d^2 v_x^c}{dy^2} dy &= \frac{dv_x^c}{dy} + C_1 \\\int \frac{dv_x^c}{dy} &= \int C_1 dy \\v_x^c &= C_1y + C_2 }
+
+	apply boundary conditions to solve for constants:
+	\as{C_2 &= U \\ C_1 &= -\frac{U}{h}  \\ v_x^c &= -\frac{U}{h}y + U}
+\edd
+
+\bdd{Analyze Poiseuille (pressure driven) contribution}
+
+	integrate Equation \ref{hp}:
+	\as{\int \frac{d^2 v_x^p}{d y^2} dy &=\int \left( \frac{1}{\mu} \frac{d p}{d x} \right) dy \\
+	\int \frac{dv_x^p}{dy} dy &= \int \left( \frac{1}{\mu} \frac{d p}{d x}y + C_3 \right) dy \\
+	v_x^p &= \frac{1}{2\mu} \frac{d p}{d x}y^2 + C_3y + C_4 }
+
+	apply boundary conditions to solve for constants:
+	\as{C_4 &= 0 \\
+	C_3 &= -\frac{1}{2\mu} \frac{d p}{d x}h\\
+	v_x^p &= \frac{1}{2\mu} \frac{d p}{d x}y^2 -\frac{1}{2\mu} \frac{d p_0}{d x}hy}
+\edd
+
+\bdd{Combine Couette and Poiseuille velocity terms}
+
+	the total flow velocity is then:
+	\an{v_x &= v_x^c + v_x^p \\
+	&= -\frac{U}{h}y + U+\frac{1}{2\mu} \frac{d p}{d x}y^2 -\frac{1}{2\mu} \frac{d p}{d x}hy\\ &= U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu}\frac{d p}{d x} \left[y^2 -yh\right] \label{vx}}
+\edd
+
+\bdd{Integrate over cross-sectional area to obtain the volumetric flow rate}
+
+	assume a unit width and integrate Equation \ref{vx} over the slot height $(h)$; additionally, assume the total flow rate is the sum of :
+	\an{q &= \int_0^h v_x dy \\
+	&= U\left[y-\frac{y^2}{2h}\right] + \frac{1}{2\mu} \frac{dp}{dx} \left[\frac{y^3}{3} - \frac{y^2h}{2}\right] \Biggr|_{y=0}^{y=h} \\
+	&=\frac{Uh}{2} - \frac{h^3}{12\mu} \frac{dp}{dx} \label{qx}}
+\edd
+
+\bdd{Use flow rate to calculate change in pressure over $L_1$}
+	
+	rearrange Equation \ref{qx} and solve for the external pressure by integrating over $L_1$, then rearrange to express $q$ without the pressure differential:
+	\an{\frac{dp}{dx} &= \frac{6\mu U}{h^2}-\frac{q_1 12\mu}{h^3} \label{dpdx}\\
+	\int_{p_1}^{p_0} dp &= \int_0^{L_1}\left(\frac{6\mu U}{h^2}-\frac{q_1 12\mu}{h^3} \right) dx \\
+	p_0 - p_1 &= \left(\frac{6\mu U}{h^2}-\frac{q_1 12\mu}{h^3} \right)L_1\\
+	q_1 &= \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \label{q1}}
+\edd
+
+\bdd{3(a) Solve for $v_x(y)$ in the forward-flow region (over $L_1$)}
+
+	substitute in Equation \ref{dpdx} for $\frac{dp}{dx}$
+
+	\as{v_x &= U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu}\frac{d p}{d x} \left[y^2 -yh\right] \\
+	&= U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu} \left[ \frac{6\mu U}{h^2}-\frac{q_1 12\mu}{h^3} \right] \left[y^2 -yh\right] \\
+	&= U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu} \left[ \frac{6\mu U}{h^2}-\left( \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \right) \frac{12\mu}{h^3} \right] \left[y^2 -yh\right] 
+	}
+
+	therefore, in the forward-flow region:
+	\boxedeq{3a}{v_{x1}(y) = U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu} \left[ \frac{6\mu U}{h^2}-\left( \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \right) \frac{12\mu}{h^3} \right] \left[y^2 -yh\right]}
+\edd
+
+\bdd{Use flow rate to calculate change in pressure over $L_2$}
+
+	assume that no fluid is stored in region $L_2$; therefore, the net flow rate is zero in this region $(q_2 = 0)$
+
+	rearrange Equation \ref{qx}, let $q_2=0$, and solve for the external pressure by integrating over $L_2$:
+
+	\an{\frac{dp}{dx} &= \frac{6\mu U}{h^2}-\frac{q_2 12\mu}{h^3} \label{dpdx2}\\
+	&= \frac{6\mu U}{h^2}\\
+	\int_{p_0}^{p_1} dp &= \int_{-L_2}^{0}\left(\frac{6\mu U}{h^2} \right) dx \\
+	p_1 - p_0 &= -\left(\frac{6\mu U}{h^2}\right)(-L_2)\\
+	L_2 &= \frac{(p_0 - p_1)h^2}{6 \mu U} \label{l2}}
+\edd
+
+\bdd{3(b) Solve for $v_x(y)$ in the back-flow region (over $L_2$)}
+
+	because $q_2=0$, Equation \ref{dpdx2} may be substituted into Equation \ref{vx}; therefore, in the back-flow region:
+	\as{v_x &= U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu}\frac{d p}{d x} \left[y^2 -yh\right] \\
+	&= U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu} \frac{6\mu U}{h^2} \left[y^2 -yh\right]}
+
+	\boxedeq{3b1}{v_{x2}(y) = U\left[1-\frac{y}{h}\right]+\frac{1}{2\mu} \frac{6\mu U}{h^2}\left[y^2 -yh\right]}
+	and $L_2$, solved for in Equation \ref{l2}:
+ 
+	\boxedeq{3b2}{L_2 = \frac{(p_0 - p_1)h^2}{6 \mu U}}
+\edd
+
+\bdd{3(c) Evaluate the final coating thickness $h_\infty$}
+	
+	for mass to be conserved the flow rate $q_1$ must be constant; therefore by setting Equation \ref{q1} equal to $Uh_\infty$:
+	\as{q_1 &= \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \\
+	&= U h_\infty }
+	\boxedeq{hinf}{h_\infty &= \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1 U}}
+\edd
+
+\bdd{3(d) Determine the shear force $(F)$ per unit width applied by the fluid on the substrate}
+	\as{F &= \int_{-L_2}^{L_1} \left( \mu \frac{dv_x}{dy} \right) dx \\
+	&= \int_{-L_2}^0 \left( \mu \frac{dv_{x2}}{dy} \right) dx + \int_0^{L_1} \left( \mu \frac{dv_{x1}}{dy} \right) dx \\
+	&= \int_{-L_2}^0 \mu \left[ -\frac{U}{h} + \frac{3U}{h^2} [2y-h] \right] dx + \int_0^{L_1} \mu  \left( 
+	-\frac{U}{h}+\frac{1}{2\mu} \left[ \frac{6\mu U}{h^2}-\left( \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \right) \frac{12\mu}{h^3} \right] \left[2y -h\right]\right) dx \\
+	&=\mu \left[ -\frac{U}{h} + \frac{3U}{h^2} [2y-h] \right]L_2 + 
+	\mu  \left( 
+	-\frac{U}{h}+\frac{1}{2\mu} \left[ \frac{6\mu U}{h^2}-\left( \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \right) \frac{12\mu}{h^3} \right] \left[2y -h\right]\right)L_1}
+
+	evaluate $F\Bigr|_{y=0}$
+
+	\boxedeq{3d}{F(0)&=\mu \left[ -\frac{U}{h} + \frac{3U}{h^2} [-h] \right]L_2 + 
+	\mu  \left( 
+	-\frac{U}{h}+\frac{1}{2\mu} \left[ \frac{6\mu U}{h^2}-\left( \frac{6\mu U L_1 h + (p_1-p_0)h^3}{12 \mu L_1} \right) \frac{12\mu}{h^3} \right] \left[ -h\right]\right)L_1 \\
+	&= \frac{\mu U}{h}(-4L_2 - L_1) + \frac{(p_0-p_1)h}{2}}
+
+	assuming $p_1 > p_0$, the net shear force is in the negative $x$ direction
+\edd
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% problem 4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Axisymmetric flow between parallel plates}
+
+\begin{dd}{Assumptions}
+	\begin{itemize}
+		\item $v = v(r,z), \quad v_z = v_{\theta} = 0$
+		\item creeping (Stoke's) flow $\implies R_e = \frac{ \text{inertial forces}}{\text{viscous forces}} << 1$ i.e., viscous forces are dominant and fluid inertia is negligible $(\rho v_r \frac{\partial v_r}{\partial r} = 0)$
+	\end{itemize}
+\end{dd}
+
+\bdd{Governing Equations}
+by applying these assumptions,  the conservation equations (mass and momentum) simplify to:
+\bi
+	\item continuity (BSL  B.4-2): \bes \frac{1}{r} \frac{\partial}{\partial r} \left( r v_r \right) = 0 \ees
+
+	\item Equation of Motion in the radial direction (BSL B.6-4): \bes 0 = -\frac{d\mathscr{P}}{dr} + \mu \left[ \frac{\partial}{\partial r} \left(\frac{1}{r} \frac{\partial}{\partial r} \left(r v_r \right) \right) + \frac{\partial^2 v_r}{\partial z^2} \right] \ees
+\ei
+\edd
+
+\subsection{Relate mean radial velocity $U (r)$, i.e. $v_r$ averaged along the gap thickness of $2H$, to a volumetric flow
+rate $Q$ and the geometric quantities.}
+\bdd{}
+
+	define a flow rate $Q$, where $U$ is the mean radial velocity:
+	\bes Q = Q(r) = U(r) a(r) \ees
+
+	where $a$ is perpendicular to the direction of flow:
+	\bes a = 4\pi Hr \ees
+
+	therefore:
+	\boxedeq{U}{U(r) = \frac{Q}{4\pi Hr}}
+\edd
+
+\subsection{Show the continuity and momentum equations have the form given}
+
+\bdd{Obtain an expression for $rv_r$ as a function of only z}
+
+	\bes \frac{1}{r} \frac{\partial}{\partial r} \left( r v_r \right) = 0 \implies  r v_r(r) \text{ is a constant, i.e. 
+	$rv_r$ with respect to the radial direction $(r)$ is constant} \ees
+
+	therefore, $rv_r$ can be a function of $z$ only:
+	\bes r v_r = f(z) \rightarrow v_r = \frac{f(z)}{r} \ees
+
+	\boxedeq{vr}{v_r = \frac{f(z)}{r}}
+\edd
+
+\bdd{obtain an expresion for $\mathscr{P}$}
+
+	substitute this expression and that of continuity into the conservation of momentum to obtain:
+
+	\bes 0 = -\frac{d\mathscr{P}}{dr} + \mu  \frac{1}{r} \frac{d^2 f(z)}{d z^2}  \ees
+\edd
+\bdd{seperate the variables to obtain two ODEs}
+	
+	\bes r\frac{d\mathscr{P}}{dr} = \mu \frac{d^2 f(z)}{d z^2}  \ees
+
+	the left side is now a function of only $r$ and the right side is now only a function of $z$; therefore, both sides must be equal to a constant:
+
+	\bes r\frac{d\mathscr{P}}{dr} = \mu \frac{d^2 f(z)}{d z^2}  = C \ees
+
+	Therefore, the following must hold:
+
+	\boxedeq{P}{\mathscr{P} =\mathscr{P}(r) } 
+\edd
+
+\subsection{Determine $v_r(r,z)$}
+
+\bdd{Problem Data}
+	\begin{itemize}
+		\item problem domain: $0 \le z \le 2H$, $r_1 \le r \le r_2$, and $0 \le \theta \le 2\pi$
+		\item coefficient functions: $C$ and $\mu $ are constant
+		\item forcing function: $Q = 0$, no external heat
+		\item no-slip boundary conditions: $$ v_r \Bigr|_{z=0} = 0, \quad v_r\Bigr|_{z=2H} = 0$$
+		\item governing equations: \bes r\frac{d\mathscr{P}}{dr} = C; \quad \mu \frac{d^2 f(z)}{d z^2}  = C \ees
+	\end{itemize}
+\edd
+
+\bdd{solve for the seperation constant $C$}
+
+	integrate the pressure term over the radial domain:
+
+	\bes \int_{\mathscr{P}_1}^{\mathscr{P}_2} d\mathscr{P} = C \int_{r_1}^{r_2} \frac{dr}{r}  \ees
+
+	\bes \mathscr{P}_2 - \mathscr{P}_1 = C ln \left(\frac{r_2}{r_1}\right) \rightarrow C=\frac{\mathscr{P}_2 - \mathscr{P}_1}{ln \left(\frac{r_2}{r_1}\right)}\ees
+
+\edd
+
+\bdd{substitute this expression into the remaining ODE to solve for $f(z)$}
+
+	\bes \int d^2 f(z) =  \frac{\mathscr{P}_2 - \mathscr{P}_1}{ \mu  \,ln\left(\frac{r_2}{r_1}\right)} \int dz \ees
+
+	\bes \int df(z) =  \frac{\mathscr{P}_2 - \mathscr{P}_1}{ \mu  \,ln\left(\frac{r_2}{r_1}\right)} z + C_1 \ees
+
+	\bes f(z) =  \frac{\mathscr{P}_2 - \mathscr{P}_1}{ \mu  \,ln\left(\frac{r_2}{r_1}\right)} \frac{z^2}{2} + C_1z + C_2 \ees
+\edd
+
+\bdd{apply boundary conditions and solve for constants of integration}
+
+	substitute back in $rv_r = f(z)$
+	\bes rv_r(z) =  \frac{\mathscr{P}_2 - \mathscr{P}_1}{ \mu  \,ln\left(\frac{r_2}{r_1}\right)} \frac{z^2}{2} + C_1z + C_2 \ees
+
+	Let
+	\bes A = \frac{\mathscr{P}_2 - \mathscr{P}_1}{ \mu  \,ln\left(\frac{r_2}{r_1}\right)} \ees
+
+	\bes v_r \Bigr|_{z=0} = 0 \quad \rightarrow \quad 0 =  C_2 \ees
+
+	\bes v_r\Bigr|_{z=2H} = 0 \quad \rightarrow \quad 0 = A \frac{(2H)^2}{2} +C_2\ees
+
+	 \bes C_2 = -A \frac{(2H)^2}{2}\ees
+
+	 \bes rv_r(z) =  A \frac{z^2}{2} -A \frac{(2H)^2}{2}\ees
+
+	 \bes v_r(r,z) =  A \frac{z^2}{2r} -A \frac{(2H)^2}{2r}\ees
+\edd
+
+\bdd{calculate the volumetric flow rate}
+
+	the flow rate must be constant through any cylindrical surface at a distance $r_1 \le r \le r_2$, therefore, integrate over the circumference of the domain $(2\pi)$ at a distance $(r_1)$ and over the domain height $(2H)$:
+
+	\bes Q = \int_0^{2\pi} \int_0^{2H} v_r \Bigr|_{r=r_1} dz d\theta\ees
+
+	\bes Q = \int_0^{2\pi} \int_0^{2H} \left(A \frac{z^2}{2r_1} -A \frac{(2H)^2}{2r_1} \right) dz d\theta\ees
+
+	\bes Q = \int_0^{2\pi} \left(A \frac{z^3}{6r_1} -A \frac{(2H)^2 z}{2r_1} \right) \Bigr|_{z=0}^{z=2H} d\theta \ees
+
+	\bes Q = \int_0^{2\pi} \left(A \frac{(2H)^3}{6r_1} -A \frac{(2H)^2 2H}{2r_1} \right) d\theta \ees
+
+	\bes Q = A \frac{(2H)^3 2\pi}{6r_1} -A \frac{(2H)^2 2H 2\pi}{2r_1} \ees
+\edd
+
+\bdd{express $v_r (r,z)$ in terms of $Q$}
+
+because $Q$ is constant:
+	\boxedeq{c}{ v_r(r) = \frac{Q}{a} = \frac{Q}{4\pi Hr}}
+\edd
+
+\end{document}

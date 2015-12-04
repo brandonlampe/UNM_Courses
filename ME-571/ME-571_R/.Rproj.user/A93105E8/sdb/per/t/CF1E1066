@@ -1,0 +1,17 @@
+{
+    "contents" : "\\documentclass{article}\n\n\\usepackage[margin = 1in]{geometry}\n\\usepackage{float}\n\\usepackage{graphicx}\n\n\\begin{document}\n\\section{ME 571 - HW 2 - Problem 3.16 - Brandon Lampe}\n\n<<calc, echo=FALSE>>=\n######## PROBLEM 3.16\n\n# compressive stress / tensile stress [MPa]\nsc.st <- matrix(c(0.9, .8, .7, .6, .5, .4, .35, .325, .32))\n\n# x 10^(-2)\nep <- matrix(c(0.1, .25, .4, .65, .95, 1.5, 2, 2.5, 3))\n\ne <- ep * 10 ^ (-2)\n@\n\n<<func,echo=TRUE>>=\n# function to evaluate\nfsigma.T <- function (e){\n        300 + 450 * e ^ 0.5 }\n\n# compressive stress [MPa]\nsigma.C <- sc.st * fsigma.T(e)\n\n# tensile stress [MPa]\nsigma.T <- fsigma.T(e)\n@\n\\vspace{-.5in}\n\\begin{figure}[H] \\begin{center}\n<<plot1, echo=FALSE, fig.height=7 >>=\nplot(ep, sc.st, xlab = \"Strain\",\n     ylab =\"Ratio of Compressive-to-Axial Stress [MPa]\")\nlines(ep, sc.st)\n@\n\\end{center} \\vspace{-.5in} \\caption{Data From Figure 3.17 of Class Textbook} \\end{figure}\n\n\\vspace{-.5in}\n\n\\begin{figure}[H] \\vspace{-.5in} \\begin{center}\n<<plot2, echo=FALSE, fig.height=5>>=\nplot(e, sigma.C, xlab = \"Strain\",\n     ylab = \"Compressive Stress [MPa]\")\nlines(e, sigma.C)\n@\n\\end{center} \\vspace{-.5in} \\caption{Compressive Stress Versus Strain} \\end{figure}\n\n\\vspace{-.5in}\n\n\\begin{figure}[H] \\begin{center}\n<<plot3, echo=FALSE,fig.height=5>>=\nplot(e, sigma.T, xlab = \"Strain\",\n     ylab = \"Tensile Stress [MPa]\")\nlines(e,sigma.T)\n@\n\\end{center} \\vspace{-.5in} \\caption{Tensile Stress Versus Strain} \\end{figure}\n\n\\end{document}",
+    "created" : 1410958726335.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "575778513",
+    "id" : "CF1E1066",
+    "lastKnownWriteTime" : 1411002973,
+    "path" : "~/Documents/UNM_Courses/ME-571_AdvMaterialScience_Tehrani/ME-571_R/3-16.Rnw",
+    "project_path" : "3-16.Rnw",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "sweave"
+}
