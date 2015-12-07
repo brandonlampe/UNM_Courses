@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1449103073 "HW5_Template.tex" "HW5_Template.pdf" "HW5_Template" 1449103197
+["pdflatex"] 1449103073 "HW5_Template.tex" "HW5_Template.pdf" "HW5_Template" 1449467656
   "/usr/local/texlive/2014/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2014/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -170,6 +170,6 @@
   "figs/4i.pdf" 1448494252 25500 5866125c30ab1976e6be33127d5ccbd0 ""
   "figs/4ii.pdf" 1448493989 25930 99afc7ad99a26c3f359edf14defeea6d ""
   (generated)
-  "HW5_Template.log"
   "HW5_Template.aux"
   "HW5_Template.pdf"
+  "HW5_Template.log"
